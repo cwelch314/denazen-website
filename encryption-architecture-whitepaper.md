@@ -43,6 +43,7 @@ Three properties underpin this guarantee:
 - **No perfect forward secrecy for long-lived keys.** Circle keys and messaging keys persist until rotated; compromise of a current messaging key exposes past messages encrypted with that key. Rotation is available but not automatic per-message.
 - **No protection from a compromised device.** If an attacker has the device unlocked *and* the user's encryption password, they read everything. This is the standard baseline for end-to-end encrypted systems.
 - **Metadata is partially visible.** Post counts, timing, and the Bluesky follow graph remain visible to Bluesky itself. The inbox (for direct messages and key shares) is designed to hide sender identity and message type from the server that stores it.
+- **IP addresses and network-level metadata are visible.** Clients talk directly to Denazen's server and to Bluesky PDSes over TLS; no onion routing, proxy, or sealed-transport layer is applied. Anyone with network-layer visibility sees that a given IP is talking to Denazen, even if they cannot see what is being said. Users who require network-level anonymity should route their traffic through a separate anonymity layer.
 
 ---
 
@@ -158,6 +159,39 @@ Passphrase mode is strongly encouraged: a 10-word diceware passphrase carries fu
 
 The post-quantum claims throughout this whitepaper apply to the system as deployed with a compliant password. A weaker password remains protected classically by Argon2id's memory-hardness, but its margin against a future quantum adversary shrinks with its entropy.
 
+Current Argon2id parameters (memory, iterations, parallelism) are being tuned against device-performance constraints on the minimum-supported mobile hardware and will be published here once finalized for the public build. Parameters in the shipped build are sized to preserve the entropy bounds claimed above.
+
+### 4.2 Recovery & account lifecycle
+
+**Denazen does not offer password recovery.** If a user loses their encryption password, their private content becomes permanently inaccessible:
+
+- The PDK cannot be re-derived from a forgotten password.
+- The EMK on Denazen's server remains ciphertext nobody can unlock.
+- The EVK on the user's PDS remains ciphertext nobody can unlock.
+- All private material — past posts, DMs received, circle memberships — is lost to the account.
+
+This is intrinsic to the zero-trust design. If a server-side recovery path existed, the server could use it. The "no plaintext ever touches a server" guarantee requires that no party other than the user hold material capable of unlocking the vault.
+
+Public posts (the Bluesky layer) are unaffected: they live under the AT Protocol identity, which is re-derivable from the handle and Bluesky password.
+
+### 4.3 Devices
+
+Denazen is multi-device by design. An account is not bound to a specific phone or a key blob that must be synced between devices; it is bound to a cryptographic identity whose at-rest material lives on public infrastructure:
+
+- The **EMK** (encrypted Master Key) lives on Denazen's server, addressable by the user's DID.
+- The **EVK** (encrypted Vault Key) lives on the user's Bluesky PDS under the security record.
+- All long-lived symmetric keys — messaging keys, circle keys, friend keys, Kyber secret key — live on the PDS as encrypted records wrapped under the Vault Key.
+
+A new device unlocks the account by presenting three credentials:
+
+1. **AT Protocol handle** — the account identity.
+2. **Bluesky password** — to establish a PDS session and read the user's security record.
+3. **Encryption password** — to derive the PDK, unlock the EMK, then the EVK, then every per-record key in the vault.
+
+There is no device-to-device sync protocol, no paired-device registration, and no long-lived session on specific hardware. Sign in on any device, unlock, and every key ever received is available from the vault.
+
+Sessions live in secure device storage only for the duration of use. Signing out clears the PDK, Master Key, and Vault Key from the device, leaving nothing that can decrypt content until the next sign-in.
+
 ---
 
 ## 5. Posting: two-tier content encryption
@@ -223,6 +257,28 @@ Ciphertext is AES-CBC with PKCS7. The IV is fresh random per file.
 For feed generation, Denazen's server maintains a **metadata-only index** consisting of `{post_uri, key_uri, author_did, indexed_at}`. A validation rule enforces that the key URI references the author's own repo, preventing feed poisoning. This index lets a circle member quickly enumerate posts encrypted for them without walking every contact's repo.
 
 No post content, no key material, and no plaintext of any kind is stored in this index — only references that the member's client then uses to fetch and decrypt on-device.
+
+### 5.5 Media sanitization
+
+*Status: under active development.*
+
+Encrypting an image does not by itself protect a user from metadata embedded inside the image — EXIF tags, GPS coordinates, camera serial numbers, and editing-software fingerprints travel inside the pixel file. A recipient who decrypts the image can extract them.
+
+Denazen's target behavior is to strip all non-essential metadata from images before encryption, by default, with no user action required. The exact scrubbing policy — which tags are removed and which are preserved (e.g., orientation) — is under active design. Until this is shipped and documented here, users who care about image metadata should strip it on their own device before posting.
+
+### 5.6 Deletion
+
+*Status: partially implemented; full semantics under active design.*
+
+Today, deleting a private post removes the post record, the content-key record, and the `.zen` attachments from the author's PDS, and removes the corresponding entry from the private-post index on Denazen's server.
+
+The following aspects are still being specified:
+
+- Whether recipient devices proactively purge their decryption caches on seeing a deletion event, versus deferred cleanup on next session.
+- Direct-message deletion (sender-initiated and recipient-initiated), and what each guarantees.
+- The exact ordering of deletion operations to ensure no observable orphans (a post record without its content-key record, or vice versa).
+
+Once finalized, this section will state what deletion does guarantee and what it does not. Some limits are fundamental: a recipient's already-decrypted copy, a screenshot taken before deletion, and any off-device backup the recipient created are permanently outside Denazen's control.
 
 ---
 
@@ -368,6 +424,14 @@ When sending, the client:
 
 To delete a sent message (e.g. after the recipient rejects it), the client presents the raw token; the server re-hashes and deletes only if the hashes match. The server learns nothing about the sender from the hash and cannot forge deletions.
 
+### 8.7 Push notifications
+
+*Status: not yet implemented.*
+
+Denazen does not currently deliver push notifications via Apple APNs or Google FCM. The posture for push — whether payloads will be opaque wake-up signals, contain encrypted content that an on-device notification-service extension decrypts locally, or include readable previews — is still being designed.
+
+Push notifications are a well-known metadata surface for end-to-end encrypted applications: Apple and Google can observe the timing and addressing of every notification, along with any readable payload. When push ships on Denazen, this section will state explicitly what APNs and FCM can observe.
+
 ---
 
 ## 9. The privacy invariant
@@ -456,7 +520,71 @@ Telemetry is anonymous by construction:
 
 ---
 
-## 13. Verification story
+## 13. Abuse and moderation
+
+*Status: pre-policy.*
+
+End-to-end encryption on the private layer means Denazen cannot observe the contents of private posts, DMs, or circle-key payloads. A moderation model for private content therefore must rest on explicit user action: a recipient reports an incident, at which point their client uploads the decrypted message and the sender's identity for review.
+
+The specific moderation policy — workflow, standards applied, coordination with Bluesky moderation for public content, and escalation paths for CSAM and other illegal material — is being written. Until the policy is published, the current behavior is:
+
+- Public-layer abuse follows Bluesky's existing moderation rails.
+- Private-layer abuse is addressed by the tools users already have: remove the member from the Circle, block the contact (which revokes key exchange), and report via out-of-band channels.
+
+This section will be expanded when the written policy is available.
+
+---
+
+## 14. Legal process response
+
+*Status: pre-policy.*
+
+Denazen's zero-trust design dictates what Denazen cannot produce under lawful compulsion, because Denazen never held the material:
+
+- No plaintext private content (posts, DMs, images).
+- No decryption keys of any kind — vault, messaging, circle, content, or Kyber secret.
+- No encryption password.
+- No mapping from a user's DID to legal identity beyond what the user has voluntarily associated with the account.
+
+What Denazen does hold, and could therefore be compelled to produce:
+
+- The user's DID and handle.
+- The EMK — an opaque ciphertext that cannot be unwrapped without the user's encryption password.
+- Private-post index rows: post URI, key URI, author DID, timestamps.
+- Inbox rows: opaque encrypted payloads, timestamps, and sender token hashes.
+- Operational metadata and request timing.
+
+A formal law-enforcement guidelines document and a transparency-report cadence are under development.
+
+---
+
+## 15. Audit and responsible disclosure
+
+### Third-party audit
+
+Individual cryptographic primitives used in Denazen have been independently audited — notably `@noble/post-quantum` (ML-KEM) by Cure53. The Denazen system as a whole — the vault hierarchy, the posting and inbox protocols, the privacy invariant, and the client implementations — has not yet been independently audited. A system-level audit is a priority for a near-term release; results will be published here when available.
+
+### Reporting a vulnerability
+
+Security researchers who identify an issue can report it to **security@denazen.com**. We aim to acknowledge reports within 72 hours and will coordinate on disclosure timing. Machine-readable contact and policy information is published at `/.well-known/security.txt` per RFC 9116.
+
+### Bug bounty
+
+No formal bug-bounty program is active at this time. We acknowledge valuable reports in release notes and on this page.
+
+---
+
+## 16. Future work
+
+Three items are explicitly scoped *out* of the current release and named here rather than left implicit:
+
+- **Key transparency.** The industry direction is an append-only public log of post-quantum public keys, letting any user verify that the key Denazen's server attributes to a contact matches what that contact actually published. Denazen ships with TOFU plus opt-in out-of-band verification (§8.4, §8.5) — strong but not equivalent to a transparency log. A future release will add one.
+- **Reproducible builds and binary attestation.** The open-source codebase is verifiable; the compiled mobile and web binaries are not yet byte-for-byte reproducible from source. Shipping reproducible builds — and, on supported platforms, code-transparency attestations — is planned.
+- **Formal post-quantum migration protocol.** The `.zen` format carries a `version` field (§5.3), and clients negotiate on it: newer clients read older versions, older clients surface an "update required" placeholder for newer ones. A documented rekey-window protocol for moving circle keys and messaging keys across a primitive change is not yet specified; it will be added before the first primitive rotation.
+
+---
+
+## 17. Verification story
 
 The claim "no server can decrypt" rests on the following testable facts, each verifiable from the codebase:
 
@@ -469,7 +597,7 @@ The claim "no server can decrypt" rests on the following testable facts, each ve
 
 ---
 
-## 14. Summary
+## 18. Summary
 
 - **Four-tier vault** (password → PDK → Master Key → Vault Key) splits key-at-rest material across two servers so no single breach enables offline attack.
 - **Two-tier content encryption** (circle key → content key → `.zen` files) isolates the blast radius of any single compromised post to itself.
@@ -482,3 +610,30 @@ The claim "no server can decrypt" rests on the following testable facts, each ve
 - **No plaintext ever touches a server.** The only trust root is the user's device plus a password that no Denazen server has ever seen.
 
 Even a fully compromised Bluesky PDS and a fully compromised Denazen server cannot, individually or together, read a single word of a user's private content — today or in a post-quantum future, given a compliant encryption password.
+
+---
+
+## Appendix A. Glossary
+
+Standard AT Protocol and cryptography abbreviations used throughout this whitepaper.
+
+| Term | Definition |
+|------|------------|
+| **AEAD** | Authenticated Encryption with Associated Data. An encryption scheme providing confidentiality and integrity in one operation. XSalsa20-Poly1305 is AEAD. |
+| **AppView** | In AT Protocol, a service that indexes records from PDSes to serve queries (timelines, search, notifications). The Bluesky AppView is run by Bluesky Social. |
+| **Argon2id** | Memory-hard password-hashing function. Winner of the 2015 Password Hashing Competition. |
+| **CSPRNG** | Cryptographically Secure Pseudorandom Number Generator. |
+| **DID** | Decentralized Identifier. In AT Protocol, a long-lived, repository-rooted identity string (e.g., `did:plc:xxxxxx`). |
+| **E2EE** | End-to-end encrypted. |
+| **EMK** | Encrypted Master Key — the Master Key wrapped under the PDK, stored on Denazen's server. |
+| **EVK** | Encrypted Vault Key — the Vault Key wrapped under the Master Key, stored on the user's PDS. |
+| **KEM** | Key Encapsulation Mechanism. Produces a shared secret plus a ciphertext that only the holder of the matching private key can decapsulate. ML-KEM is a KEM. |
+| **MAC** | Message Authentication Code. Confirms integrity and authenticity under a symmetric key. |
+| **ML-KEM** | Module-Lattice-based Key Encapsulation Mechanism — a NIST standard (FIPS 203) derived from Kyber. ML-KEM-1024 is the Level-5 (highest) parameter set. |
+| **NIST Level 5** | NIST's highest post-quantum security category — at least 256-bit classical-equivalent security against a quantum adversary. |
+| **PDK** | Password-Derived Key — a 32-byte key derived from the encryption password via Argon2id. |
+| **PDS** | Personal Data Server. In AT Protocol, the per-user repository server that holds a user's records. |
+| **PKCS7** | Padding scheme for block ciphers such as AES-CBC. |
+| **Relay** | In AT Protocol, a firehose service that aggregates and streams records from all PDSes. |
+| **TOFU** | Trust-On-First-Use. A key-binding model where the first key seen for a contact is trusted, with substitution detected on subsequent exchanges. |
+| **XSalsa20-Poly1305** | libsodium's default AEAD construction — extended-nonce Salsa20 stream cipher with a Poly1305 MAC. |

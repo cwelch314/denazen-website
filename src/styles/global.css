@@ -615,6 +615,17 @@ section { padding-block: var(--section-pad); }
   font-weight: 500;
   line-height: 1.4;
 }
+.doc-content .callout-status {
+  border-color: var(--c-border-strong);
+  background: #f9fafb;
+}
+.doc-content .callout-status .callout-label {
+  color: var(--c-text-muted);
+}
+.doc-content .callout-status p {
+  color: var(--c-text-soft);
+  font-size: 0.95rem;
+}
 
 .doc-content figure {
   margin: 2rem 0;

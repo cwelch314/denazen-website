@@ -110,6 +110,19 @@ import WaitlistForm from '../components/WaitlistForm.astro';
             <summary>Do you need my phone number?</summary>
             <p>No. Identity comes from your AT Protocol handle. Email is used for your account and waitlist communication; no phone number is required.</p>
           </details>
+
+          <details>
+            <summary>What happens if I forget my encryption password?</summary>
+            <p>Your private content becomes permanently inaccessible. This is intentional: if Denazen had a way to recover it for you, Denazen would also be able to read your private content — breaking the core promise.</p>
+            <p>Your public Bluesky identity, handle, and follows are unaffected; those are tied to your Bluesky password, which is recoverable through Bluesky the normal way. But your Circles, past private posts, received DMs, and the keys that decrypt them all depend on the encryption password.</p>
+            <p>Write the password down somewhere safe, or use a password manager. See the <a href="/security/#recovery">Security page</a> for the full explanation.</p>
+          </details>
+
+          <details>
+            <summary>Can I use Denazen on more than one device?</summary>
+            <p>Yes. Denazen is multi-device by design. You don't pair devices or sync keys between them manually; your encrypted keys already live on public infrastructure (Denazen's server and your Bluesky PDS), and any device can unlock them with the same three credentials: your Bluesky handle, your Bluesky password, and your Denazen encryption password.</p>
+            <p>Sign in on a new phone, laptop, or tablet the same way you'd sign in on your existing one. Every Circle, contact, and past message is available. Signing out clears the keys from that device until the next unlock.</p>
+          </details>
         </div>
       </div>
     </div>
