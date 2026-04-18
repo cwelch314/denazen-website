@@ -1,0 +1,53 @@
+---
+interface Props {
+  currentPath: string;
+}
+const { currentPath } = Astro.props;
+
+const links = [
+  { href: '/about/', label: 'About' },
+  { href: '/security/', label: 'Security' },
+  { href: '/faq/', label: 'FAQ' },
+];
+
+const isActive = (href: string) => {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+};
+---
+<header class="site-nav">
+  <div class="container site-nav-inner">
+    <a href="/" class="brand" aria-label="Denazen home">
+      <img src="/images/brand/logo-wordmark.svg" alt="Denazen" width="180" height="40" />
+    </a>
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-label="Toggle navigation"
+      aria-expanded="false"
+      aria-controls="primary-nav"
+      data-nav-toggle
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+    <nav id="primary-nav" class="nav-links" aria-label="Primary">
+      {links.map((l) => (
+        <a href={l.href} class={isActive(l.href) ? 'active' : ''} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a>
+      ))}
+      <a href="/#waitlist" class="btn btn-primary">Request invite</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+  const nav = document.getElementById('primary-nav');
+  toggle?.addEventListener('click', () => {
+    const open = nav?.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(!!open));
+  });
+</script>

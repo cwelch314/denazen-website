@@ -1,0 +1,506 @@
+---
+import Base from '../layouts/Base.astro';
+
+const sections = [
+  { id: 'threat-model', label: '1. Threat model' },
+  { id: 'primitives', label: '2. Cryptographic primitives' },
+  { id: 'key-hierarchy', label: '3. Key hierarchy' },
+  { id: 'unlock', label: '4. Unlock flow' },
+  { id: 'posting', label: '5. Posting: two-tier encryption' },
+  { id: 'replies', label: '6. Replies & quotes' },
+  { id: 'reading', label: '7. Reading: decryption' },
+  { id: 'inbox', label: '8. Key exchange & inbox' },
+  { id: 'invariant', label: '9. Privacy invariant' },
+  { id: 'rotation', label: '10. Rotation' },
+  { id: 'storage', label: '11. Storage boundaries' },
+  { id: 'telemetry', label: '12. Telemetry' },
+  { id: 'verification', label: '13. Verification story' },
+  { id: 'summary', label: '14. Summary' },
+];
+---
+<Base
+  title="Security & Encryption Architecture — Denazen"
+  description="Denazen's end-to-end encryption architecture: threat model, post-quantum key exchange (ML-KEM-768), four-tier vault hierarchy, metadata-minimal inbox, and the fail-closed privacy invariant."
+  pathname="/security/"
+>
+  <section>
+    <div class="container">
+      <div style="max-width: 44rem; margin-bottom: 3rem;">
+        <h1>Security & encryption architecture</h1>
+        <p class="lead mt-3">
+          A technical whitepaper describing the end-to-end encryption model used by Denazen. Written for security engineers, cryptographers, and developers who want to verify Denazen's privacy claims rather than trust them.
+        </p>
+        <p class="mt-3" style="color: var(--c-text-muted); font-size: 0.95rem;">
+          Prefer the plain-language version? See the <a href="/faq/">FAQ</a>.
+        </p>
+      </div>
+
+      <div class="doc-layout">
+        <aside class="doc-toc" aria-label="On this page">
+          <h4>Contents</h4>
+          <ul>
+            {sections.map((s) => <li><a href={`#${s.id}`}>{s.label}</a></li>)}
+          </ul>
+        </aside>
+
+        <article class="doc-content">
+          <p>
+            All statements below assume the following MITM mitigations are in place:
+          </p>
+          <ol>
+            <li><strong>Separate encryption password</strong> — already implemented: the vault key hierarchy is derived from an encryption password that is never sent to Bluesky, Supabase, or any other server.</li>
+            <li><strong>Out-of-band key verification (optional)</strong> — planned: safety numbers / QR code verification of a contact's ML-KEM-768 public key at first contact, closing the Trust-On-First-Use (TOFU) gap against a compromised PDS operator.</li>
+            <li><strong>Confirmed-sender inbox</strong> — planned: inbox messages are authenticated against a sender identity proof, so a PDS operator cannot silently rewrite a friend's public key and impersonate them in future exchanges.</li>
+          </ol>
+          <p>
+            With those three mitigations combined, Denazen targets a <strong>zero-trust content model</strong>: no server, infrastructure provider, or Denazen developer can read plaintext content or key material, and no network attacker — including a compromised PDS — can substitute keys undetected.
+          </p>
+
+          <hr />
+
+          <h2 id="threat-model">1. Threat model <a class="anchor-link" href="#threat-model" aria-label="Permalink">#</a></h2>
+
+          <h3>1.1 Assets protected</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Asset</th><th>Protection</th></tr></thead>
+            <tbody>
+              <tr><td>Post text and images (private mode)</td><td>Confidentiality + integrity</td></tr>
+              <tr><td>Direct messages</td><td>Confidentiality + integrity</td></tr>
+              <tr><td>Circle membership (who can read a post)</td><td>Confidentiality from non-members</td></tr>
+              <tr><td>Contact graph (who DMs whom)</td><td>Obscured from the inbox server</td></tr>
+              <tr><td>Encryption keys at rest (on device and server)</td><td>Confidentiality + integrity</td></tr>
+              <tr><td>Encryption keys in transit (key exchange)</td><td>Confidentiality + post-quantum resistance</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>1.2 Adversaries considered</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Adversary</th><th>Capability</th><th>Outcome under Denazen</th></tr></thead>
+            <tbody>
+              <tr><td>Passive network observer</td><td>TLS interception</td><td>Sees only ciphertext and TLS-protected traffic</td></tr>
+              <tr><td>Bluesky PDS operator</td><td>Full read/write on user's repo</td><td>Sees ciphertext blobs, key URIs, and metadata only; cannot derive decryption keys; cannot substitute a contact's public key without detection (with mitigation 2 above)</td></tr>
+              <tr><td>Bluesky AppView / Relay</td><td>Full social graph visibility</td><td>Sees post metadata and follow graph; sees no content and no keys</td></tr>
+              <tr><td>Supabase / server-side DB</td><td>Full DB read</td><td>Sees ciphertext payloads, DIDs, metadata only</td></tr>
+              <tr><td>Compromised server-side Edge Function</td><td>Short-term access to requests</td><td>Sees transient Bluesky session tokens for identity verification only; no long-lived secrets</td></tr>
+              <tr><td>Denazen developer with DB access</td><td>Metadata + server ciphertext</td><td>Cannot derive plaintext — same position as Supabase</td></tr>
+              <tr><td>Lost or stolen device (locked)</td><td>Physical access to SecureStore</td><td>Cannot read key material without device unlock + encryption password</td></tr>
+              <tr><td>Future quantum adversary</td><td>Shor's algorithm on classical key exchange</td><td>ML-KEM-768 (post-quantum KEM) is used for all key exchange</td></tr>
+            </tbody>
+          </table></div>
+
+          <h3>1.3 Non-goals / explicit limits</h3>
+          <ul>
+            <li><strong>No perfect forward secrecy for long-lived keys.</strong> Circle keys and messaging keys persist until rotated; compromise of a current messaging key exposes past DMs encrypted with that key. Rotation is available but not automatic per-message.</li>
+            <li><strong>No protection from a compromised device.</strong> If an attacker has the device unlocked AND the user's encryption password, they read everything. This is the standard baseline for end-to-end systems.</li>
+            <li><strong>Metadata is partially leaked.</strong> Post counts, timing, and social graph (follows) remain visible to Bluesky. The inbox (for DMs and key shares) is designed to hide sender identity and message type from the server, but the user's follow graph on Bluesky is still public.</li>
+          </ul>
+
+          <h2 id="primitives">2. Cryptographic primitives <a class="anchor-link" href="#primitives" aria-label="Permalink">#</a></h2>
+          <p>
+            All crypto libraries are either <strong>vendored locally</strong> (source copied into <code>vendor/</code>) or <strong>pinned to exact versions</strong> to prevent silent algorithm drift.
+          </p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Purpose</th><th>Primitive</th><th>Library</th></tr></thead>
+            <tbody>
+              <tr><td>Password-based key derivation</td><td>Argon2id</td><td>libsodium (via <code>react-native-libsodium</code> native / <code>libsodium-wrappers-sumo</code> WASM on web)</td></tr>
+              <tr><td>Authenticated symmetric encryption (key material, DMs, inbox)</td><td>XSalsa20-Poly1305 (<code>crypto_secretbox</code>)</td><td>libsodium</td></tr>
+              <tr><td>Bulk content encryption (<code>.zen</code> files, images)</td><td>AES-CBC-128 / AES-CBC-256 with PKCS7</td><td><code>react-native-quick-crypto</code> (native OpenSSL)</td></tr>
+              <tr><td>Post-quantum key exchange</td><td>ML-KEM-768 (Kyber)</td><td><code>@noble/post-quantum</code> (pure JS, audited by Cure53, vendored)</td></tr>
+              <tr><td>Hashing</td><td>SHA-256, SHA-3</td><td><code>@noble/hashes</code> (vendored)</td></tr>
+              <tr><td>Secure random</td><td>CSPRNG</td><td><code>expo-crypto</code> + <code>react-native-get-random-values</code></td></tr>
+            </tbody>
+          </table></div>
+          <p>Notes:</p>
+          <ul>
+            <li>AES-CBC is used only for bulk content where the enclosing post-record provides integrity at the AT Protocol layer and decryption is gated by possession of the content key. All key material and all messages are authenticated via XSalsa20-Poly1305.</li>
+            <li>ML-KEM-768 targets NIST Level 3 post-quantum security. It is used <em>only</em> for key encapsulation; derived shared secrets are used once to wrap long-lived symmetric keys and are then discarded.</li>
+          </ul>
+
+          <h2 id="key-hierarchy">3. Key hierarchy <a class="anchor-link" href="#key-hierarchy" aria-label="Permalink">#</a></h2>
+          <p>
+            Denazen uses a <strong>four-tier vault hierarchy</strong> for key-at-rest protection and a separate family of <strong>content / exchange keys</strong> for messaging and posts.
+          </p>
+
+          <h3>3.1 Vault hierarchy (at rest)</h3>
+          <pre><code>{`Encryption password
+     │ Argon2id + per-user salt
+     ▼
+PDK (Password-Derived Key, 32 bytes)       ── session-only, SecureStore
+     │ XSalsa20-Poly1305
+     ▼
+Master Key (32 bytes, random)              ── long-lived
+     │ Encrypted with PDK → stored in Supabase as EMK
+     │ Plaintext copy in SecureStore after unlock
+     │ XSalsa20-Poly1305
+     ▼
+Vault Key (32 bytes, random)               ── long-lived, per account
+     │ Encrypted with Master Key → stored on the PDS as EVK
+     │ Plaintext copy in SecureStore after unlock
+     ▼
+Per-record encrypted key material:
+   - Circle keys      (com.denazen.mykeys)
+   - Friend keys      (com.denazen.friendkeys)
+   - Messaging keys   (com.denazen.messagingkeys)
+   - Kyber secret key (com.denazen.security)`}</code></pre>
+          <p><strong>Why two hops (PDK → Master → Vault) instead of one?</strong></p>
+          <ul>
+            <li>The <strong>Master Key</strong> lives in Supabase (encrypted by the PDK); the <strong>EVK</strong> lives on the Bluesky PDS (encrypted by the Master Key).</li>
+            <li>To mount an offline brute-force attack against the encryption password, an attacker needs <strong>both</strong> (a) the EMK from Supabase and (b) the EVK + Argon2 salt/params from the PDS. No single server, and no single breached operator, holds enough material to run the attack.</li>
+            <li>Password changes rewrap the Master Key with a new PDK but leave the Vault Key (and therefore all per-record encryption) untouched — no re-encryption storm.</li>
+          </ul>
+
+          <h3>3.2 Content and exchange keys</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Key</th><th>Lifetime</th><th>Purpose</th><th>Wrapped by</th></tr></thead>
+            <tbody>
+              <tr><td>Shared secret (ML-KEM-768)</td><td>Ephemeral</td><td>Wrap the messaging key during key exchange only</td><td>n/a — derived once by encapsulate/decapsulate</td></tr>
+              <tr><td>Messaging key (AES-256)</td><td>Per contact, long-lived</td><td>Encrypt DMs, circle-key shares, friend-key payloads</td><td>Shared secret (during exchange); vault key (at rest)</td></tr>
+              <tr><td>Circle key (AES-128 / 256)</td><td>Per circle, long-lived</td><td>Wrap per-post content keys</td><td>Messaging key (when shared); vault key (at rest)</td></tr>
+              <tr><td>Content key (AES-128)</td><td>One per post</td><td>Encrypt the <code>.zen</code> file attachments of a single post</td><td>Circle key</td></tr>
+            </tbody>
+          </table></div>
+          <p>Rules enforced throughout the codebase:</p>
+          <ul>
+            <li>Shared secrets are never used to encrypt content — only to wrap the messaging key.</li>
+            <li>Circle keys are never sent unwrapped; they are always delivered inside a messaging-key-encrypted payload.</li>
+            <li>The Vault Key never leaves the device in plaintext; only the PDK-wrapped form (EMK) reaches Supabase.</li>
+          </ul>
+
+          <h2 id="unlock">4. Unlock flow <a class="anchor-link" href="#unlock" aria-label="Permalink">#</a></h2>
+          <pre><code>{`User submits Bluesky password → BskyAgent login (ATProto session).
+   ▼
+User submits encryption password.
+   ▼
+Derive PDK = Argon2id(encryption_password, salt).
+   ▼
+Fetch EMK from Supabase (profiles.encrypted_master_key).
+   ▼
+Master Key = decrypt(EMK, PDK, XSalsa20-Poly1305).
+   MAC failure → "wrong encryption password" (not "no account").
+   ▼
+Fetch EVK from PDS (com.denazen.security).
+   ▼
+Vault Key = decrypt(EVK, Master Key).
+   ▼
+Store {PDK, Master, Vault} in SecureStore for session.`}</code></pre>
+          <p><strong>First-time setup</strong> is fail-closed in three phases:</p>
+          <ol>
+            <li>Generate Master Key, Vault Key, EMK, EVK in memory — no I/O yet.</li>
+            <li>Single Supabase RPC (<code>upsert_profile</code>) creates the profile row and stores the EMK atomically. On failure: nothing has been written to the PDS, so retry regenerates cleanly.</li>
+            <li>PDS write: store EVK + Argon2 params under <code>com.denazen.security/self</code>. On failure: the only orphan is the EMK in Supabase, which a clean retry replaces.</li>
+          </ol>
+          <p>At no step is a plaintext key transmitted anywhere.</p>
+
+          <h2 id="posting">5. Posting: two-tier content encryption <a class="anchor-link" href="#posting" aria-label="Permalink">#</a></h2>
+          <p>Every encrypted post uses <strong>two tiers</strong> of keys so that compromising one post never exposes others.</p>
+          <pre><code>{`           ┌──────────────────────────────┐
+           │   Circle key (AES-256)       │  ── shared with circle members
+           └──────────────┬───────────────┘
+                          │ wraps
+                          ▼
+           ┌──────────────────────────────┐
+           │ Content key (AES-128, random)│  ── one per post
+           └──────────────┬───────────────┘
+                          │ encrypts
+                          ▼
+  ┌──────────────┬────────────┬───────────────┐
+  │ _text.zen    │ image_0.zen│ image_N.zen   │
+  └──────────────┴────────────┴───────────────┘`}</code></pre>
+
+          <h3>5.1 Compose</h3>
+          <ol>
+            <li>User writes text and/or selects images.</li>
+            <li>App generates a fresh <strong>content key</strong> (16 random bytes, AES-128).</li>
+            <li>In parallel (<code>Promise.all</code>):
+              <ul>
+                <li>Encrypt post text with the content key → <code>_text.zen</code>.</li>
+                <li>For each image: resize to ≤1440 px longest side, re-encode JPEG q=0.9, iteratively lower quality if over 40 MB, then encrypt with the content key → <code>image_&lt;i&gt;.zen</code>.</li>
+              </ul>
+            </li>
+            <li>Encrypt the content key itself with the selected <strong>circle key</strong> to produce the <strong>content-key record</strong> payload.</li>
+          </ol>
+
+          <h3>5.2 Publish</h3>
+          <p>
+            The post submit handler enforces the <strong>privacy invariant</strong> (detailed in §9) with submit-time checks:
+          </p>
+          <ol>
+            <li>Write content-key record to the author's PDS at <code>com.denazen.contentkeys/&lt;rkey&gt;</code>. Payload includes the encrypted content key and a reference to the circle key used. If this write fails, the post is <strong>blocked</strong> — never downgraded to plaintext.</li>
+            <li>Upload all <code>.zen</code> blobs to the PDS. These are opaque binary blobs to Bluesky; the AppView indexes them only as file attachments.</li>
+            <li>Publish the <code>app.bsky.feed.post</code> record with:
+              <ul>
+                <li><code>text</code>: empty (the real text lives in <code>_text.zen</code>).</li>
+                <li><code>com.denazen.app: true</code> — Denazen marker.</li>
+                <li><code>com.denazen.mykey</code>: AT URI of the circle key used.</li>
+                <li><code>com.denazen.contentkey</code>: AT URI of the content-key record.</li>
+                <li>Document embeds for the <code>.zen</code> files.</li>
+              </ul>
+            </li>
+            <li>Patch the content-key record with the final post URI (bidirectional linkage, for deletion cleanup).</li>
+          </ol>
+
+          <h3>5.3 <code>.zen</code> file format</h3>
+          <pre><code>{`{
+  "version": 1,
+  "type": "encrypted-image" | "encrypted-text",
+  "format": "jpg" | "txt",
+  "iv": "<hex>",
+  "data": "<base64 ciphertext>",
+  "encryptedAt": "<iso>"
+}`}</code></pre>
+          <p>Ciphertext is AES-CBC with PKCS7. The IV is fresh random per file.</p>
+
+          <h3>5.4 Private post index</h3>
+          <p>
+            For feed generation, Supabase keeps a <strong>metadata-only index</strong> (<code>private_post_index</code>): <code>&#123;post_uri, key_uri, author_did, indexed_at&#125;</code>. A DB trigger enforces that <code>key_uri</code> starts with <code>at://&lt;author_did&gt;/</code> to prevent feed poisoning. Row-level rate limiting caps authors at 50 indexed posts per hour. This index lets a circle member quickly enumerate posts encrypted for them without walking every contact's repo.
+          </p>
+
+          <h2 id="replies">6. Replies and quotes <a class="anchor-link" href="#replies" aria-label="Permalink">#</a></h2>
+          <p><strong>Replies</strong> reuse the parent post's content key:</p>
+          <ul>
+            <li>If the parent is encrypted, the reply's <code>_text.zen</code> is encrypted with the <strong>same content key</strong> the parent used, and the reply's post record points its <code>com.denazen.contentkey</code> at the parent's content-key record.</li>
+            <li>This preserves access control: anyone with the parent's circle key automatically reads all replies without separate key exchange.</li>
+            <li>When a reply is deleted, the content-key record is <strong>not</strong> deleted (the parent still uses it).</li>
+          </ul>
+          <p><strong>Encrypted quotes</strong> embed the quote reference <em>inside</em> the encrypted text:</p>
+          <pre><code>{`User's message text
+---QUOTE---
+{"uri":"at://did:plc:xxx/app.bsky.feed.post/yyy","cid":"bafyrei..."}`}</code></pre>
+          <p>
+            No <code>app.bsky.embed.record</code> is attached to the public post record, so observers cannot see what is being quoted. After decryption, the client splits on <code>---QUOTE---</code> and fetches the referenced post via <code>getPostThread()</code>.
+          </p>
+
+          <h2 id="reading">7. Reading: decryption pipeline <a class="anchor-link" href="#reading" aria-label="Permalink">#</a></h2>
+          <pre><code>{`Post with .zen files loads in feed
+   ▼
+Parse com.denazen.mykey (circle key URI)
+       com.denazen.contentkey (content-key record URI)
+   ▼
+Check decryption cache {postUri, documentIndex} ── HIT → display
+   ▼
+┌─── Step 1: resolve circle key (on device only) ───┐
+│  - Own post: keyService.getKeyByUri()             │
+│  - Friend's post: friendKeysService               │
+│                    .findKeyByOriginalUri()        │
+└───────────────────────────────────────────────────┘
+   ▼
+┌─── Step 2: fetch & decrypt content key ───────────┐
+│  - Fetch content-key record (cached)              │
+│  - AES-decrypt with circle key                    │
+│  - Result: AES-128 content key                    │
+│  - On failure: return null (NEVER fall back       │
+│    to circle key as content key)                  │
+└───────────────────────────────────────────────────┘
+   ▼
+┌─── Step 3: fetch & decrypt .zen files ────────────┐
+│  Streaming mode: download + decrypt concurrently  │
+│  Traditional mode: download → parse → decrypt     │
+│  With yield points to keep the UI thread alive    │
+└───────────────────────────────────────────────────┘
+   ▼
+Cache data URI → render → clean up temp files`}</code></pre>
+          <p>Key properties:</p>
+          <ul>
+            <li><strong>Plaintext never persists.</strong> Data URIs live in component memory only; nothing is written to AsyncStorage, SQLite, or the filesystem outside ephemeral temp files that are deleted immediately after decryption.</li>
+            <li><strong>Content keys are cached</strong> for the duration of a feed session to avoid refetching on every image of a multi-image post, but the cache holds ciphertext-derived material only and is cleared on logout.</li>
+            <li><strong>Strict two-tier discipline.</strong> If the content-key record exists but fetch/decrypt fails, decryption fails. The code never "falls back" to decrypting the <code>.zen</code> file with the circle key directly — that would produce garbage and mask real errors.</li>
+          </ul>
+
+          <h2 id="inbox">8. Key exchange and the encrypted inbox <a class="anchor-link" href="#inbox" aria-label="Permalink">#</a></h2>
+
+          <h3>8.1 ML-KEM-768 exchange pattern</h3>
+          <p>Every first contact (friend request) and every subsequent circle-key share follows the canonical pattern:</p>
+          <pre><code>{`Sender                                Recipient
+------                                ---------
+Fetch recipient Kyber pubkey
+  (com.denazen.security on PDS)
+ml_kem768.encapsulate(pk)
+  → (cipherText, sharedSecret)
+Encrypt messaging_key with shared_secret
+Optionally encrypt circle_key with shared_secret
+Deliver {cipherText, encrypted payload}
+                                      ml_kem768.decapsulate(cipherText, sk)
+                                        → sharedSecret
+                                      Decrypt messaging_key and circle_key
+                                      Validate messaging_key (64 hex chars)
+                                      Store keys under the vault`}</code></pre>
+          <p>
+            The shared secret is <strong>used once and discarded.</strong> All future communication with that contact uses the now-established messaging key.
+          </p>
+
+          <h3>8.2 The encrypted inbox (server design)</h3>
+          <p>
+            Friend requests and key shares flow through a <strong>metadata-minimal inbox</strong> on Supabase rather than through Bluesky DMs or the sender's public PDS. The server design is deliberately structured so that a full Supabase breach reveals essentially nothing about the social graph:
+          </p>
+          <p>Table <code>inbox_messages</code>:</p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Column</th><th>Seen by server</th><th>Content</th></tr></thead>
+            <tbody>
+              <tr><td><code>message_id</code></td><td>Yes</td><td>Random UUID</td></tr>
+              <tr><td><code>owner_id</code></td><td>Yes</td><td>Recipient's profile ID</td></tr>
+              <tr><td><code>read</code></td><td>Yes</td><td>Boolean</td></tr>
+              <tr><td><code>priority</code></td><td>Yes</td><td>Client-set integer (routing hint)</td></tr>
+              <tr><td><code>encrypted_payload</code></td><td><strong>Opaque</strong></td><td><code>&#123; cipherText, encryptedData &#125;</code> — ML-KEM ciphertext + XSalsa20-Poly1305 AEAD blob</td></tr>
+              <tr><td><code>encryption_info</code></td><td>Yes</td><td>Algorithm tag, e.g. <code>&#123; "v": 1, "method": "ml-kem-768+xsalsa20" &#125;</code></td></tr>
+              <tr><td><code>sender_token_hash</code></td><td>Yes</td><td>SHA-256 of a sender-only random token</td></tr>
+              <tr><td><code>created_at</code>, <code>expires_at</code></td><td>Yes</td><td>Timestamps; expiry capped at 31 days</td></tr>
+            </tbody>
+          </table></div>
+          <p>The server <strong>does not know</strong>:</p>
+          <ul>
+            <li>Who sent the message. There is no sender column — only a hash of a random sender token.</li>
+            <li>What type of message it is. The <code>type</code> discriminator (<code>friend_request</code>, <code>key_share</code>, <code>friend_request_accepted</code>, <code>key_share_accepted</code>) is <strong>inside</strong> the encrypted payload.</li>
+            <li>What the content is. It is encrypted under a shared secret derived from the recipient's Kyber key.</li>
+            <li>Whether two inbox rows are related. There is no thread/conversation identifier on the server.</li>
+          </ul>
+          <p>The server <strong>does know</strong>:</p>
+          <ul>
+            <li>Which user owns each inbox (required for delivery and RLS).</li>
+            <li>Timing and message counts.</li>
+            <li>That the sender possessed a valid Bluesky session when writing — see §8.3.</li>
+          </ul>
+
+          <h3>8.3 Write gateway (<code>api</code> Edge Function)</h3>
+          <p>All inbox writes go through a single Edge Function that performs <strong>PDS session verification</strong>:</p>
+          <ol>
+            <li>Client sends request with <code>Authorization: Bearer &lt;bluesky-accessJwt&gt;</code> and <code>X-PDS-URL</code>.</li>
+            <li>Edge Function calls <code>com.atproto.server.getSession</code> on the user's PDS to validate the JWT.</li>
+            <li>The DID returned by the PDS — not a client claim — is used for all subsequent operations.</li>
+            <li>Writes are rate-limited by this verified DID (30 sends/hour; 100-message mailbox cap per recipient).</li>
+          </ol>
+          <p>
+            This eliminates the old "anon key + client-supplied user ID" trust model. A malicious client cannot impersonate another user in the inbox.
+          </p>
+
+          <h3>8.4 Sender deletion tokens</h3>
+          <p>When sending, the client:</p>
+          <ol>
+            <li>Generates 32 random bytes (raw token).</li>
+            <li>Sends <code>SHA-256(raw_token)</code> as <code>sender_token_hash</code>.</li>
+            <li>Stores <code>&#123;message_id, raw_token&#125;</code> locally for 30 days.</li>
+          </ol>
+          <p>
+            To delete a sent message (e.g. after rejection), the client presents the raw token; the server re-hashes and deletes only if the hashes match. The server learns nothing about the sender from the hash and cannot forge deletions.
+          </p>
+
+          <h3>8.5 Confirmed-sender inbox (planned)</h3>
+          <p>
+            The MITM mitigations assumed at the top of this document include a <strong>confirmed-sender</strong> extension: before a recipient accepts a friend request or key share, the client verifies that the inbox payload's claimed sender identity corresponds to a public-key binding the recipient has seen before (TOFU) or has out-of-band verified. Combined with §8.6, this prevents a compromised PDS from silently substituting a contact's key and impersonating them in future inbox messages.
+          </p>
+
+          <h3>8.6 Out-of-band key verification (planned)</h3>
+          <p>
+            Safety numbers / QR-code verification of a contact's ML-KEM-768 public key at first contact. Denazen already stores a <strong>TOFU pubkey-hash fingerprint</strong> on the messaging-key record (<code>contactPubkeyHash</code>) so repeat contacts detect key substitution; OOB verification is the first-contact equivalent.
+          </p>
+
+          <h2 id="invariant">9. The privacy invariant <a class="anchor-link" href="#invariant" aria-label="Permalink">#</a></h2>
+          <p>Denazen operates under a single, non-negotiable invariant:</p>
+          <blockquote><p>A user who intends to create a private post MUST NEVER produce a public one — under any circumstance.</p></blockquote>
+          <p>This is implemented as a fail-closed discriminated union enforced at submit time:</p>
+          <pre><code>{`type ComposeState =
+  | { mode: 'public' /* ... */ }
+  | { mode: 'private', keyId: string, encryptionReady: true, /* ... */ }`}</code></pre>
+          <p>The submit handler:</p>
+          <ol>
+            <li><strong>Snapshots</strong> all encryption parameters into immutable local constants before any async work.</li>
+            <li>Validates the snapshot: if mode is <code>'private'</code> and any of <code>&#123;keyId, encryption key hex, content key&#125;</code> is missing, <strong>throws and blocks</strong> submission.</li>
+            <li>Passes the snapshot — never live React state — into the background upload pipeline.</li>
+          </ol>
+          <p>
+            <code>blueskyService.createPost()</code> independently validates: if any encryption parameter is present, <strong>all</strong> must be, else it throws. There is no code path that "recovers" by sending a plaintext post, no null-coalescing to public, no retry that silently downgrades privacy.
+          </p>
+          <p>The same fail-closed discipline extends to:</p>
+          <ul>
+            <li>Circle-key shares (never sent unwrapped).</li>
+            <li>Messaging keys in friend requests (must be encrypted under the Kyber-derived shared secret).</li>
+            <li>Rotation events (rotated keys are re-sent only to retained members, wrapped under their messaging keys).</li>
+            <li>Circle member list integrity (the <code>sharedWith</code> list is updated <strong>before</strong> a key is transmitted; if that write fails, the key is not sent).</li>
+          </ul>
+
+          <h2 id="rotation">10. Rotation <a class="anchor-link" href="#rotation" aria-label="Permalink">#</a></h2>
+
+          <h3>10.1 Messaging-key rotation</h3>
+          <p>A user may rotate the messaging key they share with any contact:</p>
+          <ol>
+            <li>Generate a new AES-256 messaging key.</li>
+            <li>Send it to the contact via the inbox, encrypted with the <strong>current</strong> messaging key.</li>
+            <li>Store the new key as "pending" on the sender side; wait for a <code>KeyUriConfirmation</code> message indicating the recipient has stored it.</li>
+            <li>On confirmation, promote the new key to default and deactivate the old one.</li>
+          </ol>
+          <p>
+            Rotation is rate-limited with a 10-minute cooldown per contact. Old keys remain available for decrypting past messages but are never used to encrypt new ones.
+          </p>
+
+          <h3>10.2 Circle-key rotation</h3>
+          <p>When a user removes a member from a circle, they <strong>rotate the circle key</strong>:</p>
+          <ol>
+            <li>Generate a new circle key.</li>
+            <li>Update the <code>sharedWith</code> list (removing the unshared member) <strong>before</strong> any key distribution.</li>
+            <li>Re-share the new circle key with each retained member via inbox (wrapped under that member's messaging key).</li>
+            <li>Send a <code>friendKeyRotateOut</code> notice to removed members, who delete the old key on receipt.</li>
+            <li>Future posts use the new key; prior posts remain readable by whoever had the old key at the time they were posted.</li>
+          </ol>
+          <p>
+            This is intentionally <strong>not forward-secret for prior posts</strong> — historical content stays decryptable by the members who legitimately had access when it was written.
+          </p>
+
+          <h3>10.3 Kyber key rotation</h3>
+          <p>
+            Users can rotate their ML-KEM-768 key pair from Settings. The new public key is written to <code>com.denazen.security</code>; the old security record is automatically backed up under a timestamped rkey. Contacts who previously performed a key exchange will need to re-exchange (or the future TOFU-verification step §8.5 will detect the mismatch).
+          </p>
+
+          <h2 id="storage">11. Storage boundaries <a class="anchor-link" href="#storage" aria-label="Permalink">#</a></h2>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Store</th><th>What's stored</th><th>What's NEVER stored</th></tr></thead>
+            <tbody>
+              <tr><td>Bluesky PDS</td><td>Ciphertext <code>.zen</code> blobs, encrypted key records (<code>com.denazen.*</code>), EVK, Kyber public key</td><td>Plaintext content, plaintext keys, encryption password</td></tr>
+              <tr><td>Bluesky AppView / Relay</td><td>Post metadata, follow graph</td><td>Content, keys</td></tr>
+              <tr><td>Supabase <code>public</code> schema</td><td>Profile rows (DID + EMK), post-index metadata, inbox rows (opaque ciphertext), invites</td><td>Plaintext content, plaintext keys, passwords, vault keys</td></tr>
+              <tr><td>Supabase <code>internal</code> schema</td><td>Telemetry events, feedback submissions</td><td>PII, content (telemetry filter drops DIDs, URIs, handles, raw errors)</td></tr>
+              <tr><td>Edge Functions (in transit)</td><td>Bluesky accessJwt (transient, for PDS verification)</td><td>Long-lived secrets, content, keys</td></tr>
+              <tr><td>Device SecureStore</td><td>PDK, Master Key, Vault Key, per-account sessions</td><td>— (this is the trust root)</td></tr>
+              <tr><td>AsyncStorage</td><td>Encrypted key cache files (ciphertext only), preferences, processed-notification IDs</td><td>Plaintext keys, plaintext content</td></tr>
+            </tbody>
+          </table></div>
+          <p>
+            The two Supabase schemas are layered so <code>internal</code> is <strong>not</strong> exposed via PostgREST and is unreachable from any client with the anon key.
+          </p>
+
+          <h2 id="telemetry">12. Telemetry and privacy <a class="anchor-link" href="#telemetry" aria-label="Permalink">#</a></h2>
+          <p>Telemetry is anonymous by construction:</p>
+          <ul>
+            <li>No <code>identify()</code> or <code>alias()</code> calls to PostHog; <code>personProfiles: 'never'</code>.</li>
+            <li>Property names that could carry user-identifiable data are listed in a <code>PII_PROPERTIES</code> allowlist; a <code>before_send</code> hook drops them as a last line of defense.</li>
+            <li>Error strings are mapped to a bounded vocabulary (<code>network_timeout</code>, <code>auth_rejected</code>, etc.) at the call site — raw <code>Error.message</code> or API response bodies are never captured.</li>
+            <li>Session replay is off. Screen-name and touch autocapture are off. GeoIP is disabled.</li>
+          </ul>
+
+          <h2 id="verification">13. Verification story <a class="anchor-link" href="#verification" aria-label="Permalink">#</a></h2>
+          <p>The claim "no server can decrypt" rests on the following testable facts, each verifiable from the codebase:</p>
+          <ol>
+            <li><strong>No plaintext key ever crosses a network boundary.</strong> The Vault Key is generated on device; leaves only as the EVK (wrapped under the Master Key) to the PDS and never reaches Supabase. The Master Key leaves only as the EMK (wrapped under the PDK) to Supabase.</li>
+            <li><strong>No plaintext content ever crosses a network boundary.</strong> Posts are encrypted in <code>ComposeScreen</code> before any upload; <code>.zen</code> blobs are opaque to Bluesky; DMs and inbox messages are sealed under the recipient's Kyber key.</li>
+            <li><strong>Edge Functions see no secrets.</strong> The <code>api</code> Edge Function handles session tokens only long enough to call <code>getSession</code> on the user's PDS, and it has no access to vault, messaging, or circle keys.</li>
+            <li><strong>Fail-closed discipline.</strong> The privacy invariant (§9) makes it structurally impossible for a private-intended post to become public without an explicit code change.</li>
+            <li><strong>Vendored crypto libraries.</strong> All cryptographic primitives are either pinned or copied into <code>vendor/</code>; library updates require a deliberate PR.</li>
+            <li><strong>Independent key-at-rest layer.</strong> The vault hierarchy (§3) means compromising any single server (Bluesky <strong>or</strong> Supabase) does not yield an offline brute-force target — an attacker needs material from both.</li>
+          </ol>
+
+          <h2 id="summary">14. Summary <a class="anchor-link" href="#summary" aria-label="Permalink">#</a></h2>
+          <ul>
+            <li><strong>Four-tier vault</strong> (password → PDK → Master Key → Vault Key) splits key-at-rest material across two servers so no single breach enables offline attack.</li>
+            <li><strong>Two-tier content encryption</strong> (circle key → content key → <code>.zen</code> files) isolates the blast radius of any single compromised post to itself.</li>
+            <li><strong>Post-quantum key exchange</strong> (ML-KEM-768) protects all first-contact handshakes against future quantum adversaries.</li>
+            <li><strong>Metadata-minimal inbox</strong> (<code>inbox_messages</code>) hides sender identity, message type, and relationships from the server that stores it.</li>
+            <li><strong>PDS session verification</strong> at the single write gateway ensures callers are who they claim to be before any server-side mutation.</li>
+            <li><strong>Fail-closed privacy invariant</strong> prevents silent downgrade from private to public at every layer.</li>
+            <li><strong>No plaintext ever touches a server.</strong> The only trust root is the user's device plus a password that no Denazen server has ever seen.</li>
+          </ul>
+          <p>
+            With the separate encryption password (already shipped), out-of-band key verification (planned), and confirmed-sender inbox (planned) in place, Denazen achieves a <strong>zero-trust content model</strong>: even a fully compromised Bluesky PDS and a fully compromised Supabase cannot, individually or together, read a single word of a user's private content.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+</Base>

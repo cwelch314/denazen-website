@@ -1,0 +1,31 @@
+---
+interface Props {
+  buttonLabel?: string;
+  note?: string;
+  id?: string;
+}
+
+const {
+  buttonLabel = 'Request invite',
+  note = 'Invite-only alpha. We\u2019ll email you when a spot opens.',
+  id = 'waitlist',
+} = Astro.props;
+
+// TODO: swap to MailerLite embed/API when list ID + credentials are provided.
+// Current form posts to /api/waitlist (placeholder) so the UI is fully wired
+// and can be redirected at the endpoint level without touching page markup.
+---
+<form class="waitlist" action="/api/waitlist" method="POST" id={id} novalidate>
+  <label for={`${id}-email`} class="sr-only">Email address</label>
+  <input
+    id={`${id}-email`}
+    name="email"
+    type="email"
+    required
+    placeholder="you@example.com"
+    autocomplete="email"
+    spellcheck="false"
+  />
+  <button type="submit" class="btn btn-primary">{buttonLabel}</button>
+</form>
+<p class="waitlist-note">{note}</p>
