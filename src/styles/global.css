@@ -345,29 +345,29 @@ section { padding-block: var(--section-pad); }
 .hero h1 { margin-bottom: 1.5rem; }
 .hero p.lead { margin-bottom: 2rem; max-width: 36rem; }
 .hero-visual {
-  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   max-width: 520px;
   margin-inline: auto;
-  aspect-ratio: 520 / 560;
+  padding-block: 1rem;
 }
 .hero-phone {
-  position: absolute;
-  width: 60%;
+  width: 52%;
   height: auto;
-  top: 0;
-  filter: drop-shadow(0 18px 32px rgba(26, 8, 54, 0.22));
+  filter: drop-shadow(0 14px 28px rgba(26, 8, 54, 0.22));
+  transition: transform 200ms ease;
 }
 .hero-phone-back {
-  left: 0;
-  transform: rotate(-4deg);
-  transform-origin: bottom left;
+  transform: rotate(-5deg);
+  transform-origin: center bottom;
+  margin-right: -12%;
   z-index: 1;
 }
 .hero-phone-front {
-  right: 0;
-  top: 5%;
-  transform: rotate(4deg);
-  transform-origin: bottom right;
+  transform: rotate(5deg) translateY(32px);
+  transform-origin: center bottom;
+  margin-left: -12%;
   z-index: 2;
 }
 @media (max-width: 900px) {
