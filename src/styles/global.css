@@ -385,7 +385,7 @@ section { padding-block: var(--section-pad); }
 }
 .hero-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
   gap: 3rem;
   align-items: center;
 }
@@ -410,12 +410,12 @@ section { padding-block: var(--section-pad); }
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  max-width: 520px;
+  max-width: 680px;
   margin-inline: auto;
   padding-block: 1rem;
 }
 .hero-phone {
-  width: 52%;
+  width: 54%;
   height: auto;
   filter: drop-shadow(0 14px 28px rgba(26, 8, 54, 0.22));
   transition: transform 200ms ease;
