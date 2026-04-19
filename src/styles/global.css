@@ -409,11 +409,10 @@ section { padding-block: var(--section-pad); }
   line-height: 1.45;
 }
 .hero .hero-encrypted svg {
-  width: 15px;
-  height: 15px;
+  width: 16px;
+  height: 16px;
   flex-shrink: 0;
-  color: var(--c-accent);
-  margin-top: 0.2em;
+  margin-top: 0.15em;
 }
 .hero-visual {
   display: flex;
@@ -666,6 +665,14 @@ section { padding-block: var(--section-pad); }
 }
 .doc-content blockquote p { color: var(--c-text); margin: 0; }
 
+.doc-content h4.doc-subhead {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--c-text);
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+}
 .doc-content table {
   width: 100%;
   border-collapse: collapse;
@@ -690,6 +697,31 @@ section { padding-block: var(--section-pad); }
 }
 .doc-content tr:last-child td { border-bottom: 0; }
 .doc-content .table-wrap { overflow-x: auto; }
+
+.password-tiers .tier td:first-child {
+  border-left: 4px solid transparent;
+  padding-left: 0.85rem;
+  font-weight: 500;
+  color: var(--c-text);
+  white-space: nowrap;
+}
+.password-tiers .tier-very-weak td:first-child { border-left-color: #dc2626; }
+.password-tiers .tier-weak td:first-child { border-left-color: #ea580c; }
+.password-tiers .tier-fair td:first-child { border-left-color: #eab308; }
+.password-tiers .tier-strong td:first-child { border-left-color: #22c55e; }
+.password-tiers .tier-very-strong td:first-child { border-left-color: #16a34a; }
+.password-tiers .tier-post-quantum td:first-child {
+  border-left-color: var(--c-accent);
+  color: var(--c-accent);
+  font-weight: 600;
+}
+.password-tiers .tier-post-quantum .tier-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.15em;
+  margin-right: 0.35em;
+  color: var(--c-accent);
+}
 
 .doc-content pre {
   font-size: 0.85rem;

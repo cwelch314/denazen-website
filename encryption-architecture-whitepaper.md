@@ -153,13 +153,42 @@ At no step is a plaintext key transmitted anywhere.
 
 Every cryptographic guarantee in this document ultimately bottoms out on the entropy of the user's encryption password. Argon2id's memory-hardness makes each brute-force guess expensive — even for a quantum adversary, because coherent quantum memory is catastrophically costly — but it cannot create entropy the password itself does not contain.
 
-Denazen enforces a minimum of **16 characters** or a **10-word diceware passphrase** (EFF large list). Both target ~160 bits of random entropy, which is the threshold at which an offline attack remains infeasible for a Grover-equipped adversary after Argon2id's cost factor and memory-hardness penalty are credited. This matches the NIST Level 5 post-quantum security floor (≥ 2^128 effective work).
+#### The policy enforced by the app
 
-Passphrase mode is strongly encouraged: a 10-word diceware passphrase carries full random entropy by construction, while human-selected character passwords typically do not. The password field shows real-time entropy feedback calibrated against the post-quantum target rather than the classical one.
+- **Minimum length:** 12 characters. This is the only hard requirement for submission.
+- **No maximum length.** Passphrases are welcome.
+- **Must differ from the Bluesky password.** A minimum Levenshtein edit distance is enforced to prevent a PDS operator who captures the Bluesky password from trivially reusing it against captured Argon2id material.
 
-The post-quantum claims throughout this whitepaper apply to the system as deployed with a compliant password. A weaker password remains protected classically by Argon2id's memory-hardness, but its margin against a future quantum adversary shrinks with its entropy.
+#### The real-time strength meter
 
-Current Argon2id parameters (memory, iterations, parallelism) are being tuned against device-performance constraints on the minimum-supported mobile hardware and will be published here once finalized for the public build. Parameters in the shipped build are sized to preserve the entropy bounds claimed above.
+As the user types, the password field shows a color-coded meter that estimates entropy in bits and categorises it into one of six tiers:
+
+| Tier | Entropy | Meaning |
+|------|---------|---------|
+| Very weak | < 50 bits | Dictionary-attack trivial |
+| Weak | 50–79 bits | Unsafe against a determined attacker |
+| Fair | 80–99 bits | Adequate against casual offline attack |
+| Strong | 100–127 bits | Classically safe |
+| Very strong | 128–159 bits | Classically excellent |
+| **Post-quantum safe** | **≥ 160 bits** | **Clears the NIST Level 5 post-quantum floor** |
+
+The meter uses red / orange / yellow for the lower tiers, green for Strong and Very strong, and the brand purple with a shield-checkmark icon for the Post-quantum safe tier.
+
+#### Reaching the post-quantum tier
+
+160 bits of entropy credits Argon2id's cost factor and memory-hardness penalty against Grover's algorithm, yielding an effective post-quantum work factor that clears the NIST Level 5 floor (≥ 2^128 effective work). Attainable with:
+
+- ~27 random alphanumeric characters, or
+- ~25 random all-printable characters, or
+- A 13-word EFF diceware passphrase (strongly encouraged — passphrases carry full random entropy by construction, where human-selected character passwords typically do not).
+
+#### What post-quantum means for your password
+
+The post-quantum claims elsewhere in this whitepaper apply to the system as deployed with a password that reaches the Post-quantum safe tier. A shorter or lower-entropy password remains protected classically by Argon2id's memory-hardness — offline brute force against a well-chosen 12-character password is still expensive — but its margin against a future quantum adversary shrinks with its entropy. Users who want the strongest guarantee the architecture offers should aim for the top tier.
+
+#### Argon2id parameters
+
+Argon2id memory, iteration, and parallelism parameters are tuned to the minimum-supported mobile hardware and are sized to preserve the entropy bounds above. Final shipping values will be published here once the public build is frozen.
 
 ### 4.2 Recovery & account lifecycle
 

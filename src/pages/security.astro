@@ -212,19 +212,61 @@ Store {PDK, Master, Vault} in secure device storage for session.`}</code></pre>
             Every cryptographic guarantee in this document ultimately bottoms out on the entropy of the user's encryption password. Argon2id's memory-hardness makes each brute-force guess expensive — even for a quantum adversary, because coherent quantum memory is catastrophically costly — but it cannot create entropy the password itself does not contain.
           </p>
 
-          <aside class="callout" role="note">
-            <span class="callout-label">User action required</span>
-            <p>Denazen enforces a minimum of <strong>16 characters</strong> or a <strong>10-word diceware passphrase</strong> (EFF large list). Both target ~160 bits of random entropy — the threshold at which an offline attack remains infeasible for a Grover-equipped adversary after Argon2id's cost factor and memory-hardness penalty are credited. This matches the NIST Level 5 post-quantum security floor (≥ 2^128 effective work).</p>
-          </aside>
+          <h4 class="doc-subhead">The policy enforced by the app</h4>
+          <ul>
+            <li><strong>Minimum length:</strong> 12 characters. This is the only hard requirement for submission.</li>
+            <li><strong>No maximum length.</strong> Passphrases are welcome.</li>
+            <li><strong>Must differ from the Bluesky password.</strong> A minimum Levenshtein edit distance is enforced to prevent a PDS operator who captures the Bluesky password from trivially reusing it against captured Argon2id material.</li>
+          </ul>
 
+          <h4 class="doc-subhead">The real-time strength meter</h4>
           <p>
-            Passphrase mode is strongly encouraged: a 10-word diceware passphrase carries full random entropy by construction, while human-selected character passwords typically do not. The password field shows real-time entropy feedback calibrated against the post-quantum target rather than the classical one.
+            As the user types, the password field shows a color-coded meter that estimates entropy in bits and categorises it into one of six tiers:
           </p>
+          <div class="table-wrap"><table class="password-tiers">
+            <thead>
+              <tr><th>Tier</th><th>Entropy</th><th>Meaning</th></tr>
+            </thead>
+            <tbody>
+              <tr class="tier tier-very-weak"><td>Very weak</td><td>&lt; 50 bits</td><td>Dictionary-attack trivial</td></tr>
+              <tr class="tier tier-weak"><td>Weak</td><td>50–79 bits</td><td>Unsafe against a determined attacker</td></tr>
+              <tr class="tier tier-fair"><td>Fair</td><td>80–99 bits</td><td>Adequate against casual offline attack</td></tr>
+              <tr class="tier tier-strong"><td>Strong</td><td>100–127 bits</td><td>Classically safe</td></tr>
+              <tr class="tier tier-very-strong"><td>Very strong</td><td>128–159 bits</td><td>Classically excellent</td></tr>
+              <tr class="tier tier-post-quantum">
+                <td>
+                  <svg class="tier-icon" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true">
+                    <path d="M479.07 111.36a16 16 0 00-13.15-14.74c-86.5-15.52-122.61-26.74-203.33-63.2a16 16 0 00-13.18 0C168.69 69.88 132.58 81.1 46.08 96.62a16 16 0 00-13.15 14.74c-3.85 61.11 4.36 118.05 24.43 169.24A349.47 349.47 0 00129 393.11c53.47 56.73 110.24 81.37 121.07 85.73a16 16 0 0012 0c10.83-4.36 67.6-29 121.07-85.73a349.47 349.47 0 0071.5-112.51c20.07-51.19 28.28-108.13 24.43-169.24zm-131 75.11l-110.8 128a16 16 0 01-11.41 5.53h-.66a16 16 0 01-11.2-4.57l-49.2-48.2a16 16 0 1122.4-22.86l37 36.29 99.7-115.13a16 16 0 0124.2 20.94z"/>
+                  </svg>
+                  Post-quantum safe
+                </td>
+                <td>≥ 160 bits</td>
+                <td>Clears the NIST Level 5 post-quantum floor</td>
+              </tr>
+            </tbody>
+          </table></div>
           <p>
-            The post-quantum claims throughout this whitepaper apply to the system as deployed <em>with a compliant password</em>. A weaker password remains protected classically by Argon2id's memory-hardness, but its margin against a future quantum adversary shrinks with its entropy.
+            The meter uses red / orange / yellow for the lower tiers, green for Strong and Very strong, and the brand purple with a shield-checkmark icon for the Post-quantum safe tier.
           </p>
+
+          <h4 class="doc-subhead">Reaching the post-quantum tier</h4>
           <p>
-            Current Argon2id parameters (memory, iterations, parallelism) are being tuned against device-performance constraints on the minimum-supported mobile hardware and will be published here once finalized for the public build. Parameters in the shipped build are sized to preserve the entropy bounds claimed above.
+            160 bits of entropy credits Argon2id's cost factor and memory-hardness penalty against Grover's algorithm, yielding an effective post-quantum work factor that clears the NIST Level 5 floor (≥ 2^128 effective work). Attainable with:
+          </p>
+          <ul>
+            <li>~27 random alphanumeric characters, or</li>
+            <li>~25 random all-printable characters, or</li>
+            <li>A 13-word EFF diceware passphrase (strongly encouraged — passphrases carry full random entropy by construction, where human-selected character passwords typically do not).</li>
+          </ul>
+
+          <h4 class="doc-subhead">What post-quantum means for your password</h4>
+          <p>
+            The post-quantum claims elsewhere in this whitepaper apply to the system as deployed with a password that reaches the Post-quantum safe tier. A shorter or lower-entropy password remains protected classically by Argon2id's memory-hardness — offline brute force against a well-chosen 12-character password is still expensive — but its margin against a future quantum adversary shrinks with its entropy. Users who want the strongest guarantee the architecture offers should aim for the top tier.
+          </p>
+
+          <h4 class="doc-subhead">Argon2id parameters</h4>
+          <p>
+            Argon2id memory, iteration, and parallelism parameters are tuned to the minimum-supported mobile hardware and are sized to preserve the entropy bounds above. Final shipping values will be published here once the public build is frozen.
           </p>
 
           <h3 id="recovery">4.2 Recovery & account lifecycle <a class="anchor-link" href="#recovery" aria-label="Permalink">#</a></h3>
