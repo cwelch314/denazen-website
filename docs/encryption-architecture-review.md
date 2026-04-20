@@ -1,3 +1,48 @@
+# Denazen Encryption Architecture — Security Review Package
+
+**Status:** draft whitepaper for external review
+**Target audience:** security engineer or cryptographer conducting an independent review
+**Public version:** rendered at https://denazen.com/security/architecture/
+
+---
+
+## Brief for the reviewer
+
+Denazen is a pre-launch, invite-only privacy-first social network built on the AT Protocol (Bluesky). It adds an end-to-end encrypted layer ("private circles") on top of the public Bluesky layer. The goal of this document is to describe the cryptographic design in enough detail that a reviewer can evaluate its soundness.
+
+### What to evaluate
+
+- **Threat model (§1).** Is the list of adversaries and assets realistic? Are any meaningful threats missing? Are the stated non-goals defensible, or do any of them need to become goals?
+- **Cryptographic primitives (§2).** Are the chosen algorithms, modes, and parameter sets appropriate? Any modern replacements we should be using? Any composition issues (e.g., AEAD vs. non-AEAD for content)?
+- **Key hierarchy (§3–§4).** Does the four-tier vault (password → PDK → Master Key → Vault Key) actually deliver the "compromise-both-servers-or-nothing" property we claim? Is the unlock flow fail-closed in the way described? Is the password-strength policy (§4.1) defensible against Grover-equipped adversaries with the stated Argon2id envelope?
+- **Content encryption (§5).** Two-tier (circle-key wraps content-key wraps .zen files). Are there patterns where the discipline could break (e.g., partial publish failures, content-key reuse)? Is the submit-time invariant (§9) sufficient to prevent silent downgrade to plaintext?
+- **Key exchange and inbox (§8).** ML-KEM-1024 to an inbox with no server-visible sender, authenticated by a PDS-session-verification gateway. Does the confirmed-sender + TOFU + opt-in OOB design actually close the MITM window?
+- **Privacy invariant (§9).** Is the fail-closed discriminated-union design sufficient? Are there other places in the codebase that should have the same discipline?
+- **Rotation (§10).** Messaging-key rotation requires recipient confirmation; circle-key rotation is triggered by member removal; Kyber rotation requires contact re-exchange. Any gaps?
+- **Storage boundaries (§11).** The table lists what's stored where. Any omissions?
+- **Verification story (§13 — renumbered to §17 in the whitepaper).** The six claims at the end are presented as codebase-verifiable. Are any of them not actually verifiable from the code alone?
+- **Future work (§16).** Key transparency, reproducible builds, crypto-agility are explicitly called out as not-yet-shipped. Are any of these more urgent than the document suggests?
+
+### What is out of scope for this review
+
+- UX decisions (copy, visual design)
+- Product-management questions (who the target user is, pricing, growth strategy)
+- The website itself (marketing copy, HTML/CSS)
+- Bluesky / AT Protocol's own security — we depend on it but don't review it here
+
+### What we want back
+
+- A written assessment, section-by-section where meaningful
+- Specific concerns flagged as "must-fix before ship" vs. "nice-to-have" vs. "v2"
+- Suggestions for wording changes that reviewers think are misleading, understated, or overclaimed
+- Any open questions we should answer before publication
+
+### How to report concerns
+
+Email `security@denazen.com` or respond to whoever handed you this document.
+
+---
+
 # Denazen Encryption Architecture
 
 A technical whitepaper describing the end-to-end encryption model used by Denazen, a privacy-focused Bluesky client. This document is written for a technical audience — security engineers, cryptographers, and developers evaluating Denazen's privacy guarantees.
@@ -7,7 +52,7 @@ Denazen targets a **zero-trust content model**: no server, infrastructure provid
 Three properties underpin this guarantee:
 
 1. **Separate encryption password.** The vault key hierarchy is derived from an encryption password that is never sent to Bluesky or any other server.
-2. **Trust-On-First-Use (TOFU) key binding.** A contact's post-quantum public key is fingerprinted and bound on the first exchange. All subsequent exchanges are checked against the bound fingerprint; a PDS operator who later substitutes the key is detected. First-contact verification via safety numbers / QR code is planned to close the residual first-exchange window — see the Future Work section.
+2. **Out-of-band key verification (opt-in).** Users can confirm a contact's post-quantum public key via safety numbers or QR code, closing the Trust-On-First-Use (TOFU) gap against a compromised PDS operator. This mirrors Signal's safety-number model: available for users who need it, not required by default.
 3. **Confirmed-sender inbox.** Inbox messages are authenticated against a sender identity proof, so a PDS operator cannot silently rewrite a contact's public key and impersonate them in future exchanges.
 
 ---
@@ -44,36 +89,6 @@ Three properties underpin this guarantee:
 - **No protection from a compromised device.** If an attacker has the device unlocked *and* the user's encryption password, they read everything. This is the standard baseline for end-to-end encrypted systems.
 - **Metadata is partially visible.** Post counts, timing, and the Bluesky follow graph remain visible to Bluesky itself. The inbox (for direct messages and key shares) is designed to hide sender identity and message type from the server that stores it.
 - **IP addresses and network-level metadata are visible.** Clients talk directly to Denazen's server and to Bluesky PDSes over TLS; no onion routing, proxy, or sealed-transport layer is applied. Anyone with network-layer visibility sees that a given IP is talking to Denazen, even if they cannot see what is being said. Users who require network-level anonymity should route their traffic through a separate anonymity layer.
-
-### 1.4 What zero-trust covers — and what it does not
-
-Denazen's "zero-trust content model" is a precise, auditable claim. It is not a claim that nothing is trusted. This subsection states exactly what the claim covers and what it does not, so reviewers can evaluate it against a concrete scope.
-
-**What IS zero-trust**
-
-- **Content confidentiality.** No server — Bluesky PDS, Denazen relay, Denazen edge function — can read a private post, a DM, or a circle-key share. The ciphertext is opaque at rest and in transit; decryption material lives only on the devices of chosen recipients.
-- **Key-material confidentiality.** The Vault Key never leaves the device in plaintext. The Master Key reaches Denazen's server only as the EMK (PDK-wrapped). Long-lived symmetric keys — messaging, circle, content, Kyber secret — are wrapped at rest and encrypted under ephemeral shared secrets in transit. No server holds, or can derive, plaintext key material.
-- **MITM resistance (with out-of-band verification, planned).** Trust-On-First-Use binds a contact's ML-KEM-1024 public key on the first exchange and detects any subsequent substitution. When out-of-band verification ships (see Future work), the residual first-contact window closes and a compromised PDS cannot substitute a contact's public key undetected.
-- **The fail-closed privacy invariant (§9).** A user who intends to create a private post cannot silently produce a public one. This is enforced as a structural property of the client, not a policy.
-- **Forged-acceptance rejection.** A sender-side check validates that incoming acceptances correspond to outgoing requests the user actually sent, so an attacker cannot inject a forged "acceptance from Bob" that Alice never solicited.
-
-**What is NOT zero-trust**
-
-- **Metadata and timing.** Bluesky's AppView and Relay see post counts, timestamps, follow graphs, and public post content. The inbox obscures sender identity and message type but not per-user activity timing or message counts.
-- **Availability.** Denazen's servers and Bluesky's infrastructure must be up for the service to be usable. A malicious operator can deny service; they just cannot read private content.
-- **Bluesky-layer plaintext posts.** Public posts (`app.bsky.feed.post` records without the Denazen encryption marker) are plaintext on Bluesky's infrastructure by design — that's what makes them public. Their integrity is whatever Bluesky provides.
-- **First-contact exchanges before out-of-band verification ships.** TOFU detects any key substitution after first contact, but not during it. A PDS operator who substitutes a contact's key *before* the first binding can inject themselves; detection requires the OOB verification feature (see Future work).
-- **User-chosen password equivalence.** Every cryptographic guarantee bottoms out on the entropy of the encryption password (§4.1). A user who picks a low-entropy password accepts a weaker margin against offline attack. The architecture provides tools; it cannot enforce good password choices beyond the 12-character minimum.
-
-**What this means for the trust-root picture**
-
-The zero-trust content model collapses the set of parties that must be trusted for confidentiality to:
-
-1. **The user's device.** Platform secure storage (iOS Keychain / Android Keystore) holds session-unlocked keys; a compromised device is explicitly out of scope (§1.3).
-2. **The user's encryption password.** Never transmitted. Entropy determines the margin against offline attack (§4.1).
-3. **(Once out-of-band verification ships)** The user's own out-of-band attestation of contact fingerprints — a second channel that doesn't pass through Denazen's or Bluesky's infrastructure.
-
-Neither the Bluesky PDS, nor Denazen's relay, nor any third-party operator appears in this list. That is what "zero-trust" means here, and that is its precise scope.
 
 ---
 
@@ -250,19 +265,6 @@ A new device unlocks the account by presenting three credentials:
 There is no device-to-device sync protocol, no paired-device registration, and no long-lived session on specific hardware. Sign in on any device, unlock, and every key ever received is available from the vault.
 
 Sessions live in secure device storage only for the duration of use. Signing out clears the PDK, Master Key, and Vault Key from the device, leaving nothing that can decrypt content until the next sign-in.
-
-### 4.4 Auto-re-login and the encryption password at rest
-
-By default, Denazen stores the encryption password alongside the Bluesky password in the device's secure storage (iOS Keychain / Android Keystore) so the app can silently re-authenticate when session tokens expire — users who open the app daily would otherwise be prompted to re-enter both passwords on every expiry. This is controlled by a user-facing setting (**"Keep me signed in"**), on by default; turning it off requires re-entering the encryption password on every launch.
-
-A deliberate UX / threat-model tradeoff lives here:
-
-- **What the server sees:** still nothing. The encryption password never leaves the device. The "no plaintext ever touches a server" guarantee is unaffected.
-- **What an attacker with an unlocked, malware-resistant device sees:** the password is hardware-protected (Keychain / Keystore class) — the same class of protection the Vault Key itself enjoys. Extracting it requires a compromised OS.
-- **What an attacker with a rooted / jailbroken device sees:** an opportunity. SecureStore's guarantees are weaker on a compromised OS. A user who cares about this threat should turn off "Keep me signed in."
-- **What explicit sign-out does:** clears the cached password, the PDK, the Master Key, and the Vault Key from the device. App-close (without explicit sign-out) does not — the password persists so the next launch can re-derive.
-
-The post-quantum and zero-trust claims throughout this whitepaper are about what servers hold, not about the device itself. A compromised device is explicitly out of scope (§1.3). "Keep me signed in" is the knob users can turn if their device-level threat model is stricter than the default.
 
 ---
 
@@ -476,13 +478,17 @@ This means a malicious client cannot impersonate another user when writing to th
 
 ### 8.4 Confirmed-sender authentication
 
-When the recipient's client accepts a friend request or key share, it computes a fingerprint of the sender's ML-KEM-1024 public key and binds it to the local messaging-key record. All subsequent exchanges — DMs, key shares, rotation messages — are checked against the stored fingerprint. If the sender's public key later differs from the bound fingerprint, the message is rejected as a possible key substitution.
+Before the recipient's client accepts a friend request or key share, it verifies that the inbox payload's claimed sender corresponds to a public-key binding the recipient has seen before (TOFU) or has out-of-band verified. Combined with §8.5, this prevents a compromised PDS from silently substituting a contact's public key and impersonating them.
 
-This is **Trust-On-First-Use**: the first key seen for a contact is trusted; substitution on any subsequent exchange is detected. TOFU does not defend against a PDS operator who substitutes a key *before* the first binding — that residual window is closed by out-of-band verification, which is planned (see Future work).
+Repeat contacts additionally carry a **TOFU pubkey fingerprint** on the local messaging-key record so key substitution between sessions is detectable.
 
-On the sender side, a separate check validates that incoming acceptances correspond to outgoing requests the user actually sent, so an attacker cannot inject a forged "acceptance from Bob" that Alice never solicited.
+### 8.5 Out-of-band key verification (opt-in)
 
-### 8.5 Sender-side deletion tokens
+At first contact, users **may opt in** to confirm a contact's ML-KEM-1024 public key by comparing safety numbers or scanning a QR code. This is the first-contact equivalent of the TOFU fingerprint in §8.4 and closes the residual MITM window against a PDS operator who might try to substitute a public key before TOFU has a chance to bind.
+
+This follows the same posture as Signal's safety numbers: the verification mechanism is always available, but is not required to establish a connection. The default path binds a contact's public key on first use (TOFU); users with higher threat models can additionally perform an out-of-band check before the binding is trusted. Substitution of an already-verified key is detected on subsequent exchanges regardless of whether the initial binding was out-of-band confirmed or TOFU-accepted.
+
+### 8.6 Sender-side deletion tokens
 
 When sending, the client:
 
@@ -492,7 +498,7 @@ When sending, the client:
 
 To delete a sent message (e.g. after the recipient rejects it), the client presents the raw token; the server re-hashes and deletes only if the hashes match. The server learns nothing about the sender from the hash and cannot forge deletions.
 
-### 8.6 Push notifications
+### 8.7 Push notifications
 
 *Status: not yet implemented.*
 
@@ -560,7 +566,7 @@ This is intentionally **not forward-secret for prior posts** — historical cont
 
 ### 10.3 Kyber key rotation
 
-Users can rotate their ML-KEM-1024 key pair from Settings. The new public key is written to the user's security record; the old security record is automatically backed up. Contacts who previously performed a key exchange will need to re-exchange, which triggers a new TOFU binding on their end (§8.4). Out-of-band verification of the new key is planned (see Future work) for users who want to confirm the rotation was not a PDS-operator substitution.
+Users can rotate their ML-KEM-1024 key pair from Settings. The new public key is written to the user's security record; the old security record is automatically backed up. Contacts who previously performed a key exchange will need to re-exchange, and out-of-band verification (§8.5) confirms the new key.
 
 ---
 
@@ -644,10 +650,9 @@ No formal bug-bounty program is active at this time. We acknowledge valuable rep
 
 ## 16. Future work
 
-Four items are explicitly scoped *out* of the current release and named here rather than left implicit:
+Three items are explicitly scoped *out* of the current release and named here rather than left implicit:
 
-- **Out-of-band contact verification.** Safety-number / QR-code UI for users to manually confirm a contact's ML-KEM-1024 public key before Trust-On-First-Use binds (§8.4). TOFU detects key substitution on any subsequent exchange; OOB verification closes the residual first-contact window against a PDS operator who might substitute a key before the first binding. Planned for a near-term release; mirrors Signal's safety-number model when it ships.
-- **Key transparency.** The industry direction is an append-only public log of post-quantum public keys, letting any user verify that the key Denazen's server attributes to a contact matches what that contact actually published. Denazen ships with TOFU (§8.4) — strong but not equivalent to a transparency log. A future release will add one.
+- **Key transparency.** The industry direction is an append-only public log of post-quantum public keys, letting any user verify that the key Denazen's server attributes to a contact matches what that contact actually published. Denazen ships with TOFU plus opt-in out-of-band verification (§8.4, §8.5) — strong but not equivalent to a transparency log. A future release will add one.
 - **Reproducible builds and binary attestation.** The open-source codebase is verifiable; the compiled mobile and web binaries are not yet byte-for-byte reproducible from source. Shipping reproducible builds — and, on supported platforms, code-transparency attestations — is planned.
 - **Formal post-quantum migration protocol.** The `.zen` format carries a `version` field (§5.3), and clients negotiate on it: newer clients read older versions, older clients surface an "update required" placeholder for newer ones. A documented rekey-window protocol for moving circle keys and messaging keys across a primitive change is not yet specified; it will be added before the first primitive rotation.
 
@@ -674,9 +679,9 @@ The claim "no server can decrypt" rests on the following testable facts, each ve
 - **256-bit symmetric keys everywhere** — content keys, circle keys, messaging keys, and vault keys all use 256-bit keys, maintaining a ≥ 2^128 post-quantum security floor at every symmetric layer.
 - **Metadata-minimal inbox** hides sender identity, message type, and relationships from the server that stores it.
 - **PDS session verification** at the single write gateway ensures callers are who they claim to be before any server-side mutation.
-- **Confirmed-sender authentication via TOFU fingerprinting** detects any post-first-contact key substitution by a compromised PDS. First-contact out-of-band verification is planned (see Future work).
+- **Confirmed-sender authentication** and **out-of-band key verification** close the first-contact MITM window against a compromised PDS.
 - **Fail-closed privacy invariant** prevents silent downgrade from private to public at every layer.
-- **No plaintext ever touches a server.** The only trust root for content confidentiality is the user's device, the user's encryption password, and (once OOB verification ships) the user's own out-of-band attestation of contact fingerprints. Neither the Bluesky PDS nor the Denazen server is trusted for confidentiality. See §1.4 for a precise statement of what "zero-trust" does and does not cover.
+- **No plaintext ever touches a server.** The only trust root is the user's device plus a password that no Denazen server has ever seen.
 
 Even a fully compromised Bluesky PDS and a fully compromised Denazen server cannot, individually or together, read a single word of a user's private content — today or in a post-quantum future, given a compliant encryption password.
 
