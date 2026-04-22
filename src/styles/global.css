@@ -622,6 +622,8 @@ section { padding-block: var(--section-pad); }
 .doc-toc {
   position: sticky;
   top: 6rem;
+  max-height: calc(100vh - 7rem);
+  overflow-y: auto;
   font-size: 0.9rem;
 }
 .doc-toc h4 {
@@ -842,6 +844,8 @@ section { padding-block: var(--section-pad); }
   .doc-content { min-width: 0; }
   .doc-toc {
     position: static;
+    max-height: none;
+    overflow: visible;
     border: 1px solid var(--c-border);
     border-radius: var(--radius);
     background: #ffffff;
