@@ -7,7 +7,7 @@ export default {
   hero: {
     headlinePublic: 'Public when you want',
     headlinePrivate: 'Private when it matters',
-    lead: 'Some moments are only for those you trust, and no one else.',
+    lead: 'Some moments are just for your people.',
     encrypted: 'End-to-end encrypted by default.',
     waitlistButton: 'Request invite',
     waitlistNote: 'Invite-only alpha. Early spots are limited.',
@@ -17,20 +17,20 @@ export default {
   },
   whyDenazen: {
     heading: 'Why Denazen?',
-    body: 'Most social media makes you perform for everyone. Denazen lets you choose.',
+    body: 'Most social media makes you perform for everyone. Denazen lets you be yourself.',
   },
   publicSection: {
-    heading: 'Public when you want',
+    heading: 'Explore public content without the noise',
     paragraphs: [
-      'Denazen is built on Bluesky, so you plug straight into a network of 40+ million. Post openly, follow anyone, get discovered.',
-      'Bring your handle, or make a new one. Keep every follower you already have.',
+      'Denazen is built on Bluesky, so you plug straight into a vibrant network of 40+ million. Find your people and interests. Control your own feed.',
+      'Bring your own handle, or create one with Denazen. No ads. No sludge. No clickbait.It’s all under your control. ',
     ],
     imageAlt: "Denazen's public feed, with the Public and Private tabs visible at the top of the screen.",
   },
   privateSection: {
-    heading: 'Private when it matters',
+    heading: 'Share privately when it matters',
     paragraphs: [
-      'For the moments not everyone needs to see, Denazen adds a private layer. Posts are encrypted on your device before they leave it. Only the people you trust can decrypt them.',
+      'For the moments not everyone needs to see, Denazen adds a private layer to an otherwise public internet. Posts are encrypted on your device before they leave it. Only the people you trust can decrypt them.',
       'No one else can see them. Not even us.',
     ],
     imageAlt:
@@ -52,22 +52,22 @@ export default {
       {
         title: 'End-to-end encrypted',
         body:
-          "Private posts are encrypted on your device with AES-256. Decrypted only by the people you've shared with. Denazen's servers see nothing readable.",
+          "Private posts are encrypted on your device with post-quantum cryptography. Decrypted only by the people you've shared with. Data servers see nothing but gibberish. Not even we can see your private posts.",
       },
       {
         title: 'You control the audience',
         body:
-          'Circles are one-directional and revocable. Remove someone and they lose access — the cryptography enforces it, not a setting.',
+          'Circles are one-directional and revocable. Remove someone and they lose access — the cryptography enforces it, not a policy.',
       },
       {
         title: 'Built on AT Protocol',
         body:
-          'Open, portable identity. Use your Bluesky handle — no phone number required. Your public presence stays yours, portable across apps.',
+          'Open, portable identity. Bring your Bluesky or AT Protocol handle or create a new one. Your public presence stays yours, portable across apps.',
       },
       {
         title: 'Private replies to public posts',
         body:
-          'React to anything on Bluesky inside a circle instead of the timeline. Discuss without broadcasting. Safer commentary without the pile-on.',
+          'React to anything on Bluesky inside a private circle instead in front of the world. Discuss without broadcasting. Safer commentary without the pile-on.',
       },
     ],
   },
@@ -75,16 +75,16 @@ export default {
     heading: 'No ads. No trackers. No algorithm deciding what you see.',
     paragraphs: [
       "Denazen isn't built to keep you scrolling. There are no ads, no behavioral tracking, no feed sorted by what will make you react. Just the people you've chosen to hear from.",
-      'Most of what people do online is watched — platforms, data brokers, AI models scraping whatever they can reach. Private content on Denazen is opaque to all of them. No key, no read.',
+      'Most of what people do online is watched — platforms, data brokers, advertisers, and AI models scraping and analyzing whatever they can. Private content on Denazen is opaque to all of them.',
       "We're not selling your data. We can't even see it.",
     ],
     listAria: "What Denazen doesn't do",
-    listItems: ['Ads', 'Trackers', 'Algorithmic feeds', 'Training data'],
+    listItems: ['Ads', 'Behavioral trackers', 'AI training data'],
   },
   ctaSection: {
     heading: 'Join the alpha',
     body:
-      "Denazen is launching in a small, invite-only alpha. Drop your email and we'll let you know when a spot opens up.",
+      "Denazen is launching in a closed Beta. Drop your email and we'll let you know when a spot opens up.",
     waitlistButton: 'Request invite',
     waitlistNote: 'No spam. One email when your invite is ready.',
   },
