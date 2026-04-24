@@ -5,9 +5,9 @@ export default {
       'A privacy-first social network built on Bluesky. Share publicly when you want to, privately in end-to-end encrypted circles when it matters.',
   },
   hero: {
-    headlinePublic: 'Public when you want.',
-    headlinePrivate: 'Private when it matters.',
-    lead: "Some things aren't for everyone.",
+    headlinePublic: 'Public when you want',
+    headlinePrivate: 'Private when it matters',
+    lead: 'Some moments are only for those you trust, and no one else.',
     encrypted: 'End-to-end encrypted by default.',
     waitlistButton: 'Request invite',
     waitlistNote: 'Invite-only alpha. Early spots are limited.',

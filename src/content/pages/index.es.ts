@@ -5,9 +5,9 @@ export default {
       'Una red social con privacidad primero, construida sobre Bluesky. Comparte públicamente cuando quieras y en privado en círculos cifrados de extremo a extremo cuando importa.',
   },
   hero: {
-    headlinePublic: 'Público cuando quieras.',
-    headlinePrivate: 'Privado cuando importa.',
-    lead: 'Hay cosas que no son para todos.',
+    headlinePublic: 'Público cuando quieras',
+    headlinePrivate: 'Privado cuando importa',
+    lead: 'Algunos momentos son solo para las personas en las que confías, y nadie más.',
     encrypted: 'Cifrado de extremo a extremo por defecto.',
     waitlistButton: 'Solicitar invitación',
     waitlistNote: 'Alpha solo por invitación. Los primeros lugares son limitados.',
