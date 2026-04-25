@@ -3,6 +3,9 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://www.denazen.com',
   trailingSlash: 'always',
+  devToolbar: {
+    enabled: false
+  },
   build: {
     format: 'directory'
   },

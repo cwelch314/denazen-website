@@ -12,7 +12,7 @@ export const ui = {
     'nav.primaryAria': 'Primary',
     'nav.languageAria': 'Language',
 
-    'footer.tagline': 'Private when it matters. Public when you choose. Some moments are just for your people.',
+    'footer.tagline': 'Real connection. Real privacy. Real control.',
     'footer.product': 'Product',
     'footer.company': 'Company',
     'footer.legal': 'Legal',
@@ -49,7 +49,7 @@ export const ui = {
     'nav.primaryAria': 'Principal',
     'nav.languageAria': 'Idioma',
 
-    'footer.tagline': 'Privado cuando importa. Público cuando elijas. Algunos momentos son solo para tu gente.',
+    'footer.tagline': 'Conexión real. Privacidad real. Control real.',
     'footer.product': 'Producto',
     'footer.company': 'Empresa',
     'footer.legal': 'Legal',

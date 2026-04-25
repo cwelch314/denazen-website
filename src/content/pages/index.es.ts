@@ -7,7 +7,7 @@ export default {
   hero: {
     heading: 'Si las redes sociales empezaran de cero hoy, así se verían.',
     lines: [
-      'La conexión del Facebook de los primeros días.',
+      'La conexión del Facebook/Instagram de los primeros días.',
       'La privacidad de Signal.',
       'La libertad de Bluesky.',
     ],
@@ -37,8 +37,6 @@ export default {
       'Publica en público cuando quieras llegar más lejos',
       'Sin anuncios. Sin rastreo. Sin manipulación',
     ],
-    bskyNote:
-      'Una capa sobre Bluesky—inicia sesión con tu cuenta existente, o crea una en la app.',
     image: {
       src: '/images/screenshots/feed-public.webp',
       alt: 'El feed público de Denazen, con las pestañas Público y Privado visibles en la parte superior de la pantalla.',
@@ -69,6 +67,8 @@ export default {
       'Tú eliges lo que importa. Tú eliges cómo experimentarlo.',
       'Y como tu identidad y tus datos son portátiles, nunca te quedas atrapado en un solo lugar.',
     ],
+    bskyNote:
+      'Una capa sobre Bluesky—inicia sesión con tu cuenta existente, o crea una en la app.',
     image: {
       src: '/images/screenshots/circles.webp',
       alt: 'La pantalla de gestión de círculos de Denazen mostrando círculos definidos por el usuario como Amigos Más Cercanos, Familia y Club de Lectura.',

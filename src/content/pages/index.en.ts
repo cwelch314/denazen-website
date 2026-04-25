@@ -7,7 +7,7 @@ export default {
   hero: {
     heading: 'If social media started over today, this is what it would look like.',
     lines: [
-      'The connection of early Facebook.',
+      'The connection of early Facebook/Instagram.',
       'The privacy of Signal.',
       'The freedom of Bluesky.',
     ],
@@ -37,8 +37,6 @@ export default {
       'Post publicly when you want to reach beyond',
       'No ads. No tracking. No manipulation',
     ],
-    bskyNote:
-      'A layer on top of Bluesky—log in with your existing account, or create one in the app.',
     image: {
       src: '/images/screenshots/feed-public.webp',
       alt: "Denazen's public feed, with the Public and Private tabs visible at the top of the screen.",
@@ -69,6 +67,8 @@ export default {
       'You choose what matters. You choose how to experience it.',
       "And because your identity and data are portable, you're never stuck in one place.",
     ],
+    bskyNote:
+      'A layer on top of Bluesky—log in with your existing account, or create one in the app.',
     image: {
       src: '/images/screenshots/circles.webp',
       alt: "Denazen's circles management screen showing user-defined circles like Closest Friends, Family, and Book Club.",
