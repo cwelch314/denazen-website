@@ -35,24 +35,13 @@ const linkClass = (link: { mobileOnly?: boolean }, active: boolean) =>
       <img src={localizeAsset('/images/brand/fox-64.png', lang)} alt="" class="brand-fox" width="32" height="32" />
       <span class="brand-text">Denazen</span>
     </a>
-    <button
-      class="nav-toggle"
-      type="button"
-      aria-label={t('nav.toggleAria')}
-      aria-expanded="false"
-      aria-controls="primary-nav"
-      data-nav-toggle
-    >
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="3" y1="6" x2="21" y2="6"></line>
-        <line x1="3" y1="12" x2="21" y2="12"></line>
-        <line x1="3" y1="18" x2="21" y2="18"></line>
-      </svg>
-    </button>
-    <nav id="primary-nav" class="nav-links" aria-label={t('nav.primaryAria')}>
-      {links.map((l) => (
-        <a href={localizePath(l.path, lang)} class={linkClass(l, isActive(l.path))} aria-current={isActive(l.path) ? 'page' : undefined}>{t(l.key)}</a>
-      ))}
+    <div class="nav-right">
+      <nav id="primary-nav" class="nav-links" aria-label={t('nav.primaryAria')}>
+        {links.map((l) => (
+          <a href={localizePath(l.path, lang)} class={linkClass(l, isActive(l.path))} aria-current={isActive(l.path) ? 'page' : undefined}>{t(l.key)}</a>
+        ))}
+        <a href={`${localizePath('/', lang)}#waitlist`} class="btn btn-primary">{t('nav.requestInvite')}</a>
+      </nav>
       <div class="lang-switcher" role="group" aria-label={t('nav.languageAria')}>
         {locales.map((loc) => (
           <a
@@ -63,8 +52,21 @@ const linkClass = (link: { mobileOnly?: boolean }, active: boolean) =>
           >{loc.toUpperCase()}</a>
         ))}
       </div>
-      <a href={`${localizePath('/', lang)}#waitlist`} class="btn btn-primary">{t('nav.requestInvite')}</a>
-    </nav>
+      <button
+        class="nav-toggle"
+        type="button"
+        aria-label={t('nav.toggleAria')}
+        aria-expanded="false"
+        aria-controls="primary-nav"
+        data-nav-toggle
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
   </div>
 </header>
 

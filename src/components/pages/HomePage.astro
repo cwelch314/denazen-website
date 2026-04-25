@@ -22,13 +22,6 @@ const img = (p: string) => localizeAsset(p, lang);
           <span class="hero-headline-public">{c.hero.headlinePublic}</span>
         </h1>
         <p class="lead">{c.hero.lead}</p>
-        <p class="hero-encrypted">
-          <svg class="icon-lock-closed" viewBox="0 0 512 512" fill="#38A169" aria-hidden="true">
-            <path d="M368 192h-16v-80a96 96 0 10-192 0v80h-16a64.07 64.07 0 00-64 64v176a64.07 64.07 0 0064 64h224a64.07 64.07 0 0064-64V256a64.07 64.07 0 00-64-64zm-48 0H192v-80a64 64 0 11128 0z"/>
-          </svg>
-          <span>{c.hero.encrypted}</span>
-        </p>
-        <WaitlistForm lang={lang} id="waitlist" buttonLabel={c.hero.waitlistButton} note={c.hero.waitlistNote} />
         <div class="hero-trust-pill">
           <span class="people-lock-icon" aria-hidden="true">
             <svg class="people-lock-icon-base" viewBox="0 0 512 512" fill="currentColor">
@@ -43,6 +36,7 @@ const img = (p: string) => localizeAsset(p, lang);
             <span>{c.hero.trustPillBody}</span>
           </span>
         </div>
+        <WaitlistForm lang={lang} id="waitlist" buttonLabel={c.hero.waitlistButton} note={c.hero.waitlistNote} />
       </div>
       <div class="hero-visual">
         <img class="hero-phone hero-phone-back" src={img('/images/screenshots/hero-public.webp')} alt={c.hero.imageAltPublic} width="560" height="1111" />

@@ -13,7 +13,7 @@ export const ui = {
     'nav.primaryAria': 'Primary',
     'nav.languageAria': 'Language',
 
-    'footer.tagline': 'Public when you want. Private when it matters. A privacy-first social network built on Bluesky.',
+    'footer.tagline': 'Private when it matters. Public when you choose. Some moments are just for your people.',
     'footer.product': 'Product',
     'footer.company': 'Company',
     'footer.legal': 'Legal',
@@ -52,7 +52,7 @@ export const ui = {
     'nav.primaryAria': 'Principal',
     'nav.languageAria': 'Idioma',
 
-    'footer.tagline': 'Público cuando quieras. Privado cuando importa. Una red social con privacidad primero, construida sobre Bluesky.',
+    'footer.tagline': 'Privado cuando importa. Público cuando elijas. Algunos momentos son solo para tu gente.',
     'footer.product': 'Producto',
     'footer.company': 'Empresa',
     'footer.legal': 'Legal',

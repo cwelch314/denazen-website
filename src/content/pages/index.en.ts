@@ -1,18 +1,17 @@
 export default {
   meta: {
-    title: 'Denazen — Public when you want. Private when it matters.',
+    title: 'Denazen — Public when you choose. Private when it matters.',
     description:
-      'A privacy-first social network built on Bluesky. Share publicly when you want to, privately in end-to-end encrypted circles when it matters.',
+      'A privacy-first social network built on Bluesky. Share publicly when you choose to, privately in end-to-end encrypted circles when it matters.',
   },
   hero: {
-    headlinePublic: 'Public when you want',
+    headlinePublic: 'Public when you choose',
     headlinePrivate: 'Private when it matters',
     lead: 'Some moments are just for your people.',
-    encrypted: 'End-to-end encrypted by default.',
     waitlistButton: 'Request invite',
     waitlistNote: 'Invite-only beta. Early spots are limited.',
-    trustPillTitle: 'You choose who sees what.',
-    trustPillBody: 'A private layer for your social life.',
+    trustPillTitle: 'A private layer in your social media.',
+    trustPillBody: 'End-to-end encrypted by default.',
     imageAltPublic: 'Denazen app on iPhone showing a public feed of posts from Bluesky.',
     imageAltPrivate:
       "Denazen app on iPhone showing a private feed, with a post tagged 'Shared with your Trusted Friends circle'.",
