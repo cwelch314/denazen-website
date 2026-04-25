@@ -1,4 +1,5 @@
 ---
+import WaitlistForm from '../WaitlistForm.astro';
 import type { Lang } from '../../i18n/config';
 import { localizeAsset } from '../../i18n/assets';
 import type enContent from '../../content/pages/index.en';
@@ -26,6 +27,9 @@ const img = (p: string) => localizeAsset(p, lang);
           ))}
         </p>
         <p class="home-hero-tagline">{c.hero.tagline}</p>
+        <div class="home-hero-cta">
+          <WaitlistForm lang={lang} id="waitlist" buttonLabel={c.hero.waitlistButton} note={c.hero.waitlistNote} />
+        </div>
       </div>
       <div class="home-visual home-hero-visual">
         <img class="home-hero-phone home-hero-phone-back" src={img(c.hero.imagePublic.src)} alt={c.hero.imagePublic.alt} width="560" height="1111" />
@@ -108,12 +112,5 @@ const img = (p: string) => localizeAsset(p, lang);
   <div class="container-narrow">
     <h2>{c.values.heading}</h2>
     {c.values.paragraphs.map((p) => <p>{p}</p>)}
-  </div>
-</section>
-
-<!-- Closing -->
-<section class="home-closing">
-  <div class="container-narrow">
-    <h2>{c.closing.line}</h2>
   </div>
 </section>

@@ -4,7 +4,6 @@ export const ui = {
   en: {
     'nav.skipToContent': 'Skip to content',
     'nav.home': 'Home',
-    'nav.about': 'About',
     'nav.faq': 'FAQ',
     'nav.security': 'Security',
     'nav.requestInvite': 'Request invite',
@@ -20,7 +19,6 @@ export const ui = {
     'footer.connect': 'Connect',
     'footer.home': 'Home',
     'footer.faq': 'FAQ',
-    'footer.about': 'About',
     'footer.joinAlpha': 'Join the beta',
     'footer.privacy': 'Privacy',
     'footer.terms': 'Terms',
@@ -43,7 +41,6 @@ export const ui = {
   es: {
     'nav.skipToContent': 'Saltar al contenido',
     'nav.home': 'Inicio',
-    'nav.about': 'Nosotros',
     'nav.faq': 'Preguntas frecuentes',
     'nav.security': 'Seguridad',
     'nav.requestInvite': 'Solicitar invitación',
@@ -59,7 +56,6 @@ export const ui = {
     'footer.connect': 'Conectar',
     'footer.home': 'Inicio',
     'footer.faq': 'Preguntas frecuentes',
-    'footer.about': 'Nosotros',
     'footer.joinAlpha': 'Únete a la beta',
     'footer.privacy': 'Privacidad',
     'footer.terms': 'Términos',

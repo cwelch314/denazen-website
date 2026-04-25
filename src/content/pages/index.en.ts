@@ -11,7 +11,9 @@ export default {
       'The privacy of Signal.',
       'The freedom of Bluesky.',
     ],
-    tagline: 'Public when you want. Private when it matters.',
+    tagline: 'Real connection. Real privacy. Real control.',
+    waitlistButton: 'Request invite',
+    waitlistNote: "It's in an invite-only Beta.",
     imagePublic: {
       src: '/images/screenshots/hero-public.webp',
       alt: 'Denazen app on iPhone showing a public feed of posts from Bluesky.',
@@ -84,8 +86,5 @@ export default {
       "Denazen is free to use. We don't rely on ads, tracking, or attention extraction.",
       "We're building a model based on reciprocity—designed to give back to the people who make this network what it is.",
     ],
-  },
-  closing: {
-    line: 'Real connection. Real privacy. Real control.',
   },
 };
