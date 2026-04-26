@@ -17,7 +17,7 @@ export default {
     ],
     tagline: ['Público cuando quieras.', 'Privado cuando importa.'],
     waitlistButton: 'Solicitar invitación',
-    waitlistNote: 'En una beta solo por invitación.',
+    waitlistNote: 'Beta solo por invitación.',
     imagePublic: {
       src: '/images/screenshots/hero-public.webp',
       alt: 'La app de Denazen en un iPhone mostrando un feed público de publicaciones de Bluesky.',
@@ -42,8 +42,8 @@ export default {
       'Sin anuncios. Sin rastreo. Sin manipulación',
     ],
     image: {
-      src: '/images/screenshots/hero-private.webp',
-      alt: 'El feed privado de Denazen mostrando una publicación de fin de semana familiar compartida con el círculo de Amigos de Confianza del usuario.',
+      src: '/images/screenshots/whats-denazen.webp',
+      alt: 'El feed privado de Denazen mostrando una publicación del viaje de una pareja compartida con el círculo Familia del usuario.',
     },
   },
   privacy: {
