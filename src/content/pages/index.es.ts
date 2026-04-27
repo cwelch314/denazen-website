@@ -9,7 +9,7 @@ export default {
     rotator: {
       prefix: 'La conexión del ',
       words: ['Facebook', 'Instagram'],
-      suffix: ' de los primeros días.',
+      suffix: ' de los <em>primeros días</em>.',
     },
     lines: [
       'La privacidad de Signal.',

@@ -20,11 +20,11 @@ const img = (p: string) => localizeAsset(p, lang);
         <h1 set:html={c.hero.heading}></h1>
         <p class="home-hero-lines">
           <span class="home-hero-rotator-line">
-            {c.hero.rotator.prefix}<span class="word-rotator">
+            <Fragment set:html={c.hero.rotator.prefix} /><span class="word-rotator">
               {c.hero.rotator.words.map((w, i) => (
                 <span class={`word${i === 0 ? ' is-active' : ''}`}>{w}</span>
               ))}
-            </span>{c.hero.rotator.suffix}
+            </span><Fragment set:html={c.hero.rotator.suffix} />
           </span>
           <br />
           {c.hero.lines.map((line, i) => (

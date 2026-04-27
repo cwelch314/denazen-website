@@ -7,7 +7,7 @@ export default {
   hero: {
     heading: 'This is how social <em>should</em> work.',
     rotator: {
-      prefix: 'The connection of early ',
+      prefix: 'The connection of <em>early</em> ',
       words: ['Facebook', 'Instagram'],
       suffix: '.',
     },
