@@ -1,8 +1,8 @@
 export default {
   meta: {
-    title: 'Términos del Servicio — Denazen',
+    title: 'Términos del Servicio — Penrose',
     description:
-      'Los términos del servicio de Denazen — las reglas para usar el servicio, que cubren el uso aceptable, las cuentas, el contenido y la responsabilidad.',
+      'Los términos del servicio de Penrose — las reglas para usar el servicio, que cubren el uso aceptable, las cuentas, el contenido y la responsabilidad.',
   },
   heading: 'Términos del Servicio',
   lastUpdatedLabel: 'Última actualización: ',
@@ -13,16 +13,16 @@ export default {
   sections: [
     {
       heading: '1. Aceptación',
-      paragraphs: ['Al usar Denazen, aceptas estos Términos. Si no estás de acuerdo, no uses el servicio.'],
+      paragraphs: ['Al usar Penrose, aceptas estos Términos. Si no estás de acuerdo, no uses el servicio.'],
     },
     {
       heading: '2. Elegibilidad',
-      paragraphs: ['Debes cumplir con la edad mínima requerida por la ley aplicable en tu jurisdicción para usar Denazen.'],
+      paragraphs: ['Debes cumplir con la edad mínima requerida por la ley aplicable en tu jurisdicción para usar Penrose.'],
     },
     {
       heading: '3. Cuentas',
       paragraphs: [
-        'Denazen usa la identidad del AT Protocol. Eres responsable de la seguridad de tus credenciales y de los dispositivos que contienen tus llaves de cifrado. Si pierdes el acceso a tus llaves, podrías perder permanentemente el acceso a tu contenido privado.',
+        'Penrose usa la identidad del AT Protocol. Eres responsable de la seguridad de tus credenciales y de los dispositivos que contienen tus llaves de cifrado. Si pierdes el acceso a tus llaves, podrías perder permanentemente el acceso a tu contenido privado.',
       ],
     },
     {
@@ -40,7 +40,7 @@ export default {
     {
       heading: '5. Contenido',
       paragraphs: [
-        'Conservas los derechos sobre el contenido que publicas. Otorgas a Denazen los derechos limitados necesarios para operar el servicio (almacenar, transmitir y mostrar tu contenido a las audiencias que especifiques).',
+        'Conservas los derechos sobre el contenido que publicas. Otorgas a Penrose los derechos limitados necesarios para operar el servicio (almacenar, transmitir y mostrar tu contenido a las audiencias que especifiques).',
       ],
     },
     {
@@ -64,7 +64,7 @@ export default {
     {
       heading: '9. Limitación de responsabilidad',
       paragraphs: [
-        'En la medida máxima permitida por la ley, Denazen no es responsable de daños indirectos, incidentales o consecuenciales que surjan del uso del servicio.',
+        'En la medida máxima permitida por la ley, Penrose no es responsable de daños indirectos, incidentales o consecuenciales que surjan del uso del servicio.',
       ],
     },
     {

@@ -1,8 +1,8 @@
 export default {
   meta: {
-    title: 'Política de Privacidad — Denazen',
+    title: 'Política de Privacidad — Penrose',
     description:
-      'La política de privacidad de Denazen: qué recopilamos, qué no, y cómo el cifrado de extremo a extremo limita lo que siquiera podríamos ver.',
+      'La política de privacidad de Penrose: qué recopilamos, qué no, y cómo el cifrado de extremo a extremo limita lo que siquiera podríamos ver.',
   },
   heading: 'Política de Privacidad',
   lastUpdatedLabel: 'Última actualización: ',
@@ -14,7 +14,7 @@ export default {
     {
       heading: 'Quiénes somos',
       paragraphs: [
-        'Denazen («nosotros», «nos», «nuestro») opera el sitio web denazen.com y la aplicación social Denazen. Denazen está construido sobre el AT Protocol; parte del contenido público que creas en Denazen es manejado por la infraestructura del AT Protocol / Bluesky.',
+        'Penrose («nosotros», «nos», «nuestro») opera el sitio web denazen.com y la aplicación social Penrose. Penrose está construido sobre el AT Protocol; parte del contenido público que creas en Penrose es manejado por la infraestructura del AT Protocol / Bluesky.',
       ],
     },
     {
@@ -55,13 +55,13 @@ export default {
     {
       heading: 'Compartir',
       paragraphs: [
-        'No vendemos tu información personal. Se comparte información limitada con proveedores de servicios estrictamente para operar Denazen (por ejemplo, alojamiento de infraestructura, envío de correos para comunicación de la cuenta). El contenido público se comparte a través de la red del AT Protocol por diseño.',
+        'No vendemos tu información personal. Se comparte información limitada con proveedores de servicios estrictamente para operar Penrose (por ejemplo, alojamiento de infraestructura, envío de correos para comunicación de la cuenta). El contenido público se comparte a través de la red del AT Protocol por diseño.',
       ],
     },
     {
       heading: 'Tus opciones',
       list: [
-        { body: 'Puedes solicitar la eliminación de tu cuenta de Denazen.' },
+        { body: 'Puedes solicitar la eliminación de tu cuenta de Penrose.' },
         { body: 'Puedes revocar el acceso de una persona a un Círculo; la criptografía lo hará cumplir de ahí en adelante.' },
         { body: 'Puedes cancelar la suscripción a la comunicación por correo no esencial.' },
       ],

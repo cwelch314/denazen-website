@@ -54,20 +54,20 @@ const img = (p: string) => localizeAsset(p, lang);
   </div>
 </section>
 
-<!-- What Denazen Is -->
+<!-- What Penrose Is -->
 <section class="section-tint home-prose">
   <div class="container">
     <div class="home-grid">
       <div class="home-text">
-        <h2>{c.whatDenazen.heading}</h2>
-        {c.whatDenazen.paragraphs.map((p) => <p>{p}</p>)}
-        <p class="home-prose-resolution">{c.whatDenazen.resolution}</p>
+        <h2>{c.whatPenrose.heading}</h2>
+        {c.whatPenrose.paragraphs.map((p) => <p>{p}</p>)}
+        <p class="home-prose-resolution">{c.whatPenrose.resolution}</p>
         <ul class="home-list">
-          {c.whatDenazen.list.map((item) => <li>{item}</li>)}
+          {c.whatPenrose.list.map((item) => <li>{item}</li>)}
         </ul>
       </div>
       <div class="home-visual">
-        <img src={img(c.whatDenazen.image.src)} alt={c.whatDenazen.image.alt} width="560" height="1037" />
+        <img src={img(c.whatPenrose.image.src)} alt={c.whatPenrose.image.alt} width="560" height="1037" />
       </div>
     </div>
   </div>

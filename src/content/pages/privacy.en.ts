@@ -1,8 +1,8 @@
 export default {
   meta: {
-    title: 'Privacy Policy — Denazen',
+    title: 'Privacy Policy — Penrose',
     description:
-      "Denazen's privacy policy: what we collect, what we don't, and how end-to-end encryption limits what we could even see.",
+      "Penrose's privacy policy: what we collect, what we don't, and how end-to-end encryption limits what we could even see.",
   },
   heading: 'Privacy Policy',
   lastUpdatedLabel: 'Last updated: ',
@@ -14,7 +14,7 @@ export default {
     {
       heading: 'Who we are',
       paragraphs: [
-        'Denazen (“we”, “us”, “our”) operates the website denazen.com and the Denazen social application. Denazen is built on top of the AT Protocol; some public content you create on Denazen is handled by the AT Protocol / Bluesky infrastructure.',
+        'Penrose (“we”, “us”, “our”) operates the website denazen.com and the Penrose social application. Penrose is built on top of the AT Protocol; some public content you create on Penrose is handled by the AT Protocol / Bluesky infrastructure.',
       ],
     },
     {
@@ -55,13 +55,13 @@ export default {
     {
       heading: 'Sharing',
       paragraphs: [
-        'We do not sell your personal information. Limited information is shared with service providers strictly to operate Denazen (e.g., infrastructure hosting, email delivery for account communication). Public content is shared through the AT Protocol network by design.',
+        'We do not sell your personal information. Limited information is shared with service providers strictly to operate Penrose (e.g., infrastructure hosting, email delivery for account communication). Public content is shared through the AT Protocol network by design.',
       ],
     },
     {
       heading: 'Your choices',
       list: [
-        { body: 'You can request deletion of your Denazen account.' },
+        { body: 'You can request deletion of your Penrose account.' },
         { body: "You can revoke a person's access to a Circle; the cryptography will enforce that going forward." },
         { body: 'You can opt out of non-essential email communication.' },
       ],

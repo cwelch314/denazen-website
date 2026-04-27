@@ -1,21 +1,21 @@
 export default {
   meta: {
-    title: 'Política de Seguridad — Denazen',
-    description: 'Cómo reportar una vulnerabilidad de seguridad en Denazen y qué esperar de nosotros a cambio.',
+    title: 'Política de Seguridad — Penrose',
+    description: 'Cómo reportar una vulnerabilidad de seguridad en Penrose y qué esperar de nosotros a cambio.',
   },
   heading: 'Política de Seguridad',
   draftNotice: {
     title: 'Borrador — aún no listo para revisión técnica o de investigación',
-    body: 'Esta política es un borrador previo al lanzamiento. El contenido, el alcance y las afirmaciones pueden cambiar antes de que Denazen esté disponible públicamente. No cites esta versión.',
+    body: 'Esta política es un borrador previo al lanzamiento. El contenido, el alcance y las afirmaciones pueden cambiar antes de que Penrose esté disponible públicamente. No cites esta versión.',
   },
-  leadBefore: 'Denazen está construido en torno a sólidas garantías de privacidad y cifrado. Publicamos nuestra ',
+  leadBefore: 'Penrose está construido en torno a sólidas garantías de privacidad y cifrado. Publicamos nuestra ',
   leadArchitectureLink: 'arquitectura de cifrado',
   leadAfter: ' en detalle y damos la bienvenida al escrutinio de la comunidad de investigación en seguridad.',
   intro: 'Esta página describe cómo reportar un problema de seguridad y qué puedes esperar de nosotros a cambio.',
 
   reporting: {
     heading: 'Reporte de vulnerabilidades',
-    p1Before: 'Si crees que has encontrado una vulnerabilidad de seguridad en Denazen, repórtala de forma privada escribiendo a ',
+    p1Before: 'Si crees que has encontrado una vulnerabilidad de seguridad en Penrose, repórtala de forma privada escribiendo a ',
     reportEmail: 'security@denazen.com',
     p1After: '.',
     p2: 'Por favor, no divulgues el problema públicamente antes de darnos una oportunidad razonable de responder. Acusaremos recibo de tu reporte en un plazo de 72 horas y coordinaremos contigo el calendario de divulgación.',
@@ -63,11 +63,11 @@ export default {
       },
       {
         kind: 'plain',
-        text: 'La app móvil de Denazen publicada en la App Store y Google Play — errores criptográficos, de autenticación, autorización o manejo de datos en la compilación publicada.',
+        text: 'La app móvil de Penrose publicada en la App Store y Google Play — errores criptográficos, de autenticación, autorización o manejo de datos en la compilación publicada.',
       },
       {
         kind: 'plain',
-        text: 'Endpoints del servidor de Denazen — el API gateway, el inbox, el índice de publicaciones, el manejo de solicitudes de amistad. Incluye bypass de autenticación, fallos de autorización, inyección y problemas de fuga de datos.',
+        text: 'Endpoints del servidor de Penrose — el API gateway, el inbox, el índice de publicaciones, el manejo de solicitudes de amistad. Incluye bypass de autenticación, fallos de autorización, inyección y problemas de fuga de datos.',
       },
       {
         kind: 'code',
@@ -79,7 +79,7 @@ export default {
     outOfScopeHeading: 'Fuera del alcance',
     outOfScope: [
       'Ataques físicos a dispositivos bajo el control del usuario (un dispositivo robado y desbloqueado está fuera de nuestro modelo de amenazas).',
-      'Ingeniería social al personal o usuarios de Denazen.',
+      'Ingeniería social al personal o usuarios de Penrose.',
       'Pruebas de denegación de servicio contra la infraestructura de producción. Reporta preocupaciones de DoS de forma analítica, no mediante ataques de carga reales.',
       'Vulnerabilidades en servicios de terceros con los que nos integramos (PDS de Bluesky, relays del AT Protocol, infraestructura de tiendas de apps). Repórtalas al proveedor correspondiente.',
       'Vulnerabilidades que requieren que un atacante ya posea tu contraseña de cifrado o llave de bóveda.',
@@ -110,20 +110,20 @@ export default {
 
   bugBounty: {
     heading: 'Programa de recompensas',
-    body: 'Denazen no ofrece actualmente recompensas pagadas por errores. Proporcionamos reconocimiento público para los reportes válidos y podemos ofrecer otras formas de reconocimiento a medida que el producto madure. Está previsto un programa de recompensas pagadas después del lanzamiento.',
+    body: 'Penrose no ofrece actualmente recompensas pagadas por errores. Proporcionamos reconocimiento público para los reportes válidos y podemos ofrecer otras formas de reconocimiento a medida que el producto madure. Está previsto un programa de recompensas pagadas después del lanzamiento.',
   },
 
   acknowledgments: {
     heading: 'Agradecimientos',
-    before: 'Los investigadores que han reportado problemas de forma responsable a Denazen están listados en nuestra ',
+    before: 'Los investigadores que han reportado problemas de forma responsable a Penrose están listados en nuestra ',
     linkText: 'página de agradecimientos',
     after: '.',
   },
 
   changelog: {
     heading: 'Registro de cambios',
-    before: 'Los cambios importantes en los documentos públicos de seguridad de Denazen — incluido el libro blanco de la arquitectura de cifrado — se registran en el ',
+    before: 'Los cambios importantes en los documentos públicos de seguridad de Penrose — incluido el libro blanco de la arquitectura de cifrado — se registran en el ',
     linkText: 'registro de cambios de seguridad',
-    after: '. Si has revisado antes la postura de seguridad de Denazen, esa es la forma más rápida de ver qué ha cambiado.',
+    after: '. Si has revisado antes la postura de seguridad de Penrose, esa es la forma más rápida de ver qué ha cambiado.',
   },
 };

@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 620" role="img" aria-label="Four-tier vault hierarchy: Encryption password derives a Password-Derived Key via Argon2id. The PDK encrypts the Master Key, which is stored on Denazen's server as EMK. The Master Key encrypts the Vault Key, which is stored on the PDS as EVK. The Vault Key protects per-record keys including Circle, Friend, Messaging, and Kyber secret keys.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 620" role="img" aria-label="Four-tier vault hierarchy: Encryption password derives a Password-Derived Key via Argon2id. The PDK encrypts the Master Key, which is stored on Penrose's server as EMK. The Master Key encrypts the Vault Key, which is stored on the PDS as EVK. The Vault Key protects per-record keys including Circle, Friend, Messaging, and Kyber secret keys.">
   <defs>
     <style>
       .box-outer { fill: #ffffff; stroke: #1F8FE0; stroke-width: 2; }
@@ -39,7 +39,7 @@
     <rect x="200" y="214" width="320" height="80" rx="8" class="box-accent"/>
     <text x="360" y="240" text-anchor="middle" class="lbl-head">Master Key</text>
     <text x="360" y="258" text-anchor="middle" class="lbl-sub">32 bytes random · long-lived</text>
-    <text x="360" y="274" text-anchor="middle" class="lbl-storage">Stored as EMK on Denazen's server</text>
+    <text x="360" y="274" text-anchor="middle" class="lbl-storage">Stored as EMK on Penrose's server</text>
     <text x="360" y="288" text-anchor="middle" class="lbl-sub">Plaintext copy in secure device storage after unlock</text>
   </g>
   <line x1="360" y1="294" x2="360" y2="324" class="arrow" marker-end="url(#arrow)"/>

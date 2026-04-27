@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'Denazen — Social media redesigned for you',
+    title: 'Penrose — Social media redesigned for you',
     description:
       'A social network built for real relationships—with private spaces, real control, and no ads or tracking.',
   },
@@ -20,21 +20,21 @@ export default {
     waitlistNote: "Invite-only Beta.",
     imagePublic: {
       src: '/images/screenshots/hero-public.webp',
-      alt: 'Denazen app on iPhone showing a public feed of posts from Bluesky.',
+      alt: 'Penrose app on iPhone showing a public feed of posts from Bluesky.',
     },
     imagePrivate: {
       src: '/images/screenshots/hero-private.webp',
-      alt: "Denazen app on iPhone showing a private feed with a post tagged 'Shared with your Trusted Friends circle'.",
+      alt: "Penrose app on iPhone showing a private feed with a post tagged 'Shared with your Trusted Friends circle'.",
     },
   },
-  whatDenazen: {
+  whatPenrose: {
     heading: 'Social media used to be about connection.',
     paragraphs: [
       'It was about friends. Family. Real life.',
       'Then it became about engagement-maximizing algorithms. Tracking. Advertising. And the users became the product.',
     ],
     resolution:
-      'Denazen brings it back—and rebuilds it for how the internet should work now.',
+      'Penrose brings it back—and rebuilds it for how the internet should work now.',
     list: [
       'Connect with the people you actually care about',
       'Share privately with trusted circles',
@@ -43,7 +43,7 @@ export default {
     ],
     image: {
       src: '/images/screenshots/whats-denazen.webp',
-      alt: "Denazen's private feed showing a couple's trip post shared with the user's Family circle.",
+      alt: "Penrose's private feed showing a couple's trip post shared with the user's Family circle.",
     },
   },
   privacy: {
@@ -55,13 +55,13 @@ export default {
     closer: 'Because real connection requires trust.',
     image: {
       src: '/images/screenshots/private-network.webp',
-      alt: "Denazen's Private Network screen on iPhone, explaining end-to-end encryption.",
+      alt: "Penrose's Private Network screen on iPhone, explaining end-to-end encryption.",
     },
   },
   freedom: {
     heading: 'You decide what your social experience looks like.',
     intro:
-      'Denazen is built on the idea that you should control what you see, how you engage, and where your data lives.',
+      'Penrose is built on the idea that you should control what you see, how you engage, and where your data lives.',
     list: [
       'No algorithm forcing content on you',
       'No engagement traps or infinite scroll manipulation',
@@ -75,15 +75,15 @@ export default {
       'A layer on top of Bluesky—log in with your existing account, or create one in the app.',
     image: {
       src: '/images/screenshots/circles.webp',
-      alt: "Denazen's circles management screen showing user-defined circles like Closest Friends, Family, and Book Club.",
+      alt: "Penrose's circles management screen showing user-defined circles like Closest Friends, Family, and Book Club.",
     },
   },
   values: {
     heading: 'Built differently—on purpose.',
     paragraphs: [
-      "Denazen is a Public Benefit Corporation. That means our mission isn't just a promise—it's part of our legal structure.",
+      "Penrose is a Public Benefit Corporation. That means our mission isn't just a promise—it's part of our legal structure.",
       "We're accountable not just to growth, but to people and the world we're building in.",
-      "Denazen is free to use. We don't rely on ads, tracking, or attention extraction.",
+      "Penrose is free to use. We don't rely on ads, tracking, or attention extraction.",
       "We're building a model based on reciprocity—designed to give back to the people who make this network what it is.",
     ],
   },

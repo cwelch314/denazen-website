@@ -1,8 +1,8 @@
 export default {
   meta: {
-    title: 'Terms of Service — Denazen',
+    title: 'Terms of Service — Penrose',
     description:
-      "Denazen's terms of service — the rules for using the service, covering acceptable use, accounts, content, and liability.",
+      "Penrose's terms of service — the rules for using the service, covering acceptable use, accounts, content, and liability.",
   },
   heading: 'Terms of Service',
   lastUpdatedLabel: 'Last updated: ',
@@ -13,16 +13,16 @@ export default {
   sections: [
     {
       heading: '1. Agreement',
-      paragraphs: ['By using Denazen, you agree to these Terms. If you do not agree, do not use the service.'],
+      paragraphs: ['By using Penrose, you agree to these Terms. If you do not agree, do not use the service.'],
     },
     {
       heading: '2. Eligibility',
-      paragraphs: ['You must meet the minimum age required by applicable law in your jurisdiction to use Denazen.'],
+      paragraphs: ['You must meet the minimum age required by applicable law in your jurisdiction to use Penrose.'],
     },
     {
       heading: '3. Accounts',
       paragraphs: [
-        'Denazen uses AT Protocol identity. You are responsible for the security of your credentials and the devices that hold your encryption keys. If you lose access to your keys, you may permanently lose access to your private content.',
+        'Penrose uses AT Protocol identity. You are responsible for the security of your credentials and the devices that hold your encryption keys. If you lose access to your keys, you may permanently lose access to your private content.',
       ],
     },
     {
@@ -40,7 +40,7 @@ export default {
     {
       heading: '5. Content',
       paragraphs: [
-        'You retain rights to the content you post. You grant Denazen the limited rights needed to operate the service (store, transmit, and display your content to the audiences you specify).',
+        'You retain rights to the content you post. You grant Penrose the limited rights needed to operate the service (store, transmit, and display your content to the audiences you specify).',
       ],
     },
     {
@@ -64,7 +64,7 @@ export default {
     {
       heading: '9. Limitation of liability',
       paragraphs: [
-        'To the maximum extent permitted by law, Denazen is not liable for indirect, incidental, or consequential damages arising from use of the service.',
+        'To the maximum extent permitted by law, Penrose is not liable for indirect, incidental, or consequential damages arising from use of the service.',
       ],
     },
     {

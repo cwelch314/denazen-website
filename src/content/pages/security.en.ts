@@ -1,21 +1,21 @@
 export default {
   meta: {
-    title: 'Security Policy — Denazen',
-    description: 'How to report a security vulnerability in Denazen and what to expect from us in return.',
+    title: 'Security Policy — Penrose',
+    description: 'How to report a security vulnerability in Penrose and what to expect from us in return.',
   },
   heading: 'Security Policy',
   draftNotice: {
     title: 'Draft — not yet ready for technical/research review',
-    body: 'This policy is a pre-launch working draft. Content, scope, and claims are subject to change before Denazen is publicly available. Do not cite from this version.',
+    body: 'This policy is a pre-launch working draft. Content, scope, and claims are subject to change before Penrose is publicly available. Do not cite from this version.',
   },
-  leadBefore: 'Denazen is built around strong privacy and encryption guarantees. We publish our ',
+  leadBefore: 'Penrose is built around strong privacy and encryption guarantees. We publish our ',
   leadArchitectureLink: 'encryption architecture',
   leadAfter: ' in detail and welcome scrutiny from the security research community.',
   intro: 'This page describes how to report a security issue and what you can expect from us in return.',
 
   reporting: {
     heading: 'Reporting a vulnerability',
-    p1Before: 'If you believe you have found a security vulnerability in Denazen, please report it privately by emailing ',
+    p1Before: 'If you believe you have found a security vulnerability in Penrose, please report it privately by emailing ',
     reportEmail: 'security@denazen.com',
     p1After: '.',
     p2: 'Please do not disclose the issue publicly before giving us a reasonable chance to respond. We will acknowledge your report within 72 hours and will coordinate with you on a disclosure timeline.',
@@ -63,11 +63,11 @@ export default {
       },
       {
         kind: 'plain',
-        text: 'The Denazen mobile app published to the App Store and Google Play — cryptographic, authentication, authorization, or data-handling bugs in the shipping build.',
+        text: 'The Penrose mobile app published to the App Store and Google Play — cryptographic, authentication, authorization, or data-handling bugs in the shipping build.',
       },
       {
         kind: 'plain',
-        text: 'Denazen server endpoints — the API gateway, the inbox, the post index, friend request handling. Includes authentication bypass, authorization flaws, injection, and data-leak issues.',
+        text: 'Penrose server endpoints — the API gateway, the inbox, the post index, friend request handling. Includes authentication bypass, authorization flaws, injection, and data-leak issues.',
       },
       {
         kind: 'code',
@@ -79,7 +79,7 @@ export default {
     outOfScopeHeading: 'Out of scope',
     outOfScope: [
       "Physical attacks on devices under the user's control (an unlocked stolen device is outside our threat model).",
-      'Social engineering of Denazen staff or users.',
+      'Social engineering of Penrose staff or users.',
       'Denial-of-service testing against production infrastructure. Report DoS concerns analytically, not via actual load attacks.',
       'Vulnerabilities in third-party services we integrate with (Bluesky PDS, AT Protocol relays, app store infrastructure). Report those to the respective vendor.',
       'Vulnerabilities that require an attacker to already possess your encryption password or vault key.',
@@ -110,20 +110,20 @@ export default {
 
   bugBounty: {
     heading: 'Bug bounty',
-    body: 'Denazen does not currently offer paid bug bounties. We provide public acknowledgment for valid reports and may offer other forms of recognition as the product matures. A paid bounty program is planned post-launch.',
+    body: 'Penrose does not currently offer paid bug bounties. We provide public acknowledgment for valid reports and may offer other forms of recognition as the product matures. A paid bounty program is planned post-launch.',
   },
 
   acknowledgments: {
     heading: 'Acknowledgments',
-    before: 'Researchers who have responsibly reported issues to Denazen are listed on our ',
+    before: 'Researchers who have responsibly reported issues to Penrose are listed on our ',
     linkText: 'acknowledgments page',
     after: '.',
   },
 
   changelog: {
     heading: 'Changelog',
-    before: "Material changes to Denazen's public security documents — including the encryption architecture whitepaper — are logged on the ",
+    before: "Material changes to Penrose's public security documents — including the encryption architecture whitepaper — are logged on the ",
     linkText: 'security changelog',
-    after: ". If you've reviewed Denazen's security posture before, that's the quickest way to see what's changed.",
+    after: ". If you've reviewed Penrose's security posture before, that's the quickest way to see what's changed.",
   },
 };
