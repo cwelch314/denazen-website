@@ -1,11 +1,11 @@
 export default {
   meta: {
-    title: 'Denazen — Social media designed for you, not them',
+    title: 'Denazen — Social media designed for you',
     description:
       'A social network built for real relationships—with private spaces, real control, and no ads or tracking.',
   },
   hero: {
-    heading: 'Social media designed for you, not them',
+    heading: 'Social media designed for you',
     rotator: {
       prefix: 'The connection of early ',
       words: ['Facebook', 'Instagram'],
