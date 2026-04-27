@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'Privacy Policy — Penrose',
+    title: 'Penrose',
     description:
       "Penrose's privacy policy: what we collect, what we don't, and how end-to-end encryption limits what we could even see.",
   },

@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'Registro de cambios de seguridad — Penrose',
+    title: 'Penrose',
     description:
       'Un registro con fechas de los cambios importantes en los documentos públicos de seguridad de Penrose: la Política de Seguridad, el libro blanco de la arquitectura de cifrado y el security.txt según RFC 9116.',
   },

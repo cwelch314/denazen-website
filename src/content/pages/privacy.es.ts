@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'Política de Privacidad — Penrose',
+    title: 'Penrose',
     description:
       'La política de privacidad de Penrose: qué recopilamos, qué no, y cómo el cifrado de extremo a extremo limita lo que siquiera podríamos ver.',
   },

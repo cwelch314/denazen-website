@@ -31,7 +31,7 @@ const content: {
   sections: Section[];
 } = {
   meta: {
-    title: 'Security & Encryption Architecture — Penrose',
+    title: 'Penrose',
     description:
       "Penrose's end-to-end encryption architecture: zero-trust content model, post-quantum key exchange (ML-KEM-1024, NIST Level 5), four-tier vault hierarchy, metadata-minimal inbox, and the fail-closed privacy invariant.",
   },

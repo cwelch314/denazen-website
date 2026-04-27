@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'Security Policy — Penrose',
+    title: 'Penrose',
     description: 'How to report a security vulnerability in Penrose and what to expect from us in return.',
   },
   heading: 'Security Policy',

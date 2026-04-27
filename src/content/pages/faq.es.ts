@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'Preguntas frecuentes — Penrose',
+    title: 'Penrose',
     description: 'Respuestas a preguntas comunes sobre Penrose: qué es, cómo funciona la privacidad y cómo entrar.',
   },
   heading: 'Preguntas frecuentes',

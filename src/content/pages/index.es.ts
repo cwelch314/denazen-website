@@ -1,11 +1,11 @@
 export default {
   meta: {
-    title: 'Penrose — Redes sociales rediseñadas para ti',
+    title: 'Penrose',
     description:
       'Una red social hecha para relaciones reales—con espacios privados, control real y sin anuncios ni rastreo.',
   },
   hero: {
-    heading: 'El triángulo imposible. Resuelto.',
+    heading: 'Las redes sociales, sin concesiones.',
     rotator: {
       prefix: 'Conexión como ',
       words: ['Facebook', 'Instagram'],
@@ -13,11 +13,11 @@ export default {
     },
     lines: [
       'Privacidad como Signal.',
-      'Control como Bluesky.',
+      'Control y libertad de Bluesky.',
     ],
-    tagline: ['Las redes sociales, sin concesiones.'],
+    tagline: ['El triángulo imposible. Resuelto.'],
     waitlistButton: 'Solicitar invitación',
-    waitlistNote: 'Una nueva forma de red social. Beta solo por invitación.',
+    waitlistNote: 'Beta solo por invitación próximamente. Ayuda a dar forma al futuro de las redes sociales.',
     imagePublic: {
       src: '/images/screenshots/hero-public.webp',
       alt: 'La app de Penrose en un iPhone mostrando un feed público de publicaciones de Bluesky.',

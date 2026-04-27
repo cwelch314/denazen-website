@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'Security Changelog — Penrose',
+    title: 'Penrose',
     description:
       "A dated record of material changes to Penrose's public security documents: the Security Policy, the encryption architecture whitepaper, and the RFC 9116 security.txt.",
   },

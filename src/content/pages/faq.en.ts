@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'FAQ — Penrose',
+    title: 'Penrose',
     description: 'Answers to common questions about Penrose: what it is, how privacy works, and how to get in.',
   },
   heading: 'Frequently asked questions',

@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'Security Acknowledgments — Penrose',
+    title: 'Penrose',
     description: 'Security researchers who have responsibly reported issues to Penrose.',
   },
   heading: 'Security Acknowledgments',

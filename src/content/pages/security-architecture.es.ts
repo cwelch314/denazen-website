@@ -28,7 +28,7 @@ const content: {
   sections: Section[];
 } = {
   meta: {
-    title: 'Arquitectura de Seguridad y Cifrado — Penrose',
+    title: 'Penrose',
     description:
       'La arquitectura de cifrado de extremo a extremo de Penrose: modelo de contenido de confianza cero, intercambio de llaves post-cuántico (ML-KEM-1024, NIST Nivel 5), jerarquía de bóveda de cuatro niveles, inbox con metadatos mínimos y el invariante de privacidad a prueba de fallos.',
   },

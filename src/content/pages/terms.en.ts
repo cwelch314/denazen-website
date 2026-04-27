@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'Terms of Service — Penrose',
+    title: 'Penrose',
     description:
       "Penrose's terms of service — the rules for using the service, covering acceptable use, accounts, content, and liability.",
   },

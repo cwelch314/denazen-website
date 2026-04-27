@@ -42,7 +42,7 @@
  * navy supports the dark-band sections. */
 :root {
   --c-bg: #ffffff;
-  --c-bg-tint: #F1F3F5;            /* gray100 */
+  --c-bg-tint: #EEF4FB;            /* subtle blue tint, derived from brandBlue100 */
   --c-text: #212529;               /* gray900 */
   --c-text-soft: #495057;          /* gray700 */
   --c-text-muted: #6C757D;         /* gray600 */
@@ -51,8 +51,8 @@
   --c-accent: #2884E0;             /* brandBlue500 */
   --c-accent-hover: #005091;       /* brandBlue700 */
   --c-accent-tint: #D9EBFF;        /* brandBlue100 */
-  --c-dark: #0A0E1A;               /* navy900 */
-  --c-dark-2: #0F1525;             /* navy800 (gradient stop) */
+  --c-dark: #003A6B;               /* brandBlue800 (top of dark gradient) */
+  --c-dark-2: #002647;             /* brandBlue900 (bottom of dark gradient) */
 
   --font-sans: 'Inter', system-ui, -apple-system, Segoe UI, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;

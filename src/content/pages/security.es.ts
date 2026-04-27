@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'Política de Seguridad — Penrose',
+    title: 'Penrose',
     description: 'Cómo reportar una vulnerabilidad de seguridad en Penrose y qué esperar de nosotros a cambio.',
   },
   heading: 'Política de Seguridad',

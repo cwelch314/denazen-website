@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'Términos del Servicio — Penrose',
+    title: 'Penrose',
     description:
       'Los términos del servicio de Penrose — las reglas para usar el servicio, que cubren el uso aceptable, las cuentas, el contenido y la responsabilidad.',
   },

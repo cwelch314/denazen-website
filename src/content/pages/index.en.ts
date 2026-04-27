@@ -1,11 +1,11 @@
 export default {
   meta: {
-    title: 'Penrose — Social media redesigned for you',
+    title: 'Penrose',
     description:
       'A social network built for real relationships—with private spaces, real control, and no ads or tracking.',
   },
   hero: {
-    heading: 'The impossible triangle. Solved.',
+    heading: 'Social media, without compromise.',
     rotator: {
       prefix: 'Connection like <em>early</em> ',
       words: ['Facebook', 'Instagram'],
@@ -13,11 +13,11 @@ export default {
     },
     lines: [
       'Privacy like Signal.',
-      'Control like Bluesky.',
+      'Control and freedom of Bluesky.',
     ],
-    tagline: ['Social media, without compromise.'],
+    tagline: ['The impossible triangle. Solved.'],
     waitlistButton: 'Request invite',
-    waitlistNote: 'A new kind of social network. Invite-only beta.',
+    waitlistNote: 'Invite-only beta launching soon. Help shape the future of social.',
     imagePublic: {
       src: '/images/screenshots/hero-public.webp',
       alt: 'Penrose app on iPhone showing a public feed of posts from Bluesky.',
