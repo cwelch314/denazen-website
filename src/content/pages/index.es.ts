@@ -7,17 +7,17 @@ export default {
   hero: {
     heading: 'Así es como las redes sociales <em>deberían</em> funcionar.',
     rotator: {
-      prefix: 'La conexión del ',
+      prefix: 'Conexión como ',
       words: ['Facebook', 'Instagram'],
-      suffix: ' de los <em>primeros días</em>.',
+      suffix: ' en sus <em>primeros días</em>.',
     },
     lines: [
-      'La privacidad de Signal.',
-      'La libertad de Bluesky.',
+      'Privacidad como Signal.',
+      'Control como Bluesky.',
     ],
-    tagline: ['Todo en un solo lugar.', 'El triángulo imposible. Resuelto.'],
+    tagline: ['El triángulo imposible. Resuelto.'],
     waitlistButton: 'Solicitar invitación',
-    waitlistNote: 'Beta solo por invitación.',
+    waitlistNote: 'Una nueva forma de red social. Beta solo por invitación.',
     imagePublic: {
       src: '/images/screenshots/hero-public.webp',
       alt: 'La app de Penrose en un iPhone mostrando un feed público de publicaciones de Bluesky.',

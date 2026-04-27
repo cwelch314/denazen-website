@@ -7,17 +7,17 @@ export default {
   hero: {
     heading: 'This is how social <em>should</em> work.',
     rotator: {
-      prefix: 'The connection of <em>early</em> ',
+      prefix: 'Connection like <em>early</em> ',
       words: ['Facebook', 'Instagram'],
       suffix: '.',
     },
     lines: [
-      'The privacy of Signal.',
-      'The freedom of Bluesky.',
+      'Privacy like Signal.',
+      'Control like Bluesky.',
     ],
-    tagline: ['All in one place.', 'The impossible triangle. Solved.'],
+    tagline: ['The impossible triangle. Solved.'],
     waitlistButton: 'Request invite',
-    waitlistNote: "Invite-only Beta.",
+    waitlistNote: 'A new kind of social network. Invite-only beta.',
     imagePublic: {
       src: '/images/screenshots/hero-public.webp',
       alt: 'Penrose app on iPhone showing a public feed of posts from Bluesky.',
