@@ -15,7 +15,7 @@ export default {
       'La privacidad de Signal.',
       'La libertad de Bluesky.',
     ],
-    tagline: ['Social, sin concesiones'],
+    tagline: ['El triángulo imposible. Resuelto.'],
     waitlistButton: 'Solicitar invitación',
     waitlistNote: 'Beta solo por invitación.',
     imagePublic: {

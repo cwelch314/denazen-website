@@ -15,7 +15,7 @@ export default {
       'The privacy of Signal.',
       'The freedom of Bluesky.',
     ],
-    tagline: ['Social, without the trade offs'],
+    tagline: ['The impossible triangle. Solved.'],
     waitlistButton: 'Request invite',
     waitlistNote: "Invite-only Beta.",
     imagePublic: {
