@@ -5,7 +5,7 @@ export default {
       'A social network built for real relationships—with private spaces, real control, and no ads or tracking.',
   },
   hero: {
-    heading: 'This is how social <em>should</em> work.',
+    heading: 'The impossible triangle. Solved.',
     rotator: {
       prefix: 'Connection like <em>early</em> ',
       words: ['Facebook', 'Instagram'],
@@ -15,7 +15,7 @@ export default {
       'Privacy like Signal.',
       'Control like Bluesky.',
     ],
-    tagline: ['The impossible triangle. Solved.'],
+    tagline: ['Social media, without compromise.'],
     waitlistButton: 'Request invite',
     waitlistNote: 'A new kind of social network. Invite-only beta.',
     imagePublic: {

@@ -5,7 +5,7 @@ export default {
       'Una red social hecha para relaciones reales—con espacios privados, control real y sin anuncios ni rastreo.',
   },
   hero: {
-    heading: 'Así es como las redes sociales <em>deberían</em> funcionar.',
+    heading: 'El triángulo imposible. Resuelto.',
     rotator: {
       prefix: 'Conexión como ',
       words: ['Facebook', 'Instagram'],
@@ -15,7 +15,7 @@ export default {
       'Privacidad como Signal.',
       'Control como Bluesky.',
     ],
-    tagline: ['El triángulo imposible. Resuelto.'],
+    tagline: ['Las redes sociales, sin concesiones.'],
     waitlistButton: 'Solicitar invitación',
     waitlistNote: 'Una nueva forma de red social. Beta solo por invitación.',
     imagePublic: {
