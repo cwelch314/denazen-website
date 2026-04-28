@@ -1,6 +1,6 @@
 // Cloudflare Pages Function — serves the ATProto OAuth client metadata
 // JSON, varying its contents by the requesting Host so each app build
-// variant can have its own client_id and reverse-DNS URL scheme.
+// variant can have its own client_id and redirect URIs.
 //
 // Why this exists: ATProto OAuth requires the redirect URI scheme to be
 // the reverse-DNS of the client_id host. With three build variants
@@ -8,18 +8,34 @@
 // gets its own scheme and they can coexist on a single device.
 // See ADR 0002 for the original tactical-workaround context.
 //
+// Each variant now advertises TWO redirect URIs (HTTPS first, custom
+// scheme second). `@atproto/oauth-client-expo` picks `redirect_uris[0]`
+// so it'll prefer the HTTPS one — which the OS dispatches directly to
+// the app via Universal Links / App Links, skipping the browser entirely
+// and removing the Android-default-browser hang failure mode that
+// drove this migration. The custom-scheme entry stays as fallback for
+// any binary built against the older metadata; once HTTPS dispatch has
+// soaked in production for ≥1 release cycle, drop it (Phase 4).
+// See `denazen` repo: docs/plan-app-links-redirect.md.
+//
 // Routing:
 //   GET https://dev.denazen.com/.well-known/oauth-client-metadata.json
 //     → client_id: https://dev.denazen.com/.well-known/oauth-client-metadata.json
-//     → redirect_uris: ["com.denazen.dev:/oauth-callback"]
+//     → redirect_uris:
+//         [ "https://dev.denazen.com/oauth-callback",
+//           "com.denazen.dev:/oauth-callback" ]
 //
 //   GET https://beta.denazen.com/.well-known/oauth-client-metadata.json
 //     → client_id: https://beta.denazen.com/.well-known/oauth-client-metadata.json
-//     → redirect_uris: ["com.denazen.beta:/oauth-callback"]
+//     → redirect_uris:
+//         [ "https://beta.denazen.com/oauth-callback",
+//           "com.denazen.beta:/oauth-callback" ]
 //
 //   GET https://denazen.com/.well-known/oauth-client-metadata.json
 //     → client_id: https://denazen.com/.well-known/oauth-client-metadata.json
-//     → redirect_uris: ["com.denazen:/oauth-callback"]
+//     → redirect_uris:
+//         [ "https://denazen.com/oauth-callback",
+//           "com.denazen:/oauth-callback" ]
 //
 //   Any other host (preview *.pages.dev, localhost, www. variants):
 //     → falls back to production metadata. Not used by any real client;
@@ -58,7 +74,10 @@ export const onRequestGet: PagesFunction = ({ request }) => {
     policy_uri: 'https://denazen.com/privacy/',
     tos_uri: 'https://denazen.com/terms/',
     application_type: 'native',
-    redirect_uris: [`${variant.scheme}:/oauth-callback`],
+    redirect_uris: [
+      `https://${clientUriHost}/oauth-callback`,
+      `${variant.scheme}:/oauth-callback`,
+    ],
     grant_types: ['authorization_code', 'refresh_token'],
     response_types: ['code'],
     scope: 'atproto transition:generic transition:chat.bsky',
