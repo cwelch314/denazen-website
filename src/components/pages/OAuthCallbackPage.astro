@@ -1,0 +1,102 @@
+---
+import type { Lang } from '../../i18n/config';
+
+interface Content {
+  hero: { heading: string; body: string };
+  retryLabel: string;
+  homeLabel: string;
+  privacyNote: string;
+}
+
+interface Props {
+  lang: Lang;
+  content: Content;
+}
+
+const { lang, content } = Astro.props;
+const homeHref = lang === 'es' ? '/es/' : '/';
+---
+
+<section class="oauth-callback">
+  <div class="container">
+    <h1>{content.hero.heading}</h1>
+    <p class="body">{content.hero.body}</p>
+
+    <button id="oauth-retry-btn" type="button" class="primary">
+      {content.retryLabel}
+    </button>
+
+    <a href={homeHref} class="home-link">{content.homeLabel}</a>
+
+    <p class="privacy-note">{content.privacyNote}</p>
+  </div>
+</section>
+
+<script>
+  // Re-fire the current URL on click. The OS may dispatch the link to
+  // the installed app on this attempt if Universal Links / App Links
+  // verification has finished settling in the meantime. We never read
+  // the `code` or `state` query parameters from this page — they pass
+  // through the browser address bar untouched.
+  const btn = document.getElementById('oauth-retry-btn');
+  btn?.addEventListener('click', () => {
+    window.location.href = window.location.href;
+  });
+</script>
+
+<style>
+  .oauth-callback {
+    padding: 4rem 1.5rem;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .container {
+    max-width: 32rem;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin: 0 0 1rem;
+  }
+
+  .body {
+    margin: 0 0 2.5rem;
+    color: var(--color-text-secondary, #6c757d);
+    line-height: 1.55;
+  }
+
+  .primary {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    background: #2884E0;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 1.25rem;
+  }
+
+  .primary:hover,
+  .primary:focus-visible {
+    background: #1466B8;
+  }
+
+  .home-link {
+    display: block;
+    margin-bottom: 3rem;
+    color: var(--color-text-secondary, #6c757d);
+    font-size: 0.95rem;
+  }
+
+  .privacy-note {
+    font-size: 0.85rem;
+    color: var(--color-text-muted, #868e96);
+    margin: 0;
+  }
+</style>
