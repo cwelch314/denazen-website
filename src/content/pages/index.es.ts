@@ -5,14 +5,17 @@ export default {
       'Una red social hecha para relaciones reales—con espacios privados, control real y sin anuncios ni rastreo.',
   },
   hero: {
-    heading: 'El futuro de lo social.',
-    linesBefore: ['Privacidad como Signal.'],
+    heading: 'Las redes sociales, sin concesiones.',
+    linesBefore: [],
     rotator: {
       prefix: 'Conexión como ',
       words: ['Facebook', 'Instagram'],
       suffix: ' en sus <em>primeros días</em>.',
     },
-    linesAfter: ['Libertad de Bluesky.'],
+    linesAfter: [
+      'Privacidad inspirada en Signal.',
+      'Libertad de Bluesky.',
+    ],
     tagline: ['El triángulo imposible. Resuelto.'],
     waitlistButton: 'Solicitar invitación',
     waitlistNote: 'Beta solo por invitación próximamente. Ayuda a dar forma al futuro de las redes sociales.',
