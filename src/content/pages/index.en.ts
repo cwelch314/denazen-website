@@ -2,7 +2,7 @@ export default {
   meta: {
     title: 'Penrose',
     description:
-      'A social network built for real relationships—with private spaces, real control, and no ads or tracking.',
+      'A social network built for real relationships, with private spaces, real control, and no ads or tracking.',
   },
   hero: {
     heading: 'Social media, without compromise.',
@@ -29,12 +29,12 @@ export default {
   whatPenrose: {
     heading: 'Remember when social was social?',
     paragraphs: [
-      "Social media started as a way to keep up with the people in your life—the people you'd actually call. Your sister. Your roommate from college. Your closest friends.",
-      'Somewhere along the way, the feed stopped being them. It became strangers, performers, and ads—whatever an algorithm decided would keep you scrolling.',
+      "Social media started as a way to keep up with the people in your life. The people you'd actually call. Your sister. Your roommate from college. Your closest friends.",
+      'Somewhere along the way, the feed stopped being them. It became strangers, performers, and ads. Whatever an algorithm decided would keep you scrolling.',
     ],
     resolution: 'Penrose puts the people back at the center.',
     list: [
-      'Build circles for the people who matter—close friends, family, your book club',
+      'Build circles for the people who matter: close friends, family, your book club',
       'A chronological feed of the people you actually chose to follow',
       'Share moments meant for a few, not posts engineered for reach',
       'Less performance. More presence.',
@@ -48,7 +48,7 @@ export default {
     heading: 'Private means private.',
     paragraphs: [
       'Posts you share with a circle are encrypted on your device before they leave it. Only the people you trust with that circle hold the keys to decrypt them.',
-      'Not advertisers. Not AI. Not governments. <em>No one else.</em> Not even us—the keys live on your devices, and we have no way to decrypt your content.',
+      'Not advertisers. Not AI. Not governments. <em>No one else.</em> Not even us. The keys live on your devices, and we have no way to decrypt your content.',
     ],
     closer: 'Cryptography, not policy. The math is the promise.',
     image: {
@@ -59,12 +59,12 @@ export default {
   freedom: {
     heading: 'The freedom of an open network.',
     intro:
-      "Penrose runs on the AT Protocol—the open social network behind Bluesky and 40+ million people. A whole world of public conversation is right there: dive into any topic you care about, follow voices outside your circle, and discover what's actually happening—not what an algorithm decided to show you.",
+      "Penrose runs on the AT Protocol, the open social network behind Bluesky and 40+ million people. A whole world of public conversation is right there. Dive into any topic you care about, follow voices outside your circle, and discover what's actually happening, not what an algorithm picked for you.",
     list: [
-      'Explore public posts on any topic—politics, art, science, your niche hobby',
+      'Explore public posts on any topic: politics, art, science, your niche hobby',
       'Bring your existing Bluesky handle, or start fresh in the app',
       'Take your followers, posts, and identity to any AT Protocol app',
-      'Choose your own algorithms—or skip them entirely',
+      'Choose your own algorithms, or skip them entirely',
     ],
     closing: [
       'You choose what matters. You choose how to experience it.',
@@ -78,12 +78,12 @@ export default {
     },
   },
   values: {
-    heading: 'Built differently—on purpose.',
+    heading: 'Built differently. On purpose.',
     paragraphs: [
       "Penrose is a Public Benefit Corporation. That means our mission isn't just a promise. It's part of our legal structure.",
       "We're accountable to the people using the platform and the world we're building in. From day one we will be contributing a portion of profits to causes including conservation and environmental protection, civil & human rights, and privacy.",
       "Penrose is free to use for all, with premium features to enable us to stay independent on not rely on ads, tracking, or attention extraction.",
-      "We're building a model based on reciprocity—designed to give back to the people who make this network what it is.",
+      "We're building a model based on reciprocity, designed to give back to the people who make this network what it is.",
     ],
   },
 };
