@@ -48,7 +48,7 @@ export default {
     heading: 'Privado significa privado.',
     paragraphs: [
       'Las publicaciones que compartes con un círculo se cifran en tu dispositivo antes de salir de él. Solo las personas en las que confías tienen las llaves para descifrarlas.',
-      'Ni los anunciantes. Ni la IA. Ni los gobiernos. <em>Nadie más.</em> Ni siquiera nosotros. No tenemos forma de descifrar tu contenido.',
+      'Ni los anunciantes. Ni la IA. Ni los gobiernos. <em>Nadie más.</em> Ni siquiera nosotros.',
     ],
     closer: 'Criptografía, no políticas. La matemática es la promesa.',
     image: {
