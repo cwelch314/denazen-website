@@ -6,14 +6,13 @@ export default {
   },
   hero: {
     heading: 'Las redes sociales, sin concesiones.',
-    linesBefore: [],
+    linesBefore: ['Privacidad inspirada en Signal.'],
     rotator: {
       prefix: 'Conexión como ',
       words: ['Facebook', 'Instagram'],
       suffix: ' en sus <em>primeros días</em>.',
     },
     linesAfter: [
-      'Privacidad inspirada en Signal.',
       'Libertad de Bluesky.',
     ],
     waitlistButton: 'Solicitar invitación',

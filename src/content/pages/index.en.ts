@@ -6,14 +6,13 @@ export default {
   },
   hero: {
     heading: 'Social media, without compromise.',
-    linesBefore: [],
+    linesBefore: ['Privacy inspired by Signal.'],
     rotator: {
       prefix: 'Connection like <em>early</em> ',
       words: ['Facebook', 'Instagram'],
       suffix: '.',
     },
     linesAfter: [
-      'Privacy inspired by Signal.',
       'Freedom of Bluesky.',
     ],
     waitlistButton: 'Request invite',
