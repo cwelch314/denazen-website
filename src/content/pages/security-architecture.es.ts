@@ -794,10 +794,10 @@ Entregar sobre sellado
           html:
             'El respaldo <code>OOB_VAL</code> de primer contacto es un residual aceptado explícitamente: un atacante que ya posee la llave pública Kyber del destinatario puede construir un sobre de «primer contacto» que afirme ser de cualquiera. Esto está acotado por la misma ventana de confianza que cierra la verificación fuera de banda (Trabajo futuro), y el destinatario lo presenta como un evento de primer contacto que el usuario puede verificar antes de aceptar.',
         },
-        { kind: 'h3', text: '8.3 Gateway de escritura autenticado' },
+        { kind: 'h3', text: '8.3 Autenticación de escrituras del lado del servidor' },
         {
           kind: 'p',
-          html: 'Todas las escrituras al inbox pasan por un único gateway del lado del servidor que realiza <strong>verificación de sesión del PDS mediante relay DPoP</strong> (RFC 9449):',
+          html: 'La mayoría de las escrituras del lado del servidor — entradas del índice de publicaciones, mutaciones de perfil, almacenamiento de la llave maestra cifrada — pasan por un único gateway que realiza <strong>verificación de sesión del PDS mediante relay DPoP</strong> (RFC 9449):',
         },
         {
           kind: 'ol',
@@ -819,16 +819,30 @@ Entregar sobre sellado
           html:
             'El gateway también maneja el desafío DPoP-Nonce: cuando el PDS responde con <code>401 use_dpop_nonce</code>, el gateway propaga el nonce fresco de vuelta al cliente en un encabezado de respuesta <code>DPoP-Nonce</code> para que el cliente pueda reconstruir su prueba y reintentar de forma transparente (el reintento único estándar de RFC 9449 §8).',
         },
-        { kind: 'h3', text: '8.4 Autenticación de remitente confirmado' },
         {
           kind: 'p',
           html:
-            'Cuando el cliente del destinatario acepta una solicitud de amistad o un intercambio de llaves, calcula una huella de la llave pública ML-KEM-1024 del remitente y la vincula al registro local de llave de mensajería. Todos los intercambios posteriores — DMs, intercambios de llaves, mensajes de rotación — se comprueban contra la huella almacenada. Si la llave pública del remitente difiere después de la huella vinculada, el mensaje se rechaza como posible sustitución de llave.',
+            '<strong>Las escrituras al inbox están deliberadamente exentas</strong> de esta autenticación del gateway. La autenticidad del remitente para los mensajes del inbox se prueba criptográficamente dentro del sobre sellado (§8.2.1), no mediante una comprobación de identidad del lado del servidor sobre quien escribe. Esta es una propiedad crítica del remitente sellado: si el servidor autenticara a quien escribe, aprendería la identidad del remitente, anulando la propia propiedad que el sobre está diseñado para proporcionar. El servidor, por tanto, acepta escrituras al inbox de cualquier llamante y se apoya en los topes de no leídos por destinatario y en la garantía criptográfica de que el destinatario rechazará sobres que no se autentiquen como un contacto conocido o como una solicitud de primer contacto bien formada.',
+        },
+        { kind: 'h3', text: '8.4 Autenticación de remitente confirmado' },
+        {
+          kind: 'p',
+          html: 'Dos mecanismos en conjunto imponen que el remitente de un mensaje del inbox sea quien dice ser.',
         },
         {
           kind: 'p',
           html:
-            'Esto es <strong>Trust-On-First-Use</strong>: la primera llave vista para un contacto es de confianza; la sustitución en cualquier intercambio posterior se detecta. TOFU no defiende contra un operador de PDS que sustituya una llave <em>antes</em> de la primera vinculación — esa ventana residual la cierra la verificación fuera de banda, que está planificada (consulta Trabajo futuro).',
+            '<strong>Capa 2 del sobre sellado (cada mensaje).</strong> La carga útil interna de cada sobre del inbox se cifra bajo una llave derivada de la llave de mensajería por contacto (§8.2.1). Para un contacto establecido, la única parte que puede producir un sobre que abre bajo la llave de mensajería que el destinatario tiene almacenada para ese contacto es alguien que de hecho posee esa llave — es decir, el propio contacto. Un sobre que no abre bajo la llave de mensajería vinculada se rechaza en el momento de abrir el sobre, antes de procesar cualquier carga útil.',
+        },
+        {
+          kind: 'p',
+          html:
+            '<strong>Vinculación TOFU en la primera aceptación.</strong> Cuando el cliente del destinatario acepta una solicitud de amistad, obtiene la llave pública ML-KEM-1024 del remitente desde el PDS del remitente, calcula una huella y la almacena junto con el nuevo registro de llave de mensajería. Los sobres posteriores — DMs, comparticiones de llaves de círculo, avisos de rotación — quedan ligados a esta huella por estar cifrados bajo la llave de mensajería vinculada. Un operador de PDS que más tarde sustituya la llave pública del remitente no puede derivar esa llave de mensajería y, por tanto, no puede producir sobres que el destinatario acepte.',
+        },
+        {
+          kind: 'p',
+          html:
+            'Esto es <strong>Trust-On-First-Use</strong>: la primera llave vista para un contacto es de confianza; la sustitución en cualquier intercambio posterior se detecta. TOFU no defiende contra un operador de PDS que sustituya una llave <em>antes</em> de la primera vinculación — esa ventana residual la cierra la verificación fuera de banda, que está planificada (consulta Trabajo futuro). La ruta de primer contacto del sobre sellado (Capa 2 con llave a partir del <code>OOB_VAL</code> por sobre) hereda la misma ventana residual y se cierra por el mismo mecanismo.',
         },
         {
           kind: 'p',

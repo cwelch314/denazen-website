@@ -797,10 +797,10 @@ Deliver sealed envelope
           html:
             'The first-contact <code>OOB_VAL</code> fallback is an explicitly-accepted residual: an attacker who already possesses the recipient\'s Kyber public key can construct a "first-contact" envelope claiming to be from anyone. This is bounded by the same trust window that out-of-band verification (Future work) closes, and the recipient surfaces it as a first-contact event the user can verify before accepting.',
         },
-        { kind: 'h3', text: '8.3 Authenticated write gateway' },
+        { kind: 'h3', text: '8.3 Server-side write authentication' },
         {
           kind: 'p',
-          html: 'All inbox writes go through a single server-side gateway that performs <strong>PDS session verification via DPoP relay</strong> (RFC 9449):',
+          html: 'Most server-side writes — post-index entries, profile mutations, encrypted-master-key storage — go through a single gateway that performs <strong>PDS session verification via DPoP relay</strong> (RFC 9449):',
         },
         {
           kind: 'ol',
@@ -822,16 +822,30 @@ Deliver sealed envelope
           html:
             'The gateway also handles the DPoP-Nonce challenge: when the PDS responds with <code>401 use_dpop_nonce</code>, the gateway propagates the fresh nonce back to the client in a <code>DPoP-Nonce</code> response header so the client can rebuild its proof and retry transparently (the standard RFC 9449 §8 single-shot retry).',
         },
-        { kind: 'h3', text: '8.4 Confirmed-sender authentication' },
         {
           kind: 'p',
           html:
-            "When the recipient's client accepts a friend request or key share, it computes a fingerprint of the sender's ML-KEM-1024 public key and binds it to the local messaging-key record. All subsequent exchanges — DMs, key shares, rotation messages — are checked against the stored fingerprint. If the sender's public key later differs from the bound fingerprint, the message is rejected as a possible key substitution.",
+            "<strong>Inbox writes are deliberately exempt</strong> from this gateway authentication. Sender authenticity for inbox messages is proved cryptographically inside the sealed envelope (§8.2.1), not by a server-side identity check on the writer. This is a load-bearing property of sealed-sender: if the server authenticated the writer, it would learn the sender's identity, defeating the very property the envelope is designed to provide. The server therefore accepts inbox writes from any caller and relies on per-recipient unread caps and the cryptographic guarantee that the recipient will reject envelopes that don't authenticate as a known contact or as a well-formed first-contact request.",
+        },
+        { kind: 'h3', text: '8.4 Confirmed-sender authentication' },
+        {
+          kind: 'p',
+          html: 'Two mechanisms together enforce that the sender of an inbox message is who they claim to be.',
         },
         {
           kind: 'p',
           html:
-            'This is <strong>Trust-On-First-Use</strong>: the first key seen for a contact is trusted; substitution on any subsequent exchange is detected. TOFU does not defend against a PDS operator who substitutes a key <em>before</em> the first binding — that residual window is closed by out-of-band verification, which is planned (see Future work).',
+            "<strong>Layer 2 of the sealed envelope (every message).</strong> Every inbox envelope's inner payload is encrypted under a key derived from the per-contact messaging key (§8.2.1). For an established contact, the only party that can produce an envelope that opens under the recipient's stored messaging key for that contact is someone who actually possesses that key — i.e. the contact themselves. An envelope that fails to open under the bound messaging key is rejected at envelope-open time before any payload is processed.",
+        },
+        {
+          kind: 'p',
+          html:
+            "<strong>TOFU binding on first acceptance.</strong> When the recipient's client accepts a friend request, it fetches the sender's ML-KEM-1024 public key from the sender's PDS, computes a fingerprint, and stores it alongside the new messaging-key record. Subsequent envelopes — DMs, circle-key shares, rotation notices — are tied to this fingerprint by virtue of being keyed under the bound messaging key. A PDS operator who later substitutes the sender's public key cannot derive that messaging key and therefore cannot produce envelopes the recipient will accept.",
+        },
+        {
+          kind: 'p',
+          html:
+            'This is <strong>Trust-On-First-Use</strong>: the first key seen for a contact is trusted; substitution on any subsequent exchange is detected. TOFU does not defend against a PDS operator who substitutes a key <em>before</em> the first binding — that residual window is closed by out-of-band verification, which is planned (see Future work). The first-contact path of the sealed envelope (Layer 2 keyed by the per-envelope <code>OOB_VAL</code>) inherits the same residual window and is closed by the same mechanism.',
         },
         {
           kind: 'p',
