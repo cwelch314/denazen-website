@@ -704,7 +704,7 @@ Cache data URI → render → clean up temp files`,
       heading: '8. Key exchange and the encrypted inbox',
       blocks: [
         { kind: 'h3', text: '8.1 ML-KEM-1024 exchange pattern' },
-        { kind: 'p', html: 'Every first contact (friend request) and every subsequent circle-key share follows the canonical pattern:' },
+        { kind: 'p', html: 'Every first contact (friend request) and every subsequent circle-key share is built on the same post-quantum key encapsulation pattern:' },
         {
           kind: 'code',
           text: `Sender                                Recipient
@@ -714,25 +714,28 @@ Fetch recipient Kyber pubkey
    on their PDS)
 ml_kem1024.encapsulate(pk)
   → (cipherText, sharedSecret)
-Encrypt messaging_key with shared_secret
-Optionally encrypt circle_key with shared_secret
-Deliver {cipherText, encrypted payload}
+Derive envelope keys from shared_secret    (HKDF-SHA256 — see §8.2.1)
+Wrap inner payload (messaging_key,
+  optional circle_key, …) under the
+  envelope keys
+Deliver sealed envelope
                                       ml_kem1024.decapsulate(cipherText, sk)
                                         → sharedSecret
-                                      Decrypt messaging_key and circle_key
+                                      Re-derive envelope keys
+                                      Open inner payload
                                       Validate messaging_key
                                       Store keys under the vault`,
         },
         {
           kind: 'p',
           html:
-            'The shared secret is <strong>used once and discarded.</strong> All future communication with that contact uses the now-established messaging key.',
+            'The shared secret is <strong>used once and discarded.</strong> All future communication with that contact rides on the established messaging key, carried inside the sealed-sender envelope (§8.2.1).',
         },
         { kind: 'h3', text: '8.2 The encrypted inbox' },
         {
           kind: 'p',
           html:
-            "Friend requests, key shares, and acceptances flow through a <strong>metadata-minimal inbox</strong> rather than through the sender's public PDS. The inbox is designed so that a full server breach reveals essentially nothing about the social graph.",
+            "Friend requests, circle-key shares, acceptances, and direct messages flow through a <strong>metadata-minimal inbox</strong> rather than through the sender's public PDS. The inbox is designed so that a full server breach reveals essentially nothing about the social graph.",
         },
         { kind: 'p', html: 'Each inbox row contains:' },
         {
@@ -744,11 +747,11 @@ Deliver {cipherText, encrypted payload}
             ['Read flag', 'Server', 'Boolean'],
             ['Priority', 'Server', 'Client-set routing hint'],
             [
-              '<strong>Encrypted payload</strong>',
+              '<strong>Sealed envelope</strong>',
               '<strong>Opaque</strong>',
-              'ML-KEM ciphertext + authenticated-encryption blob',
+              'Two-layer sealed-sender envelope (described below)',
             ],
-            ['Encryption info', 'Server', 'Algorithm tag (e.g. <code>ml-kem-1024+xsalsa20</code>)'],
+            ['Encryption info', 'Server', 'Algorithm tag (e.g. <code>sealed-sender-v1/ml-kem-1024+hkdf-sha256+xsalsa20-poly1305</code>)'],
             ['Sender token hash', 'Server', 'SHA-256 of a sender-only random token (for deletion only)'],
             ['Timestamps', 'Server', 'Created and expires (bounded TTL)'],
           ],
@@ -757,11 +760,42 @@ Deliver {cipherText, encrypted payload}
         {
           kind: 'ul',
           items: [
-            'Who sent the message. There is no sender column — only a hash of a random sender token.',
-            'What type of message it is. The type discriminator is <em>inside</em> the encrypted payload.',
-            "What the content is. It is encrypted under a shared secret derived from the recipient's Kyber key.",
+            "Who sent the message. The sender's identity is encrypted inside the envelope under the recipient's post-quantum public key — not visible at any layer the server can read. The sender-token hash is unrelated to identity and exists only so the sender can later delete an unread message.",
+            'What type of message it is. The type discriminator (friend request, key share, acceptance, direct message) lives inside the envelope.',
+            'What the content is.',
             'Whether two inbox rows are related. There is no thread or conversation identifier on the server.',
           ],
+        },
+        { kind: 'h4', text: '8.2.1 Sealed-sender envelope' },
+        {
+          kind: 'p',
+          html:
+            "Each row's payload is a two-layer envelope adapted from Signal's sealed-sender construction to a post-quantum KEM. It carries two independent guarantees: the outer layer hides the sender from the server; the inner layer authenticates the sender to the recipient.",
+        },
+        {
+          kind: 'p',
+          html:
+            "<strong>Layer 1 — hide sender identity from the server.</strong> The sender encapsulates against the recipient's ML-KEM-1024 public key, producing a shared secret known only to sender and recipient. HKDF-SHA256 derives three sub-keys, salted by hashes of the recipient's public key and the KEM ciphertext (domain separation). Two of those sub-keys wrap (a) the sender's claimed identity and (b) a per-envelope random value (<code>OOB_VAL</code>). The third feeds into Layer 2's salt so any tampering with Layer 1 invalidates Layer 2.",
+        },
+        {
+          kind: 'p',
+          html:
+            '<strong>Layer 2 — authenticate sender to recipient.</strong> A second HKDF derivation is keyed by <em>either</em> the per-contact messaging key (for established contacts) <em>or</em> the per-envelope random value from Layer 1 (for first contact). The result encrypts the inner payload (the actual message: friend request, key share, DM body, etc.). The recipient tries the messaging key it has on file for the claimed sender; if that opens the inner ciphertext, the sender provably possessed that key — the recipient binds. If the messaging key fails, the recipient falls back to the per-envelope value (first-contact path).',
+        },
+        {
+          kind: 'p',
+          html:
+            "<strong>What this means for the recipient:</strong> for an established contact, the only party that could have produced an envelope that opens under that contact's stored messaging key is someone who actually holds that key — i.e. the contact themselves. An impersonator who tries to forge a message under the established-contact path fails to produce an envelope that opens.",
+        },
+        {
+          kind: 'p',
+          html:
+            "<strong>What this means for the server:</strong> at no layer does the server see, infer, or learn the sender's DID. Even comparing two envelopes from the same sender to the same recipient is ciphertext-indistinguishable — the random per-envelope value and fresh KEM ciphertext re-randomise both layers on every send.",
+        },
+        {
+          kind: 'p',
+          html:
+            'The first-contact <code>OOB_VAL</code> fallback is an explicitly-accepted residual: an attacker who already possesses the recipient\'s Kyber public key can construct a "first-contact" envelope claiming to be from anyone. This is bounded by the same trust window that out-of-band verification (Future work) closes, and the recipient surfaces it as a first-contact event the user can verify before accepting.',
         },
         { kind: 'h3', text: '8.3 Authenticated write gateway' },
         {

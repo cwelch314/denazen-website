@@ -701,7 +701,7 @@ Cachear URI de datos → renderizar → limpiar archivos temporales`,
       heading: '8. Intercambio de llaves y el inbox cifrado',
       blocks: [
         { kind: 'h3', text: '8.1 Patrón de intercambio ML-KEM-1024' },
-        { kind: 'p', html: 'Cada primer contacto (solicitud de amistad) y cada intercambio posterior de llave de círculo sigue el patrón canónico:' },
+        { kind: 'p', html: 'Cada primer contacto (solicitud de amistad) y cada intercambio posterior de llave de círculo se construye sobre el mismo patrón de encapsulación de llaves post-cuántico:' },
         {
           kind: 'code',
           text: `Remitente                              Destinatario
@@ -711,25 +711,28 @@ Obtener pubkey Kyber del destinatario
    destinatario en su PDS)
 ml_kem1024.encapsulate(pk)
   → (cipherText, sharedSecret)
-Cifrar messaging_key con shared_secret
-Opcionalmente cifrar circle_key con shared_secret
-Entregar {cipherText, payload cifrado}
+Derivar llaves de sobre desde shared_secret    (HKDF-SHA256 — ver §8.2.1)
+Envolver carga útil interna (messaging_key,
+  opcionalmente circle_key, …) bajo las
+  llaves de sobre
+Entregar sobre sellado
                                        ml_kem1024.decapsulate(cipherText, sk)
                                          → sharedSecret
-                                       Descifrar messaging_key y circle_key
+                                       Re-derivar llaves de sobre
+                                       Abrir carga útil interna
                                        Validar messaging_key
                                        Almacenar llaves bajo la bóveda`,
         },
         {
           kind: 'p',
           html:
-            'El secreto compartido <strong>se usa una vez y se descarta.</strong> Toda comunicación futura con ese contacto usa la llave de mensajería ya establecida.',
+            'El secreto compartido <strong>se usa una vez y se descarta.</strong> Toda comunicación futura con ese contacto se apoya en la llave de mensajería ya establecida, transportada dentro del sobre de remitente sellado (§8.2.1).',
         },
         { kind: 'h3', text: '8.2 El inbox cifrado' },
         {
           kind: 'p',
           html:
-            'Las solicitudes de amistad, los intercambios de llaves y las aceptaciones fluyen por un <strong>inbox con metadatos mínimos</strong> en lugar de hacerlo por el PDS público del remitente. El inbox está diseñado para que una brecha completa del servidor revele esencialmente nada sobre el grafo social.',
+            'Las solicitudes de amistad, las comparticiones de llaves de círculo, las aceptaciones y los mensajes directos fluyen por un <strong>inbox con metadatos mínimos</strong> en lugar de hacerlo por el PDS público del remitente. El inbox está diseñado para que una brecha completa del servidor revele esencialmente nada sobre el grafo social.',
         },
         { kind: 'p', html: 'Cada fila del inbox contiene:' },
         {
@@ -741,11 +744,11 @@ Entregar {cipherText, payload cifrado}
             ['Bandera de leído', 'Servidor', 'Booleano'],
             ['Prioridad', 'Servidor', 'Pista de enrutamiento fijada por el cliente'],
             [
-              '<strong>Payload cifrado</strong>',
+              '<strong>Sobre sellado</strong>',
               '<strong>Opaco</strong>',
-              'Texto cifrado ML-KEM + blob de cifrado autenticado',
+              'Sobre de remitente sellado de dos capas (descrito abajo)',
             ],
-            ['Información de cifrado', 'Servidor', 'Etiqueta de algoritmo (p. ej. <code>ml-kem-1024+xsalsa20</code>)'],
+            ['Información de cifrado', 'Servidor', 'Etiqueta de algoritmo (p. ej. <code>sealed-sender-v1/ml-kem-1024+hkdf-sha256+xsalsa20-poly1305</code>)'],
             ['Hash del token del remitente', 'Servidor', 'SHA-256 de un token aleatorio solo conocido por el remitente (solo para eliminación)'],
             ['Marcas de tiempo', 'Servidor', 'Creación y expiración (TTL acotado)'],
           ],
@@ -754,11 +757,42 @@ Entregar {cipherText, payload cifrado}
         {
           kind: 'ul',
           items: [
-            'Quién envió el mensaje. No hay columna de remitente — solo un hash de un token aleatorio del remitente.',
-            'Qué tipo de mensaje es. El discriminador de tipo está <em>dentro</em> del payload cifrado.',
-            'Cuál es el contenido. Está cifrado bajo un secreto compartido derivado de la llave Kyber del destinatario.',
+            'Quién envió el mensaje. La identidad del remitente está cifrada dentro del sobre bajo la llave pública post-cuántica del destinatario — no es visible en ninguna capa que el servidor pueda leer. El hash del token del remitente no está relacionado con la identidad y existe solo para que el remitente pueda eliminar más adelante un mensaje no leído.',
+            'Qué tipo de mensaje es. El discriminador de tipo (solicitud de amistad, compartición de llave, aceptación, mensaje directo) vive dentro del sobre.',
+            'Cuál es el contenido.',
             'Si dos filas del inbox están relacionadas. No hay identificador de hilo o conversación en el servidor.',
           ],
+        },
+        { kind: 'h4', text: '8.2.1 Sobre de remitente sellado' },
+        {
+          kind: 'p',
+          html:
+            'La carga útil de cada fila es un sobre de dos capas adaptado de la construcción sealed-sender de Signal a un KEM post-cuántico. Conlleva dos garantías independientes: la capa externa oculta al remitente del servidor; la capa interna autentica al remitente ante el destinatario.',
+        },
+        {
+          kind: 'p',
+          html:
+            '<strong>Capa 1 — ocultar la identidad del remitente al servidor.</strong> El remitente encapsula contra la llave pública ML-KEM-1024 del destinatario, produciendo un secreto compartido conocido solo por el remitente y el destinatario. HKDF-SHA256 deriva tres sub-llaves, con sal a partir de hashes de la llave pública del destinatario y del texto cifrado del KEM (separación de dominios). Dos de esas sub-llaves envuelven (a) la identidad declarada del remitente y (b) un valor aleatorio por sobre (<code>OOB_VAL</code>). La tercera alimenta la sal de la Capa 2, de modo que cualquier manipulación de la Capa 1 invalida la Capa 2.',
+        },
+        {
+          kind: 'p',
+          html:
+            '<strong>Capa 2 — autenticar al remitente ante el destinatario.</strong> Una segunda derivación HKDF usa como llave <em>ya sea</em> la llave de mensajería por contacto (para contactos establecidos) <em>o bien</em> el valor aleatorio por sobre de la Capa 1 (para primer contacto). El resultado cifra la carga útil interna (el mensaje real: solicitud de amistad, compartición de llave, cuerpo de DM, etc.). El destinatario prueba la llave de mensajería que tiene archivada para el remitente declarado; si esa abre el texto cifrado interno, el remitente poseía esa llave demostrablemente — el destinatario lo vincula. Si la llave de mensajería falla, el destinatario recurre al valor por sobre (ruta de primer contacto).',
+        },
+        {
+          kind: 'p',
+          html:
+            '<strong>Qué significa esto para el destinatario:</strong> para un contacto establecido, la única parte que pudo haber producido un sobre que abre bajo la llave de mensajería almacenada para ese contacto es alguien que de hecho posee esa llave — es decir, el propio contacto. Un impostor que intenta forjar un mensaje por la ruta de contacto establecido falla en producir un sobre que se abra.',
+        },
+        {
+          kind: 'p',
+          html:
+            '<strong>Qué significa esto para el servidor:</strong> en ninguna capa el servidor ve, infiere o aprende el DID del remitente. Incluso comparar dos sobres del mismo remitente al mismo destinatario es indistinguible como texto cifrado — el valor aleatorio por sobre y el texto cifrado fresco del KEM re-aleatorizan ambas capas en cada envío.',
+        },
+        {
+          kind: 'p',
+          html:
+            'El respaldo <code>OOB_VAL</code> de primer contacto es un residual aceptado explícitamente: un atacante que ya posee la llave pública Kyber del destinatario puede construir un sobre de «primer contacto» que afirme ser de cualquiera. Esto está acotado por la misma ventana de confianza que cierra la verificación fuera de banda (Trabajo futuro), y el destinatario lo presenta como un evento de primer contacto que el usuario puede verificar antes de aceptar.',
         },
         { kind: 'h3', text: '8.3 Gateway de escritura autenticado' },
         {
