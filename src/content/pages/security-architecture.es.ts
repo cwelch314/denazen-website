@@ -237,6 +237,8 @@ const content: {
             ],
             ['Cifrado de contenido en bloque (archivos <code>.zen</code>, imágenes)', 'AES-CBC-256 con PKCS7'],
             ['Intercambio de llaves post-cuántico', 'ML-KEM-1024 (Kyber), NIST Nivel 5, auditado por Cure53'],
+            ['Función de derivación de llaves', 'HKDF-SHA256 (RFC 5869)'],
+            ['Hashing con llave', 'HMAC-SHA256'],
             ['Hash', 'SHA-256, SHA-3'],
             ['Aleatorio seguro', 'CSPRNG de la plataforma'],
           ],
@@ -247,6 +249,7 @@ const content: {
           items: [
             'AES-CBC se usa solo para contenido en bloque donde la posesión de la llave de contenido es la frontera de control de acceso. Todo el material de llaves y todos los mensajes se autentican mediante XSalsa20-Poly1305.',
             'ML-KEM-1024 apunta a la seguridad post-cuántica NIST Nivel 5 — el conjunto de parámetros más alto del estándar. Se usa solo para encapsulación de llaves; los secretos compartidos derivados envuelven llaves simétricas de larga vida una vez y luego se descartan.',
+            'HKDF-SHA256 se usa dentro del sobre del inbox de remitente sellado (§8) para derivar llaves de cifrado por sobre a partir del secreto compartido post-cuántico, y para derivar sub-llaves para los IDs de conversación de mensajes directos a partir de la llave de la bóveda. Las llaves de larga vida nunca se usan directamente como llaves HMAC — sub-llaves para propósitos distintos siempre se derivan vía HKDF con una cadena <code>info</code> estrechamente ligada (separación criptográfica de llaves estándar).',
             'Cada primitiva simétrica de la pila usa una llave de 256 bits. Bajo el algoritmo de Grover esto da un suelo efectivo de seguridad post-cuántica de 2^128 por capa.',
           ],
         },

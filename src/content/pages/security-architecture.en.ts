@@ -240,6 +240,8 @@ const content: {
             ],
             ['Bulk content encryption (<code>.zen</code> files, images)', 'AES-CBC-256 with PKCS7'],
             ['Post-quantum key exchange', 'ML-KEM-1024 (Kyber), NIST Level 5, audited by Cure53'],
+            ['Key-derivation function', 'HKDF-SHA256 (RFC 5869)'],
+            ['Keyed hashing', 'HMAC-SHA256'],
             ['Hashing', 'SHA-256, SHA-3'],
             ['Secure random', 'Platform CSPRNG'],
           ],
@@ -250,6 +252,7 @@ const content: {
           items: [
             'AES-CBC is used only for bulk content where possession of the content key is the access-control boundary. All key material and all messages are authenticated via XSalsa20-Poly1305.',
             'ML-KEM-1024 targets NIST Level 5 post-quantum security — the highest parameter set in the standard. It is used only for key encapsulation; derived shared secrets wrap long-lived symmetric keys once and are then discarded.',
+            'HKDF-SHA256 is used inside the sealed-sender inbox envelope (§8) to derive per-envelope encryption keys from the post-quantum shared secret, and to derive sub-keys for direct-message conversation IDs from the vault key. Long-lived keys are never used directly as HMAC keys — sub-keys for distinct purposes are always HKDF-derived with a tightly-bound <code>info</code> string (standard cryptographic key separation).',
             "Every symmetric primitive in the stack uses a 256-bit key. Under Grover's algorithm this yields an effective post-quantum security floor of 2^128 per layer.",
           ],
         },
