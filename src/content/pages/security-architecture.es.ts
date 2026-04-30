@@ -78,8 +78,9 @@ const content: {
       { id: 'legal-process', label: '14. Proceso legal' },
       { id: 'audit', label: '15. Auditoría y divulgación' },
       { id: 'future-work', label: '16. Trabajo futuro' },
-      { id: 'verification', label: '17. Historia de verificación' },
-      { id: 'summary', label: '18. Resumen' },
+      { id: 'signal-comparison', label: '17. Comparación con Signal' },
+      { id: 'verification', label: '18. Historia de verificación' },
+      { id: 'summary', label: '19. Resumen' },
       { id: 'glossary', label: 'Apéndice A. Glosario' },
     ],
   },
@@ -1149,8 +1150,80 @@ Entregar sobre sellado
       ],
     },
     {
+      id: 'signal-comparison',
+      heading: '17. Comparación con la arquitectura de mensajería de Signal',
+      blocks: [
+        {
+          kind: 'p',
+          html:
+            'Signal es el sistema de mensajería cifrada de extremo a extremo más estudiado; comparar la postura de cifrado de Penrose con la de Signal es una forma útil de posicionar las concesiones que tomamos. Penrose apunta a un centro de diseño diferente — una red social centrada en la privacidad con texto cifrado persistente y residente en el servidor en el PDS del AT Protocol del usuario — pero la mayor parte de la mecánica criptográfica se solapa.',
+        },
+        {
+          kind: 'table',
+          headers: ['Propiedad', 'Penrose', 'Signal', 'Veredicto'],
+          rows: [
+            ['Cifrado de extremo a extremo', 'XSalsa20-Poly1305, AES-256', 'AES-256-CBC + HMAC-SHA256', '<strong>Comparable</strong>'],
+            [
+              'Intercambio de llaves post-cuántico',
+              'ML-KEM-1024 en cada intercambio (§2, §8.1)',
+              'PQXDH (Kyber-768) solo en el handshake inicial; el Double Ratchet sigue siendo clásico',
+              '<strong>Penrose más fuerte</strong>',
+            ],
+            [
+              'Inbox de remitente sellado',
+              'Sobre de dos capas (§8.2.1), adaptado de Signal a un KEM post-cuántico',
+              'Sealed Sender (el diseño en el que se basa el de Penrose)',
+              '<strong>Comparable</strong>',
+            ],
+            [
+              'Secreto hacia adelante',
+              'Por llave — las llaves de mensajería persisten hasta una rotación explícita (§10.1)',
+              'Por mensaje — el Double Ratchet rota en cada envío',
+              '<strong>Signal más fuerte</strong>',
+            ],
+            ['Seguridad post-compromiso', 'Solo rotación manual de llaves', 'Automática vía un paso del ratchet', '<strong>Signal más fuerte</strong>'],
+            [
+              'Almacenamiento persistente de mensajes',
+              'Texto cifrado en el PDS propio del usuario (§8.5)',
+              'Entrega transitoria; texto cifrado en los dispositivos',
+              '<strong>Centro de diseño diferente</strong>',
+            ],
+            [
+              'Portabilidad de identidad',
+              'DID + handle en el AT Protocol — portable entre PDSes y apps del AT Protocol',
+              'Atada a una cuenta de Signal en la infraestructura de Signal',
+              '<strong>Penrose más fuerte</strong>',
+            ],
+            [
+              'Resistencia a MITM tras el primer contacto',
+              'Vinculación TOFU sobre la huella ML-KEM (§8.4)',
+              'Números de seguridad + transparencia de llaves (planificada)',
+              '<strong>Comparable</strong>',
+            ],
+            [
+              'Resistencia a MITM durante el primer contacto',
+              'Verificación fuera de banda planificada (§16)',
+              'UI de números de seguridad ya disponible',
+              '<strong>Signal más fuerte hoy</strong>',
+            ],
+            [
+              'Auditoría de sistema independiente',
+              'Primitivas auditadas (Cure53 sobre <code>@noble/post-quantum</code>); auditoría de sistema planificada (§15)',
+              'Múltiples auditorías de sistema completadas',
+              '<strong>Signal más maduro</strong>',
+            ],
+          ],
+        },
+        {
+          kind: 'p',
+          html:
+            'Las filas en las que Penrose es más débil — secreto hacia adelante, seguridad post-compromiso, madurez de auditoría — son consecuencias directas del centro de diseño. Una red social cuyos mensajes viven en el PDS de un usuario no puede aplicar un ratchet por mensaje sin volver a cifrar cada registro histórico en cada paso; la concesión es deliberada. Las protecciones que Penrose entrega a cambio — intercambio de llaves resistente a la cuántica en cada handshake, una identidad portable en una red abierta, y un inbox de remitente sellado que no depende de un único operador de confianza — son propiedades que Signal no proporciona, y estructuralmente no puede proporcionar.',
+        },
+      ],
+    },
+    {
       id: 'verification',
-      heading: '17. Historia de verificación',
+      heading: '18. Historia de verificación',
       blocks: [
         { kind: 'p', html: 'La afirmación «ningún servidor puede descifrar» se apoya en los siguientes hechos comprobables, cada uno verificable desde la base de código:' },
         {
@@ -1168,7 +1241,7 @@ Entregar sobre sellado
     },
     {
       id: 'summary',
-      heading: '18. Resumen',
+      heading: '19. Resumen',
       blocks: [
         {
           kind: 'ul',

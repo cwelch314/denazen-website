@@ -81,8 +81,9 @@ const content: {
       { id: 'legal-process', label: '14. Legal process' },
       { id: 'audit', label: '15. Audit & disclosure' },
       { id: 'future-work', label: '16. Future work' },
-      { id: 'verification', label: '17. Verification story' },
-      { id: 'summary', label: '18. Summary' },
+      { id: 'signal-comparison', label: '17. Signal comparison' },
+      { id: 'verification', label: '18. Verification story' },
+      { id: 'summary', label: '19. Summary' },
       { id: 'glossary', label: 'Appendix A. Glossary' },
     ],
   },
@@ -1152,8 +1153,80 @@ Deliver sealed envelope
       ],
     },
     {
+      id: 'signal-comparison',
+      heading: "17. Comparison with Signal's messaging architecture",
+      blocks: [
+        {
+          kind: 'p',
+          html:
+            "Signal is the most-studied end-to-end encrypted messaging system; comparing Penrose's encryption posture to Signal's is a useful way to position the trade-offs we made. Penrose targets a different design center — a privacy-first social network with persistent, server-resident ciphertext on the user's AT Protocol PDS — but most of the cryptographic mechanics overlap.",
+        },
+        {
+          kind: 'table',
+          headers: ['Property', 'Penrose', 'Signal', 'Verdict'],
+          rows: [
+            ['End-to-end encryption', 'XSalsa20-Poly1305, AES-256', 'AES-256-CBC + HMAC-SHA256', '<strong>Comparable</strong>'],
+            [
+              'Post-quantum key exchange',
+              'ML-KEM-1024 on every exchange (§2, §8.1)',
+              'PQXDH (Kyber-768) on initial handshake only; Double Ratchet remains classical',
+              '<strong>Penrose stronger</strong>',
+            ],
+            [
+              'Sealed-sender inbox',
+              'Two-layer envelope (§8.2.1), adapted from Signal to a post-quantum KEM',
+              "Sealed Sender (the design Penrose's is modelled on)",
+              '<strong>Comparable</strong>',
+            ],
+            [
+              'Forward secrecy',
+              'Per-key — messaging keys persist until explicit rotation (§10.1)',
+              'Per-message — Double Ratchet rekeys on every send',
+              '<strong>Signal stronger</strong>',
+            ],
+            ['Post-compromise security', 'Manual key rotation', 'Automatic via ratchet step', '<strong>Signal stronger</strong>'],
+            [
+              'Persistent message storage',
+              "Ciphertext on the user's own PDS (§8.5)",
+              'Transient delivery; ciphertext on devices',
+              '<strong>Different design center</strong>',
+            ],
+            [
+              'Identity portability',
+              'DID + handle on AT Protocol — portable across PDSes and AT-Proto apps',
+              "Tied to a Signal account on Signal's infrastructure",
+              '<strong>Penrose stronger</strong>',
+            ],
+            [
+              'MITM resistance after first contact',
+              'TOFU binding on ML-KEM fingerprint (§8.4)',
+              'Safety numbers + key transparency (planned)',
+              '<strong>Comparable</strong>',
+            ],
+            [
+              'MITM resistance during first contact',
+              'Out-of-band verification planned (§16)',
+              'Safety-number UI shipping today',
+              '<strong>Signal stronger today</strong>',
+            ],
+            [
+              'Independent system audit',
+              'Primitives audited (Cure53 on <code>@noble/post-quantum</code>); system audit planned (§15)',
+              'Multiple completed system audits',
+              '<strong>Signal more mature</strong>',
+            ],
+          ],
+        },
+        {
+          kind: 'p',
+          html:
+            "The rows where Penrose is weaker — forward secrecy, post-compromise security, audit maturity — are direct consequences of the design center. A social network whose messages live on a user's PDS cannot ratchet per-message without re-encrypting every historical record on every step; the trade-off is a deliberate one. The protections Penrose ships in exchange — quantum-resistant key exchange on every handshake, a portable identity on an open network, and a sealed-sender inbox that doesn't depend on a single trusted operator — are properties Signal does not (and structurally cannot) provide.",
+        },
+      ],
+    },
+    {
       id: 'verification',
-      heading: '17. Verification story',
+      heading: '18. Verification story',
       blocks: [
         { kind: 'p', html: 'The claim “no server can decrypt” rests on the following testable facts, each verifiable from the codebase:' },
         {
@@ -1171,7 +1244,7 @@ Deliver sealed envelope
     },
     {
       id: 'summary',
-      heading: '18. Summary',
+      heading: '19. Summary',
       blocks: [
         {
           kind: 'ul',
