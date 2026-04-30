@@ -69,7 +69,7 @@ const content: {
       { id: 'replies', label: '6. Respuestas y citas' },
       { id: 'reading', label: '7. Lectura: descifrado' },
       { id: 'inbox', label: '8. Intercambio de llaves e inbox' },
-      { id: 'push', label: '8.6 Notificaciones push' },
+      { id: 'push', label: '8.7 Notificaciones push' },
       { id: 'invariant', label: '9. Invariante de privacidad' },
       { id: 'rotation', label: '10. Rotación' },
       { id: 'storage', label: '11. Límites de almacenamiento' },
@@ -849,7 +849,31 @@ Entregar sobre sellado
           html:
             'En el lado del remitente, una comprobación separada valida que las aceptaciones entrantes correspondan a solicitudes salientes que el usuario realmente envió, así que un atacante no puede inyectar una «aceptación de Bob» falsa que Alice nunca solicitó.',
         },
-        { kind: 'h3', text: '8.5 Tokens de eliminación del lado del remitente' },
+        { kind: 'h3', text: '8.5 Transporte de mensajes directos' },
+        {
+          kind: 'p',
+          html:
+            'Los mensajes directos de tipo chat comparten el mismo transporte del inbox de remitente sellado que las solicitudes de amistad y las comparticiones de llaves. La construcción se estratifica así:',
+        },
+        {
+          kind: 'ol',
+          items: [
+            '<strong>Almacenamiento autoritativo en el PDS del usuario.</strong> Cada DM entregado también se escribe en el PDS propio del remitente y del destinatario como un registro opaco. El cuerpo del registro es texto cifrado XSalsa20-Poly1305 del texto del mensaje (y cualquier faceta de texto enriquecido), cifrado bajo la llave de mensajería por contacto. El PDS ve el texto cifrado, una marca de tiempo por mensaje, y nada más — ni el contacto, ni el cuerpo del mensaje, ni la conversación a la que pertenece.',
+            '<strong>Entrega vía el inbox de remitente sellado.</strong> Saliente, un DM se envuelve en un sobre sellado (§8.2.1) y se deposita en el inbox del destinatario. El destinatario abre el sobre, valida que se autentica bajo la llave de mensajería vinculada al remitente declarado, luego escribe el registro de texto cifrado correspondiente en su propio PDS. Las entregas fallidas nunca llegan al PDS — el repositorio del usuario solo contiene mensajes que de hecho se entregaron.',
+            '<strong>Los metadatos de conversación están cifrados con la bóveda.</strong> Cada contacto tiene un registro de conversación en el PDS del usuario que contiene puntero de cabeza, vista previa del último mensaje y conteo de no leídos. El cuerpo del registro es texto cifrado XSalsa20-Poly1305 cifrado bajo la <strong>llave de bóveda</strong> (no la llave de mensajería) — incluso un contacto cuya llave de mensajería se haya visto de alguna forma comprometida no puede leer el índice de conversación del usuario.',
+            '<strong>Identificadores de registro pseudónimos.</strong> El identificador del registro de conversación se deriva determinísticamente como <code>HMAC-SHA256(HKDF(vault_key, "denazen-dm-contact-id-v1"), contact_did)</code> truncado a 16 bytes. El mismo contacto siempre mapea al mismo identificador en una cuenta dada; cuentas distintas (llaves de bóveda distintas) mapean el mismo contacto a identificadores distintos. El PDS ve N identificadores de registro opacos pero no puede revertirlos a DIDs sin la llave de bóveda.',
+          ],
+        },
+        { kind: 'p', html: 'Qué significa esto para el modelo de amenazas:' },
+        {
+          kind: 'ul',
+          items: [
+            '<strong>El PDS ve</strong> cuántas conversaciones tiene el usuario (N identificadores de registro), tiempos por mensaje y tamaños de texto cifrado. No puede vincular ningún registro a un contacto específico, leer ningún mensaje ni reconstruir la cadena de conversación.',
+            '<strong>El servidor del inbox ve</strong> sobres sellados opacos dirigidos a un destinatario. No puede distinguir los sobres de DM de los sobres de solicitud de amistad o compartición de llave — el discriminador de tipo está dentro de la Capa 2.',
+            '<strong>Los punteros de cadena hacia adelante son solo del dispositivo.</strong> Cada carga útil de DM hace referencia al mensaje anterior en la cadena (cifrado) para que los destinatarios puedan caminar el historial hacia atrás. Los punteros hacia adelante usados para eliminación por mensaje se reconstruyen en la caché local del dispositivo y nunca se escriben en el PDS — el PDS no puede reconstruir cadenas sin la llave de mensajería.',
+          ],
+        },
+        { kind: 'h3', text: '8.6 Tokens de eliminación del lado del remitente' },
         { kind: 'p', html: 'Al enviar, el cliente:' },
         {
           kind: 'ol',
@@ -864,7 +888,7 @@ Entregar sobre sellado
           html:
             'Para eliminar un mensaje enviado (p. ej. después de que el destinatario lo rechace), el cliente presenta el token en bruto; el servidor lo vuelve a hashear y elimina solo si los hashes coinciden. El servidor no aprende nada sobre el remitente a partir del hash y no puede falsificar eliminaciones.',
         },
-        { kind: 'h3', text: '8.6 Notificaciones push', id: 'push' },
+        { kind: 'h3', text: '8.7 Notificaciones push', id: 'push' },
         { kind: 'callout', variant: 'status', label: 'Estado', body: 'Aún no implementada.' },
         {
           kind: 'p',
@@ -973,14 +997,14 @@ Entregar sobre sellado
           rows: [
             [
               'PDS de Bluesky',
-              'Blobs <code>.zen</code> cifrados, registros de llaves cifradas, EVK, llave pública Kyber',
+              'Blobs <code>.zen</code> cifrados, registros de llaves cifradas, registros de DM cifrados, registros de metadatos de conversación cifrados, EVK, llave pública Kyber',
               'Contenido en texto plano, llaves en texto plano, contraseña de cifrado',
             ],
             ['AppView / Relay de Bluesky', 'Metadatos de publicaciones, grafo de seguimiento', 'Contenido, llaves'],
             [
               'Servidor de Penrose',
-              'Filas de perfil (DID + EMK), metadatos del índice de publicaciones, filas del inbox (texto cifrado opaco), invitaciones',
-              'Contenido en texto plano, llaves en texto plano, contraseñas, llaves de bóveda',
+              'Filas de perfil (DID + EMK), metadatos del índice de publicaciones, filas del inbox de remitente sellado (sobres opacos), invitaciones',
+              'Identidad del remitente para mensajes del inbox, contenido en texto plano, llaves en texto plano, contraseñas, llaves de bóveda',
             ],
             [
               'Gateway del lado del servidor (en tránsito)',
@@ -1124,7 +1148,7 @@ Entregar sobre sellado
           items: [
             '<strong>Ninguna llave en texto plano cruza jamás un límite de red.</strong> La Llave de Bóveda se genera en el dispositivo; sale solo como la EVK (envuelta bajo la Llave Maestra) hacia el PDS y nunca llega al servidor de Penrose. La Llave Maestra sale solo como la EMK (envuelta bajo la PDK) hacia el servidor de Penrose.',
             '<strong>Ningún contenido en texto plano cruza jamás un límite de red.</strong> Las publicaciones se cifran en el dispositivo antes de cualquier subida; los blobs <code>.zen</code> son opacos para Bluesky; los mensajes directos y los mensajes del inbox se sellan bajo la llave Kyber del destinatario.',
-            '<strong>Los gateways del lado del servidor no ven secretos.</strong> El gateway de escritura maneja tokens de acceso OAuth y pruebas DPoP solo el tiempo necesario para retransmitir la llamada de verificación al PDS. Nunca posee la llave privada DPoP (que vive en el elemento seguro del usuario) y nunca toca llaves de bóveda, mensajería o círculo.',
+            '<strong>Los gateways del lado del servidor no ven secretos.</strong> El gateway de escritura maneja tokens de acceso OAuth y pruebas DPoP solo el tiempo necesario para retransmitir la llamada de verificación al PDS. Nunca posee la llave privada DPoP (que vive en el elemento seguro del usuario) y nunca toca llaves de bóveda, mensajería o círculo. En la ruta de escritura al inbox no ve ni un token de sesión ni una identidad de remitente — los sobres de remitente sellado se autentican por sí mismos ante el destinatario y no requieren autenticación del lado del servidor de quien llama.',
             '<strong>Disciplina a prueba de fallos.</strong> El invariante de privacidad (§9) hace estructuralmente imposible que una publicación pretendida privada se vuelva pública sin un cambio explícito de código.',
             '<strong>Bibliotecas criptográficas vendidas.</strong> Todas las primitivas criptográficas están fijadas o copiadas en el repositorio; las actualizaciones de bibliotecas requieren un cambio deliberado.',
             '<strong>Capa independiente de llaves en reposo.</strong> La jerarquía de bóveda (§3) significa que comprometer cualquier servidor individual (Bluesky <em>o</em> Penrose) no produce un objetivo para fuerza bruta offline — un atacante necesita material de ambos.',
@@ -1143,9 +1167,9 @@ Entregar sobre sellado
             '<strong>Cifrado de contenido en dos niveles</strong> (llave de círculo → llave de contenido → archivos <code>.zen</code>) aísla el radio de daño de cualquier publicación comprometida a sí misma.',
             '<strong>Intercambio de llaves post-cuántico</strong> (ML-KEM-1024, NIST Nivel 5) protege todos los apretones de manos de primer contacto contra futuros adversarios cuánticos.',
             '<strong>Llaves simétricas de 256 bits en todas partes</strong> — llaves de contenido, llaves de círculo, llaves de mensajería y llaves de bóveda usan todas llaves de 256 bits, manteniendo un suelo de seguridad post-cuántica ≥ 2^128 en cada capa simétrica.',
-            '<strong>Inbox con metadatos mínimos</strong> oculta la identidad del remitente, el tipo de mensaje y las relaciones al servidor que los almacena.',
-            '<strong>Verificación de sesión del PDS</strong> en el único gateway de escritura asegura que quienes llaman son quienes dicen ser antes de cualquier mutación en el servidor.',
-            '<strong>Autenticación de remitente confirmado mediante huella TOFU</strong> detecta cualquier sustitución de llave posterior al primer contacto por parte de un PDS comprometido. La verificación fuera de banda de primer contacto está planificada (consulta Trabajo futuro).',
+            '<strong>Inbox de remitente sellado</strong> oculta la identidad del remitente, el tipo de mensaje y las relaciones al servidor que los almacena. Las escrituras al inbox están intencionalmente sin autenticar del lado del servidor — la autenticidad del remitente se prueba criptográficamente dentro del sobre, recuperable solo por el destinatario.',
+            '<strong>Verificación de sesión del PDS</strong> en el único gateway de escritura asegura que quienes llaman son quienes dicen ser antes de cualquier mutación del lado del servidor que no sea del inbox (entradas del índice de publicaciones, filas de perfil, almacenamiento de la llave maestra cifrada).',
+            '<strong>Autenticación de remitente confirmado mediante huella TOFU y Capa 2 de remitente sellado</strong> detecta cualquier sustitución de llave posterior al primer contacto por parte de un PDS comprometido — cada sobre debe abrir bajo la llave de mensajería que el destinatario tiene vinculada para el remitente declarado. La verificación fuera de banda de primer contacto está planificada (consulta Trabajo futuro).',
             '<strong>Invariante de privacidad a prueba de fallos</strong> previene la degradación silenciosa de privado a público en cada capa.',
             '<strong>Ningún texto plano toca jamás un servidor.</strong> La única raíz de confianza para la confidencialidad del contenido es el dispositivo del usuario, la contraseña de cifrado del usuario y (una vez que se entregue la verificación OOB) la atestación fuera de banda del propio usuario de las huellas de los contactos. Ni el PDS de Bluesky ni el servidor de Penrose son de confianza para la confidencialidad. Consulta §1.4 para una declaración precisa de qué cubre y qué no cubre la «confianza cero».',
           ],
@@ -1183,6 +1207,14 @@ Entregar sobre sellado
             ['<strong>E2EE</strong>', 'Cifrado de extremo a extremo.'],
             ['<strong>EMK</strong>', 'Llave Maestra Cifrada — la Llave Maestra envuelta bajo la PDK, almacenada en el servidor de Penrose.'],
             ['<strong>EVK</strong>', 'Llave de Bóveda Cifrada — la Llave de Bóveda envuelta bajo la Llave Maestra, almacenada en el PDS del usuario.'],
+            [
+              '<strong>HKDF</strong>',
+              'Función de Derivación de Llaves basada en HMAC (RFC 5869). Extrae entropía del material de llave de entrada y la expande en sub-llaves de salida; una cadena <code>info</code> delimita cada derivación a un propósito específico (separación de dominios). HKDF-SHA256 usa HMAC-SHA256 internamente.',
+            ],
+            [
+              '<strong>HMAC</strong>',
+              'Código de Autenticación de Mensajes basado en Hash (RFC 2104). Confirma integridad y autenticidad bajo una llave simétrica usando una función hash. HMAC-SHA256 es la instanciación con SHA-256.',
+            ],
             [
               '<strong>KEM</strong>',
               'Mecanismo de Encapsulación de Llaves. Produce un secreto compartido más un texto cifrado que solo quien posea la llave privada correspondiente puede desencapsular. ML-KEM es un KEM.',

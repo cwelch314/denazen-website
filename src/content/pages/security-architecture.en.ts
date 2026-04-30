@@ -72,7 +72,7 @@ const content: {
       { id: 'replies', label: '6. Replies & quotes' },
       { id: 'reading', label: '7. Reading: decryption' },
       { id: 'inbox', label: '8. Key exchange & inbox' },
-      { id: 'push', label: '8.6 Push notifications' },
+      { id: 'push', label: '8.7 Push notifications' },
       { id: 'invariant', label: '9. Privacy invariant' },
       { id: 'rotation', label: '10. Rotation' },
       { id: 'storage', label: '11. Storage boundaries' },
@@ -852,7 +852,31 @@ Deliver sealed envelope
           html:
             'On the sender side, a separate check validates that incoming acceptances correspond to outgoing requests the user actually sent, so an attacker cannot inject a forged “acceptance from Bob” that Alice never solicited.',
         },
-        { kind: 'h3', text: '8.5 Sender-side deletion tokens' },
+        { kind: 'h3', text: '8.5 Direct-message transport' },
+        {
+          kind: 'p',
+          html:
+            'Chat-style direct messages share the same sealed-sender inbox transport as friend requests and key shares. The construction layers as follows:',
+        },
+        {
+          kind: 'ol',
+          items: [
+            "<strong>Authoritative storage on the user's PDS.</strong> Each delivered DM is also written to the sender's and recipient's own PDS as an opaque record. The record body is XSalsa20-Poly1305 ciphertext of the message text (and any rich-text facets), encrypted under the per-contact messaging key. The PDS sees ciphertext, a per-message timestamp, and nothing else — not the contact, not the message body, not the conversation it belongs to.",
+            "<strong>Delivery via the sealed-sender inbox.</strong> Outbound, a DM is wrapped in a sealed envelope (§8.2.1) and deposited into the recipient's inbox. The recipient opens the envelope, validates that it authenticates under the messaging key bound to the claimed sender, then writes the corresponding ciphertext record to its own PDS. Failed deliveries never reach the PDS — the user's repo only ever holds messages that were actually delivered.",
+            "<strong>Conversation metadata is vault-encrypted.</strong> Each contact has one conversation record on the user's PDS holding head pointer, last-message preview, and unread count. The record body is XSalsa20-Poly1305 ciphertext encrypted under the <strong>vault key</strong> (not the messaging key) — even a contact whose messaging key was somehow compromised cannot read the user's conversation index.",
+            '<strong>Pseudonymous record identifiers.</strong> The conversation record\'s identifier is derived deterministically as <code>HMAC-SHA256(HKDF(vault_key, "denazen-dm-contact-id-v1"), contact_did)</code> truncated to 16 bytes. Same contact always maps to the same identifier on a given account; different accounts (different vault keys) map the same contact to different identifiers. The PDS sees N opaque record identifiers but cannot reverse them to DIDs without the vault key.',
+          ],
+        },
+        { kind: 'p', html: 'What this means for the threat model:' },
+        {
+          kind: 'ul',
+          items: [
+            '<strong>The PDS sees</strong> how many conversations the user has (N record identifiers), per-message timing, and ciphertext sizes. It cannot link any record to a specific contact, read any message, or reconstruct the conversation chain.',
+            '<strong>The inbox server sees</strong> opaque sealed envelopes addressed to a recipient. It cannot tell DM envelopes apart from friend-request or key-share envelopes — the type discriminator is inside Layer 2.',
+            '<strong>Forward chain pointers are device-only.</strong> Each DM payload references the previous message in the chain (encrypted) so that recipients can walk history backward. Forward pointers used for per-message deletion are reconstructed in the device-local cache and never written to the PDS — the PDS cannot reconstruct chains without the messaging key.',
+          ],
+        },
+        { kind: 'h3', text: '8.6 Sender-side deletion tokens' },
         { kind: 'p', html: 'When sending, the client:' },
         {
           kind: 'ol',
@@ -867,7 +891,7 @@ Deliver sealed envelope
           html:
             'To delete a sent message (e.g. after the recipient rejects it), the client presents the raw token; the server re-hashes and deletes only if the hashes match. The server learns nothing about the sender from the hash and cannot forge deletions.',
         },
-        { kind: 'h3', text: '8.6 Push notifications', id: 'push' },
+        { kind: 'h3', text: '8.7 Push notifications', id: 'push' },
         { kind: 'callout', variant: 'status', label: 'Status', body: 'Not yet implemented.' },
         {
           kind: 'p',
@@ -976,14 +1000,14 @@ Deliver sealed envelope
           rows: [
             [
               'Bluesky PDS',
-              'Ciphertext <code>.zen</code> blobs, encrypted key records, EVK, Kyber public key',
+              'Ciphertext <code>.zen</code> blobs, encrypted key records, encrypted DM records, encrypted conversation-metadata records, EVK, Kyber public key',
               'Plaintext content, plaintext keys, encryption password',
             ],
             ['Bluesky AppView / Relay', 'Post metadata, follow graph', 'Content, keys'],
             [
               'Penrose server',
-              'Profile rows (DID + EMK), post-index metadata, inbox rows (opaque ciphertext), invites',
-              'Plaintext content, plaintext keys, passwords, vault keys',
+              'Profile rows (DID + EMK), post-index metadata, sealed-sender inbox rows (opaque envelopes), invites',
+              'Sender identity for inbox messages, plaintext content, plaintext keys, passwords, vault keys',
             ],
             [
               'Server-side gateway (in transit)',
@@ -1127,7 +1151,7 @@ Deliver sealed envelope
           items: [
             "<strong>No plaintext key ever crosses a network boundary.</strong> The Vault Key is generated on device; it leaves only as the EVK (wrapped under the Master Key) to the PDS and never reaches Penrose's server. The Master Key leaves only as the EMK (wrapped under the PDK) to the Penrose server.",
             '<strong>No plaintext content ever crosses a network boundary.</strong> Posts are encrypted on device before any upload; <code>.zen</code> blobs are opaque to Bluesky; direct messages and inbox messages are sealed under the recipient\'s Kyber key.',
-            "<strong>Server-side gateways see no secrets.</strong> The write gateway handles OAuth access tokens and DPoP proofs only long enough to relay the PDS verification call. It never holds the DPoP private key (which lives in the user's secure element) and never touches vault, messaging, or circle keys.",
+            "<strong>Server-side gateways see no secrets.</strong> The write gateway handles OAuth access tokens and DPoP proofs only long enough to relay the PDS verification call. It never holds the DPoP private key (which lives in the user's secure element) and never touches vault, messaging, or circle keys. On the inbox-write path it sees neither a session token nor a sender identity — sealed-sender envelopes self-authenticate to the recipient and require no server-side caller authentication.",
             '<strong>Fail-closed discipline.</strong> The privacy invariant (§9) makes it structurally impossible for a private-intended post to become public without an explicit code change.',
             '<strong>Vendored crypto libraries.</strong> All cryptographic primitives are either pinned or copied into the repository; library updates require a deliberate change.',
             '<strong>Independent key-at-rest layer.</strong> The vault hierarchy (§3) means compromising any single server (Bluesky <em>or</em> Penrose) does not yield an offline brute-force target — an attacker needs material from both.',
@@ -1146,9 +1170,9 @@ Deliver sealed envelope
             '<strong>Two-tier content encryption</strong> (circle key → content key → <code>.zen</code> files) isolates the blast radius of any single compromised post to itself.',
             '<strong>Post-quantum key exchange</strong> (ML-KEM-1024, NIST Level 5) protects all first-contact handshakes against future quantum adversaries.',
             '<strong>256-bit symmetric keys everywhere</strong> — content keys, circle keys, messaging keys, and vault keys all use 256-bit keys, maintaining a ≥ 2^128 post-quantum security floor at every symmetric layer.',
-            '<strong>Metadata-minimal inbox</strong> hides sender identity, message type, and relationships from the server that stores it.',
-            '<strong>PDS session verification</strong> at the single write gateway ensures callers are who they claim to be before any server-side mutation.',
-            "<strong>Confirmed-sender authentication via TOFU fingerprinting</strong> detects any post-first-contact key substitution by a compromised PDS. First-contact out-of-band verification is planned (see Future work).",
+            '<strong>Sealed-sender inbox</strong> hides sender identity, message type, and relationships from the server that stores it. Inbox writes are intentionally unauthenticated server-side — sender authenticity is proved cryptographically inside the envelope, recoverable only by the recipient.',
+            '<strong>PDS session verification</strong> at the single write gateway ensures callers are who they claim to be before any non-inbox server-side mutation (post-index entries, profile rows, encrypted-master-key storage).',
+            "<strong>Confirmed-sender authentication via TOFU fingerprinting and sealed-sender Layer 2</strong> detects any post-first-contact key substitution by a compromised PDS — every envelope must open under the recipient's bound messaging key for the claimed sender. First-contact out-of-band verification is planned (see Future work).",
             '<strong>Fail-closed privacy invariant</strong> prevents silent downgrade from private to public at every layer.',
             "<strong>No plaintext ever touches a server.</strong> The only trust root for content confidentiality is the user's device, the user's encryption password, and (once OOB verification ships) the user's own out-of-band attestation of contact fingerprints. Neither the Bluesky PDS nor the Penrose server is trusted for confidentiality. See §1.4 for a precise statement of what “zero-trust” does and does not cover.",
           ],
@@ -1186,6 +1210,14 @@ Deliver sealed envelope
             ['<strong>E2EE</strong>', 'End-to-end encrypted.'],
             ['<strong>EMK</strong>', "Encrypted Master Key — the Master Key wrapped under the PDK, stored on Penrose's server."],
             ['<strong>EVK</strong>', "Encrypted Vault Key — the Vault Key wrapped under the Master Key, stored on the user's PDS."],
+            [
+              '<strong>HKDF</strong>',
+              'HMAC-based Key Derivation Function (RFC 5869). Extracts entropy from input keying material and expands it into output sub-keys; an <code>info</code> string scopes each derivation to a specific purpose (domain separation). HKDF-SHA256 uses HMAC-SHA256 internally.',
+            ],
+            [
+              '<strong>HMAC</strong>',
+              'Hash-based Message Authentication Code (RFC 2104). Confirms integrity and authenticity under a symmetric key using a hash function. HMAC-SHA256 is the SHA-256 instantiation.',
+            ],
             [
               '<strong>KEM</strong>',
               'Key Encapsulation Mechanism. Produces a shared secret plus a ciphertext that only the holder of the matching private key can decapsulate. ML-KEM is a KEM.',
