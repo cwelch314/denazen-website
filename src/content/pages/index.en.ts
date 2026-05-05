@@ -1,8 +1,7 @@
 export default {
   meta: {
     title: 'Penrose',
-    description:
-      'Privacy inspired by Signal. Connection like early Facebook. Freedom of Bluesky. The impossible triangle, solved.',
+    description: 'Penrose - Privacy. Connection. Freedom.',
   },
   hero: {
     heading: 'Social media, without compromise.',

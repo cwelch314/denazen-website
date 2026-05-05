@@ -58,7 +58,8 @@ function buildSvg(v) {
   const sub = v.sub.map(escapeXml);
   const tagline = escapeXml(v.tagline);
 
-  const TEXT_X = 460;
+  const TEXT_X = 500;
+  const LEFT_CENTER_X = 240;
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
@@ -67,7 +68,7 @@ function buildSvg(v) {
       <stop offset="0%" stop-color="#003A6B"/>
       <stop offset="100%" stop-color="#002647"/>
     </linearGradient>
-    <radialGradient id="glow" cx="22%" cy="50%" r="40%">
+    <radialGradient id="glow" cx="22%" cy="42%" r="40%">
       <stop offset="0%" stop-color="#2884E0" stop-opacity="0.35"/>
       <stop offset="100%" stop-color="#2884E0" stop-opacity="0"/>
     </radialGradient>
@@ -77,30 +78,30 @@ function buildSvg(v) {
   <rect width="${W}" height="${H}" fill="url(#glow)"/>
 
   <g font-family="${FONT_STACK}" fill="#FFFFFF">
-    <text x="${TEXT_X}" y="138" font-size="40" font-weight="700" letter-spacing="-0.5" fill="#D9EBFF">${wordmark}</text>
+    <text x="${LEFT_CENTER_X}" y="478" font-size="84" font-weight="800" letter-spacing="-2" text-anchor="middle">${wordmark}</text>
 
-    <text x="${TEXT_X}" y="232" font-size="64" font-weight="800" letter-spacing="-1.5">${heading[0]}</text>
-    <text x="${TEXT_X}" y="304" font-size="64" font-weight="800" letter-spacing="-1.5">${heading[1]}</text>
+    <text x="${TEXT_X}" y="190" font-size="64" font-weight="800" letter-spacing="-1.6">${heading[0]}</text>
+    <text x="${TEXT_X}" y="262" font-size="64" font-weight="800" letter-spacing="-1.6">${heading[1]}</text>
 
-    <g fill="#ABD5FF" font-size="30" font-weight="500">
-      <text x="${TEXT_X}" y="392">${sub[0]}</text>
-      <text x="${TEXT_X}" y="436">${sub[1]}</text>
-      <text x="${TEXT_X}" y="480">${sub[2]}</text>
+    <g fill="#ABD5FF" font-size="32" font-weight="500">
+      <text x="${TEXT_X}" y="346">${sub[0]}</text>
+      <text x="${TEXT_X}" y="392">${sub[1]}</text>
+      <text x="${TEXT_X}" y="438">${sub[2]}</text>
     </g>
 
-    <text x="${TEXT_X}" y="552" font-size="26" font-style="italic" fill="#D9EBFF">${tagline}</text>
+    <text x="${TEXT_X}" y="520" font-size="38" font-weight="700" font-style="italic" fill="#FFFFFF" letter-spacing="-0.4">${tagline}</text>
   </g>
 </svg>`;
 }
 
 async function main() {
   const trianglePath = path.join(projectRoot, 'public/images/brand/penrose.png');
-  const triangleSize = 300;
+  const triangleSize = 220;
   const triangle = await sharp(trianglePath)
     .resize(triangleSize, triangleSize, { fit: 'contain' })
     .toBuffer();
-  const triangleLeft = Math.round((460 - triangleSize) / 2 + 40);
-  const triangleTop = Math.round((H - triangleSize) / 2);
+  const triangleLeft = 130;
+  const triangleTop = 150;
 
   for (const v of variants) {
     const svg = buildSvg(v);

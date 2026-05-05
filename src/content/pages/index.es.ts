@@ -1,8 +1,7 @@
 export default {
   meta: {
     title: 'Penrose',
-    description:
-      'Privacidad inspirada en Signal. Conexión como Facebook en sus primeros días. Libertad de Bluesky. El triángulo imposible, resuelto.',
+    description: 'Penrose - Privacidad. Conexión. Libertad.',
   },
   hero: {
     heading: 'Las redes sociales, sin concesiones.',
