@@ -2,7 +2,7 @@ export default {
   meta: {
     title: 'Penrose',
     description:
-      'A social network built for real relationships, with private spaces, real control, and no ads or tracking.',
+      'Privacy inspired by Signal. Connection like early Facebook. Freedom of Bluesky. The impossible triangle, solved.',
   },
   hero: {
     heading: 'Social media, without compromise.',

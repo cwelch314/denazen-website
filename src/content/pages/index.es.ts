@@ -2,7 +2,7 @@ export default {
   meta: {
     title: 'Penrose',
     description:
-      'Una red social hecha para relaciones reales, con espacios privados, control real y sin anuncios ni rastreo.',
+      'Privacidad inspirada en Signal. Conexión como Facebook en sus primeros días. Libertad de Bluesky. El triángulo imposible, resuelto.',
   },
   hero: {
     heading: 'Las redes sociales, sin concesiones.',
