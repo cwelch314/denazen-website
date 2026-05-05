@@ -1,0 +1,38 @@
+---
+import type { Lang } from '../../i18n/config';
+import WaitlistForm from '../WaitlistForm.astro';
+import type enContent from '../../content/pages/security-architecture.en';
+
+interface Props {
+  lang: Lang;
+  content: typeof enContent;
+}
+
+const { lang, content: c } = Astro.props;
+const p = c.placeholder;
+---
+<section>
+  <div class="container-narrow legal-content">
+    <h1>{c.heading}</h1>
+    <aside class="draft-notice" role="note">
+      <strong>{p.notice.title}</strong>
+      <p>{p.notice.body}</p>
+    </aside>
+
+    <h2>{p.formHeading}</h2>
+    <p>{p.formIntro}</p>
+    <WaitlistForm
+      lang={lang}
+      id="waitlist-architecture"
+      buttonLabel={p.buttonLabel}
+      note={p.note}
+      archDocCheckboxLabel={p.archDocCheckboxLabel}
+    />
+
+    <h2>{p.tocPreviewHeading}</h2>
+    <p>{p.tocPreviewIntro}</p>
+    <ul class="arch-toc-preview">
+      {c.toc.sections.map((s) => <li>{s.label}</li>)}
+    </ul>
+  </div>
+</section>

@@ -26,6 +26,16 @@ const content: {
   plainLang: { before: string; linkText: string; after: string };
   lastUpdated: { before: string; date: string; text: string; between: string; linkText: string };
   draftNotice: { title: string; body: string };
+  placeholder: {
+    notice: { title: string; body: string };
+    formHeading: string;
+    formIntro: string;
+    buttonLabel: string;
+    note: string;
+    archDocCheckboxLabel: string;
+    tocPreviewHeading: string;
+    tocPreviewIntro: string;
+  };
   toc: { heading: string; sections: { id: string; label: string }[] };
   preambleBlocks: Block[];
   sections: Section[];
@@ -53,6 +63,21 @@ const content: {
   draftNotice: {
     title: 'Draft — not yet ready for technical/research review',
     body: 'This architecture document is a pre-launch working draft. Content, scope, and claims are subject to change before Penrose is publicly available. Do not cite from this version.',
+  },
+  placeholder: {
+    notice: {
+      title: 'Under development',
+      body: 'The encryption architecture whitepaper is still being finalized and is not yet public. We will publish it here once review is complete. Thanks for your patience.',
+    },
+    formHeading: 'Get notified when it is published',
+    formIntro:
+      'Drop your email to request a Penrose invite. Tick the box and we will also send you a copy of the encryption architecture whitepaper as soon as it goes public.',
+    buttonLabel: 'Request invite',
+    note: 'Invite-only beta. We will only email you about your invite and, if you opt in, the architecture whitepaper.',
+    archDocCheckboxLabel: 'Also email me a copy of the encryption architecture whitepaper when it is published.',
+    tocPreviewHeading: 'A preview of what is coming',
+    tocPreviewIntro:
+      'These are the sections the whitepaper will cover when it goes public:',
   },
   toc: {
     heading: 'Contents',

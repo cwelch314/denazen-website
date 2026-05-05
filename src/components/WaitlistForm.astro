@@ -7,9 +7,10 @@ interface Props {
   note?: string;
   id?: string;
   lang?: Lang;
+  archDocCheckboxLabel?: string;
 }
 
-const { id = 'waitlist', lang = defaultLang, buttonLabel, note } = Astro.props;
+const { id = 'waitlist', lang = defaultLang, buttonLabel, note, archDocCheckboxLabel } = Astro.props;
 const t = useTranslations(lang);
 const resolvedButton = buttonLabel ?? t('waitlist.buttonDefault');
 const resolvedNote = note ?? t('waitlist.noteDefault');
@@ -38,6 +39,12 @@ const resolvedNote = note ?? t('waitlist.noteDefault');
     spellcheck="false"
   />
   <button type="submit" class="btn btn-primary">{resolvedButton}</button>
+  {archDocCheckboxLabel && (
+    <label class="waitlist-checkbox" for={`${id}-arch-doc`}>
+      <input id={`${id}-arch-doc`} type="checkbox" name="wantsArchitectureDoc" value="1" />
+      <span>{archDocCheckboxLabel}</span>
+    </label>
+  )}
 </form>
 <p class="waitlist-note">{resolvedNote}</p>
 
@@ -67,10 +74,15 @@ const resolvedNote = note ?? t('waitlist.noteDefault');
         return;
       }
 
+      const archCheckbox = form.querySelector<HTMLInputElement>('input[type="checkbox"][name="wantsArchitectureDoc"]');
+      const payload: Record<string, unknown> = { email };
+      if (archCheckbox) payload.wantsArchitectureDoc = archCheckbox.checked;
+
       clearError(form);
       const originalLabel = button.textContent;
       button.disabled = true;
       input.disabled = true;
+      if (archCheckbox) archCheckbox.disabled = true;
       button.textContent = msgs.submitting;
 
       try {
@@ -80,7 +92,7 @@ const resolvedNote = note ?? t('waitlist.noteDefault');
             'Content-Type': 'application/json',
             Accept: 'application/json',
           },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify(payload),
         });
         const data = (await response.json().catch(() => ({}))) as { ok?: boolean; error?: string };
 
@@ -95,6 +107,7 @@ const resolvedNote = note ?? t('waitlist.noteDefault');
         if (form.isConnected) {
           button.disabled = false;
           input.disabled = false;
+          if (archCheckbox) archCheckbox.disabled = false;
           button.textContent = originalLabel;
         }
       }
