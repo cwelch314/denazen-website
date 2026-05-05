@@ -2,8 +2,11 @@
 // the email to MailerLite's Subscribers API.
 //
 // Required environment variables (set in Cloudflare Pages → Settings → Environment variables):
-//   MAILERLITE_API_TOKEN   (encrypted)  — scope: subscribers:write
-//   MAILERLITE_GROUP_ID    (plain)      — numeric group ID to add subscribers to
+//   MAILERLITE_API_TOKEN                     (encrypted) — scope: subscribers:write
+//   MAILERLITE_GROUP_ID                      (plain)     — numeric group ID for the waitlist
+//   MAILERLITE_ARCHITECTURE_DOC_GROUP_ID     (plain, optional) — numeric group ID for users
+//                                                          who opt in to receive the encryption
+//                                                          architecture whitepaper when public.
 //
 // Opt-in behavior (single vs double) is configured on the MailerLite group,
 // not here. The API call does not force a status.
@@ -11,6 +14,7 @@
 interface Env {
   MAILERLITE_API_TOKEN: string;
   MAILERLITE_GROUP_ID: string;
+  MAILERLITE_ARCHITECTURE_DOC_GROUP_ID?: string;
 }
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -19,9 +23,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   const { request, env } = context;
 
   let email: string;
+  let wantsArchitectureDoc = false;
   try {
-    const body = (await request.json()) as { email?: string };
+    const body = (await request.json()) as { email?: string; wantsArchitectureDoc?: boolean };
     email = (body.email ?? '').trim().toLowerCase();
+    wantsArchitectureDoc = body.wantsArchitectureDoc === true;
   } catch {
     return json({ ok: false, error: 'Invalid request body.' }, 400);
   }
@@ -35,6 +41,11 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
     return json({ ok: false, error: 'Waitlist is not yet configured.' }, 503);
   }
 
+  const groups = [env.MAILERLITE_GROUP_ID];
+  if (wantsArchitectureDoc && env.MAILERLITE_ARCHITECTURE_DOC_GROUP_ID) {
+    groups.push(env.MAILERLITE_ARCHITECTURE_DOC_GROUP_ID);
+  }
+
   try {
     const response = await fetch('https://connect.mailerlite.com/api/subscribers', {
       method: 'POST',
@@ -45,7 +56,7 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       },
       body: JSON.stringify({
         email,
-        groups: [env.MAILERLITE_GROUP_ID],
+        groups,
       }),
     });
 

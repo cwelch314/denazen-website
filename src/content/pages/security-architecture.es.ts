@@ -23,6 +23,16 @@ const content: {
   plainLang: { before: string; linkText: string; after: string };
   lastUpdated: { before: string; date: string; text: string; between: string; linkText: string };
   draftNotice: { title: string; body: string };
+  placeholder: {
+    notice: { title: string; body: string };
+    formHeading: string;
+    formIntro: string;
+    buttonLabel: string;
+    note: string;
+    archDocCheckboxLabel: string;
+    tocPreviewHeading: string;
+    tocPreviewIntro: string;
+  };
   toc: { heading: string; sections: { id: string; label: string }[] };
   preambleBlocks: Block[];
   sections: Section[];
@@ -50,6 +60,21 @@ const content: {
   draftNotice: {
     title: 'Borrador — aún no listo para revisión técnica o de investigación',
     body: 'Este documento de arquitectura es un borrador previo al lanzamiento. El contenido, el alcance y las afirmaciones pueden cambiar antes de que Penrose esté disponible públicamente. No cites esta versión.',
+  },
+  placeholder: {
+    notice: {
+      title: 'En desarrollo',
+      body: 'El libro blanco sobre la arquitectura de cifrado aún se está finalizando y todavía no es público. Lo publicaremos aquí cuando termine la revisión. Gracias por tu paciencia.',
+    },
+    formHeading: 'Avísame cuando se publique',
+    formIntro:
+      'Déjanos tu correo para solicitar una invitación a Penrose. Marca la casilla y también te enviaremos una copia del libro blanco de arquitectura de cifrado en cuanto sea público.',
+    buttonLabel: 'Solicitar invitación',
+    note: 'Beta solo por invitación. Solo te escribiremos sobre tu invitación y, si lo solicitas, sobre el libro blanco de arquitectura.',
+    archDocCheckboxLabel: 'También envíenme una copia del libro blanco de arquitectura de cifrado cuando se publique.',
+    tocPreviewHeading: 'Una vista previa de lo que viene',
+    tocPreviewIntro:
+      'Estas son las secciones que cubrirá el libro blanco cuando se haga público:',
   },
   toc: {
     heading: 'Contenido',
