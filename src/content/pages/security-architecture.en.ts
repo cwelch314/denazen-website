@@ -41,13 +41,13 @@ const content: {
   sections: Section[];
 } = {
   meta: {
-    title: 'Penrose',
+    title: 'Rhize',
     description:
-      "Penrose's end-to-end encryption architecture: zero-trust content model, post-quantum key exchange (ML-KEM-1024, NIST Level 5), four-tier vault hierarchy, metadata-minimal inbox, and the fail-closed privacy invariant.",
+      "Rhize's end-to-end encryption architecture: zero-trust content model, post-quantum key exchange (ML-KEM-1024, NIST Level 5), four-tier vault hierarchy, metadata-minimal inbox, and the fail-closed privacy invariant.",
   },
   heading: 'Security & encryption architecture',
   lead:
-    "A technical whitepaper describing the end-to-end encryption model used by Penrose. Written for security engineers, cryptographers, and developers evaluating Penrose's privacy guarantees.",
+    "A technical whitepaper describing the end-to-end encryption model used by Rhize. Written for security engineers, cryptographers, and developers evaluating Rhize's privacy guarantees.",
   plainLang: {
     before: 'Prefer the plain-language version? See the ',
     linkText: 'FAQ',
@@ -62,7 +62,7 @@ const content: {
   },
   draftNotice: {
     title: 'Draft — not yet ready for technical/research review',
-    body: 'This architecture document is a pre-launch working draft. Content, scope, and claims are subject to change before Penrose is publicly available. Do not cite from this version.',
+    body: 'This architecture document is a pre-launch working draft. Content, scope, and claims are subject to change before Rhize is publicly available. Do not cite from this version.',
   },
   placeholder: {
     notice: {
@@ -71,7 +71,7 @@ const content: {
     },
     formHeading: 'Get notified when it is published',
     formIntro:
-      'Drop your email to request a Penrose invite. Tick the box and we will also send you a copy of the encryption architecture whitepaper as soon as it goes public.',
+      'Drop your email to request a Rhize invite. Tick the box and we will also send you a copy of the encryption architecture whitepaper as soon as it goes public.',
     buttonLabel: 'Request invite',
     note: 'Invite-only beta. We will only email you about your invite and, if you opt in, the architecture whitepaper.',
     archDocCheckboxLabel: 'Also email me a copy of the encryption architecture whitepaper when it is published.',
@@ -116,17 +116,17 @@ const content: {
     {
       kind: 'p',
       html:
-        "Penrose is a privacy-first social client built on the AT Protocol — the open network that powers Bluesky. It pairs public Bluesky-network posts with private posts, direct messages, and circle-shared content that are end-to-end encrypted on the user's device before they touch any server.",
+        "Rhize is a privacy-first social client built on the AT Protocol — the open network that powers Bluesky. It pairs public Bluesky-network posts with private posts, direct messages, and circle-shared content that are end-to-end encrypted on the user's device before they touch any server.",
     },
     {
       kind: 'p',
       html:
-        "This page describes the encryption architecture: the key hierarchy, the cryptographic primitives, the inbox and key-exchange protocols, and the threat model the design is built to hold against. It is written for a technical audience — security engineers, cryptographers, and developers evaluating Penrose's privacy guarantees.",
+        "This page describes the encryption architecture: the key hierarchy, the cryptographic primitives, the inbox and key-exchange protocols, and the threat model the design is built to hold against. It is written for a technical audience — security engineers, cryptographers, and developers evaluating Rhize's privacy guarantees.",
     },
     {
       kind: 'p',
       html:
-        '<strong>Core claim.</strong> Penrose targets a zero-trust content model. No server, infrastructure provider, or Penrose developer can read plaintext content or key material, and no network attacker — including a compromised Personal Data Server (PDS) — can substitute keys undetected. §1.4 states the exact scope of this claim.',
+        '<strong>Core claim.</strong> Rhize targets a zero-trust content model. No server, infrastructure provider, or Rhize developer can read plaintext content or key material, and no network attacker — including a compromised Personal Data Server (PDS) — can substitute keys undetected. §1.4 states the exact scope of this claim.',
     },
     { kind: 'hr' },
   ],
@@ -151,7 +151,7 @@ const content: {
         { kind: 'h3', text: '1.2 Adversaries considered' },
         {
           kind: 'table',
-          headers: ['Adversary', 'Capability', 'Outcome under Penrose'],
+          headers: ['Adversary', 'Capability', 'Outcome under Rhize'],
           rows: [
             ['Passive network observer', 'TLS interception', 'Sees only ciphertext and TLS-protected traffic'],
             [
@@ -165,7 +165,7 @@ const content: {
               'Sees post metadata and follow graph; sees no content and no keys',
             ],
             [
-              'Penrose relay / database',
+              'Rhize relay / database',
               'Full server-side read',
               'Sees ciphertext payloads, DIDs, and metadata only',
             ],
@@ -175,7 +175,7 @@ const content: {
               "Sees transient OAuth-issued access tokens and per-request DPoP proofs for identity verification only; no long-lived secrets. Access tokens are DPoP-bound to per-session keypairs held in users' device secure elements (RFC 9449), so token capture alone does not enable impersonation.",
             ],
             [
-              'Penrose developer with database access',
+              'Rhize developer with database access',
               'Metadata + server ciphertext',
               'Cannot derive plaintext — same position as the server',
             ],
@@ -198,21 +198,21 @@ const content: {
             '<strong>No perfect forward secrecy for long-lived keys.</strong> Circle keys and messaging keys persist until rotated; compromise of a current messaging key exposes past messages encrypted with that key. Rotation is available but not automatic per-message.',
             "<strong>No protection from a compromised device.</strong> If an attacker has the device unlocked <em>and</em> the user's encryption password, they read everything. This is the standard baseline for end-to-end encrypted systems.",
             '<strong>Metadata is partially visible.</strong> Post counts, timing, and the Bluesky follow graph remain visible to Bluesky itself. The inbox (for direct messages and key shares) is designed to hide sender identity and message type from the server that stores it.',
-            "<strong>IP addresses and network-level metadata are visible.</strong> Clients talk directly to Penrose's server and to Bluesky PDSes over TLS; no onion routing, proxy, or sealed-transport layer is applied. Anyone with network-layer visibility sees that a given IP is talking to Penrose, even if they cannot see what is being said. Users who require network-level anonymity should route their traffic through a separate anonymity layer.",
+            "<strong>IP addresses and network-level metadata are visible.</strong> Clients talk directly to Rhize's server and to Bluesky PDSes over TLS; no onion routing, proxy, or sealed-transport layer is applied. Anyone with network-layer visibility sees that a given IP is talking to Rhize, even if they cannot see what is being said. Users who require network-level anonymity should route their traffic through a separate anonymity layer.",
           ],
         },
         { kind: 'h3', text: '1.4 What zero-trust covers — and what it does not', id: 'zero-trust-scope' },
         {
           kind: 'p',
           html:
-            "Penrose's “zero-trust content model” is a precise, auditable claim. It is not a claim that nothing is trusted. This subsection states exactly what the claim covers and what it does not, so reviewers can evaluate it against a concrete scope.",
+            "Rhize's “zero-trust content model” is a precise, auditable claim. It is not a claim that nothing is trusted. This subsection states exactly what the claim covers and what it does not, so reviewers can evaluate it against a concrete scope.",
         },
         { kind: 'h4', text: 'What IS zero-trust' },
         {
           kind: 'ul',
           items: [
-            '<strong>Content confidentiality.</strong> No server — Bluesky PDS, Penrose relay, Penrose edge function — can read a private post, a DM, or a circle-key share. The ciphertext is opaque at rest and in transit; decryption material lives only on the devices of chosen recipients.',
-            "<strong>Key-material confidentiality.</strong> The Vault Key never leaves the device in plaintext. The Master Key reaches Penrose's server only as the EMK (PDK-wrapped). Long-lived symmetric keys — messaging, circle, content, Kyber secret — are wrapped at rest and encrypted under ephemeral shared secrets in transit. No server holds, or can derive, plaintext key material.",
+            '<strong>Content confidentiality.</strong> No server — Bluesky PDS, Rhize relay, Rhize edge function — can read a private post, a DM, or a circle-key share. The ciphertext is opaque at rest and in transit; decryption material lives only on the devices of chosen recipients.',
+            "<strong>Key-material confidentiality.</strong> The Vault Key never leaves the device in plaintext. The Master Key reaches Rhize's server only as the EMK (PDK-wrapped). Long-lived symmetric keys — messaging, circle, content, Kyber secret — are wrapped at rest and encrypted under ephemeral shared secrets in transit. No server holds, or can derive, plaintext key material.",
             "<strong>MITM resistance (with out-of-band verification, planned).</strong> Trust-On-First-Use binds a contact's ML-KEM-1024 public key on the first exchange and detects any subsequent substitution. When out-of-band verification ships (see Future work), the residual first-contact window closes and a compromised PDS cannot substitute a contact's public key undetected.",
             "<strong>Inbox sender unlinkability.</strong> The inbox server cannot tell who sent any given message. Sender identity is encrypted under the recipient's post-quantum public key inside the sealed envelope (§8.2.1) and recoverable only by the recipient. Two envelopes from the same sender to the same recipient are ciphertext-indistinguishable.",
             '<strong>The fail-closed privacy invariant (§9).</strong> A user who intends to create a private post cannot silently produce a public one. This is enforced as a structural property of the client, not a policy.',
@@ -224,9 +224,9 @@ const content: {
           kind: 'ul',
           items: [
             "<strong>Metadata and timing.</strong> Bluesky's AppView and Relay see post counts, timestamps, follow graphs, and public post content. The inbox obscures sender identity and message type but not per-user activity timing or message counts.",
-            "<strong>Availability.</strong> Penrose's servers and Bluesky's infrastructure must be up for the service to be usable. A malicious operator can deny service; they just cannot read private content.",
-            "<strong>Bluesky-layer plaintext posts.</strong> Public posts (<code>app.bsky.feed.post</code> records without the Penrose encryption marker) are plaintext on Bluesky's infrastructure by design — that's what makes them public. Their integrity is whatever Bluesky provides.",
-            "<strong>Bluesky account credentials.</strong> The Bluesky password (or passkey, 2FA factor, etc.) is entered on Bluesky's hosted login page and processed by Bluesky's infrastructure. Penrose does not see, touch, or hold these credentials at any point — but their confidentiality is Bluesky's responsibility, not Penrose's. A user who reuses their Bluesky password elsewhere accepts the risks of that reuse. A user whose Bluesky account is compromised at the Bluesky layer will see their Penrose private content remain encrypted (that is what the encryption password protects), but the attacker will be able to authorize a fresh Penrose OAuth session and would then be limited only by the encryption-password barrier.",
+            "<strong>Availability.</strong> Rhize's servers and Bluesky's infrastructure must be up for the service to be usable. A malicious operator can deny service; they just cannot read private content.",
+            "<strong>Bluesky-layer plaintext posts.</strong> Public posts (<code>app.bsky.feed.post</code> records without the Rhize encryption marker) are plaintext on Bluesky's infrastructure by design — that's what makes them public. Their integrity is whatever Bluesky provides.",
+            "<strong>Bluesky account credentials.</strong> The Bluesky password (or passkey, 2FA factor, etc.) is entered on Bluesky's hosted login page and processed by Bluesky's infrastructure. Rhize does not see, touch, or hold these credentials at any point — but their confidentiality is Bluesky's responsibility, not Rhize's. A user who reuses their Bluesky password elsewhere accepts the risks of that reuse. A user whose Bluesky account is compromised at the Bluesky layer will see their Rhize private content remain encrypted (that is what the encryption password protects), but the attacker will be able to authorize a fresh Rhize OAuth session and would then be limited only by the encryption-password barrier.",
             '<strong>First-contact exchanges before out-of-band verification ships.</strong> TOFU detects any key substitution after first contact, but not during it. A PDS operator who substitutes a contact’s key <em>before</em> the first binding can inject themselves; detection requires the OOB verification feature (see Future work).',
             '<strong>User-chosen password equivalence.</strong> Every cryptographic guarantee bottoms out on the entropy of the encryption password (§4.1). A user who picks a low-entropy password accepts a weaker margin against offline attack. The architecture provides tools; it cannot enforce good password choices beyond the 12-character minimum.',
           ],
@@ -238,13 +238,13 @@ const content: {
           items: [
             "<strong>The user's device.</strong> Platform secure storage (iOS Keychain / Android Keystore) holds session-unlocked keys; a compromised device is explicitly out of scope (§1.3).",
             "<strong>The user's encryption password.</strong> Never transmitted. Entropy determines the margin against offline attack (§4.1).",
-            "<strong>(Once out-of-band verification ships)</strong> The user's own out-of-band attestation of contact fingerprints — a second channel that doesn't pass through Penrose's or Bluesky's infrastructure.",
+            "<strong>(Once out-of-band verification ships)</strong> The user's own out-of-band attestation of contact fingerprints — a second channel that doesn't pass through Rhize's or Bluesky's infrastructure.",
           ],
         },
         {
           kind: 'p',
           html:
-            "Neither the Bluesky PDS, nor Penrose's relay, nor any third-party operator appears in this list. That is what “zero-trust” means here, and that is its precise scope.",
+            "Neither the Bluesky PDS, nor Rhize's relay, nor any third-party operator appears in this list. That is what “zero-trust” means here, and that is its precise scope.",
         },
       ],
     },
@@ -292,7 +292,7 @@ const content: {
         {
           kind: 'p',
           html:
-            'Penrose uses a <strong>four-tier vault hierarchy</strong> for key-at-rest protection and a separate family of <strong>content / exchange keys</strong> for messaging and posts.',
+            'Rhize uses a <strong>four-tier vault hierarchy</strong> for key-at-rest protection and a separate family of <strong>content / exchange keys</strong> for messaging and posts.',
         },
         { kind: 'h3', text: '3.1 Vault hierarchy (at rest)' },
         {
@@ -311,8 +311,8 @@ const content: {
         {
           kind: 'ul',
           items: [
-            "The <strong>Master Key</strong> lives on Penrose's server (encrypted by the PDK); the <strong>EVK</strong> lives on the user's Bluesky PDS (encrypted by the Master Key).",
-            'To mount an offline brute-force attack against the encryption password, an attacker needs <em>both</em> (a) the EMK from the Penrose server and (b) the EVK plus Argon2 salt and parameters from the PDS. No single server, and no single breached operator, holds enough material to run the attack.',
+            "The <strong>Master Key</strong> lives on Rhize's server (encrypted by the PDK); the <strong>EVK</strong> lives on the user's Bluesky PDS (encrypted by the Master Key).",
+            'To mount an offline brute-force attack against the encryption password, an attacker needs <em>both</em> (a) the EMK from the Rhize server and (b) the EVK plus Argon2 salt and parameters from the PDS. No single server, and no single breached operator, holds enough material to run the attack.',
             'Password changes rewrap the Master Key with a new PDK but leave the Vault Key (and therefore all per-record encryption) untouched — no re-encryption storm.',
           ],
         },
@@ -372,7 +372,7 @@ User submits encryption password.
    ▼
 Derive PDK = Argon2id(encryption_password, salt).
    ▼
-Fetch EMK from Penrose server.
+Fetch EMK from Rhize server.
    ▼
 Master Key = decrypt(EMK, PDK, XSalsa20-Poly1305).
    MAC failure → "wrong encryption password" (not "no account").
@@ -386,7 +386,7 @@ Store {PDK, Master, Vault} in secure device storage for session.`,
         {
           kind: 'p',
           html:
-            "The Bluesky leg of authentication runs on Bluesky's hosted page (<code>bsky.social</code>) inside an OS-managed in-app browser sheet (<code>ASWebAuthenticationSession</code> on iOS, Custom Tabs on Android). Bluesky handles handle / email entry, password (or passkey) input, 2FA, captcha, and email confirmation — Penrose never sees the user's Bluesky credentials. The OAuth flow returns an access token bound to a per-session DPoP keypair (RFC 9449); the keypair is generated on device, persisted non-extractably in iOS Keychain / Android Keystore, and used to sign every PDS request. Token refresh is handled transparently by <code>@atproto/oauth-client-expo</code> with no visible re-prompt.",
+            "The Bluesky leg of authentication runs on Bluesky's hosted page (<code>bsky.social</code>) inside an OS-managed in-app browser sheet (<code>ASWebAuthenticationSession</code> on iOS, Custom Tabs on Android). Bluesky handles handle / email entry, password (or passkey) input, 2FA, captcha, and email confirmation — Rhize never sees the user's Bluesky credentials. The OAuth flow returns an access token bound to a per-session DPoP keypair (RFC 9449); the keypair is generated on device, persisted non-extractably in iOS Keychain / Android Keystore, and used to sign every PDS request. Token refresh is handled transparently by <code>@atproto/oauth-client-expo</code> with no visible re-prompt.",
         },
         { kind: 'p', html: '<strong>First-time setup</strong> is fail-closed in three phases:' },
         {
@@ -410,7 +410,7 @@ Store {PDK, Master, Vault} in secure device storage for session.`,
           items: [
             '<strong>Minimum length:</strong> 12 characters. This is the only hard requirement for submission.',
             '<strong>No maximum length.</strong> Passphrases are welcome.',
-            "<strong>Independent of the Bluesky password.</strong> Bluesky credentials are entered on Bluesky's hosted login page during the OAuth flow and never touch Penrose's process; there is no opportunity for the encryption password to be cross-leaked through Penrose even if the user picks identical strings. (A user is still strongly encouraged to pick distinct, high-entropy passwords for the two systems.)",
+            "<strong>Independent of the Bluesky password.</strong> Bluesky credentials are entered on Bluesky's hosted login page during the OAuth flow and never touch Rhize's process; there is no opportunity for the encryption password to be cross-leaked through Rhize even if the user picks identical strings. (A user is still strongly encouraged to pick distinct, high-entropy passwords for the two systems.)",
           ],
         },
         { kind: 'h4', text: 'The real-time strength meter' },
@@ -467,13 +467,13 @@ Store {PDK, Master, Vault} in secure device storage for session.`,
         {
           kind: 'p',
           html:
-            '<strong>Penrose does not offer password recovery.</strong> If a user loses their encryption password, their private content becomes permanently inaccessible:',
+            '<strong>Rhize does not offer password recovery.</strong> If a user loses their encryption password, their private content becomes permanently inaccessible:',
         },
         {
           kind: 'ul',
           items: [
             'The PDK cannot be re-derived from a forgotten password.',
-            "The EMK on Penrose's server remains ciphertext nobody can unlock.",
+            "The EMK on Rhize's server remains ciphertext nobody can unlock.",
             "The EVK on the user's PDS remains ciphertext nobody can unlock.",
             'All private material — past posts, DMs received, circle memberships — is lost to the account.',
           ],
@@ -486,18 +486,18 @@ Store {PDK, Master, Vault} in secure device storage for session.`,
         {
           kind: 'p',
           html:
-            "Public posts (the Bluesky layer) are unaffected: they live under the AT Protocol identity, which the user can continue to access via Bluesky's own clients and account-recovery flows. Penrose's vault loss does not touch the Bluesky account.",
+            "Public posts (the Bluesky layer) are unaffected: they live under the AT Protocol identity, which the user can continue to access via Bluesky's own clients and account-recovery flows. Rhize's vault loss does not touch the Bluesky account.",
         },
         { kind: 'h3', text: '4.3 Devices', id: 'devices' },
         {
           kind: 'p',
           html:
-            'Penrose is multi-device by design. An account is not bound to a specific phone or a key blob that must be synced between devices; it is bound to a cryptographic identity whose at-rest material lives on public infrastructure:',
+            'Rhize is multi-device by design. An account is not bound to a specific phone or a key blob that must be synced between devices; it is bound to a cryptographic identity whose at-rest material lives on public infrastructure:',
         },
         {
           kind: 'ul',
           items: [
-            "The <strong>EMK</strong> (encrypted Master Key) lives on Penrose's server, addressable by the user's DID.",
+            "The <strong>EMK</strong> (encrypted Master Key) lives on Rhize's server, addressable by the user's DID.",
             "The <strong>EVK</strong> (encrypted Vault Key) lives on the user's Bluesky PDS under the security record.",
             'All long-lived symmetric keys — messaging keys, circle keys, friend keys, Kyber secret key — live on the PDS as encrypted records wrapped under the Vault Key.',
           ],
@@ -506,7 +506,7 @@ Store {PDK, Master, Vault} in secure device storage for session.`,
         {
           kind: 'ol',
           items: [
-            "<strong>Bluesky OAuth</strong> on Bluesky's hosted login page — handle, password (or passkey), 2FA, and any other credential are entered on <code>bsky.social</code> itself. Penrose receives only an OAuth-issued access token bound to a per-session DPoP keypair.",
+            "<strong>Bluesky OAuth</strong> on Bluesky's hosted login page — handle, password (or passkey), 2FA, and any other credential are entered on <code>bsky.social</code> itself. Rhize receives only an OAuth-issued access token bound to a per-session DPoP keypair.",
             '<strong>Encryption password</strong> — to derive the PDK, unlock the EMK, then the EVK, then every per-record key in the vault.',
           ],
         },
@@ -524,7 +524,7 @@ Store {PDK, Master, Vault} in secure device storage for session.`,
         {
           kind: 'p',
           html:
-            "Penrose keeps no Bluesky password and no encryption password on the device. After successful unlock, the device's secure storage (iOS Keychain / Android Keystore) holds:",
+            "Rhize keeps no Bluesky password and no encryption password on the device. After successful unlock, the device's secure storage (iOS Keychain / Android Keystore) holds:",
         },
         {
           kind: 'ul',
@@ -545,7 +545,7 @@ Store {PDK, Master, Vault} in secure device storage for session.`,
             "<strong>App close (no explicit sign-out).</strong> Vault keys persist in secure storage; OAuth tokens persist in the library's MMKV-backed store. Next launch silently restores both — no prompts.",
             '<strong>Token expiry.</strong> The OAuth library refreshes the access token on its next outbound call. No user-visible re-prompt; no Bluesky-side re-auth.',
             "<strong>Explicit sign-out.</strong> Cached vault keys are wiped from secure storage; OAuth tokens are revoked server-side and the library's local store is cleared. Next launch requires the full Bluesky OAuth + encryption-password flow.",
-            '<strong>Compromised, unlocked device.</strong> The vault keys and the OAuth refresh token are hardware-protected at the Keychain / Keystore class. Extracting them requires a compromised OS. The encryption password itself is not stored, so it cannot be extracted from the device — only attacked offline against the EMK + EVK pair, which requires breaching both Penrose\'s server and the user\'s PDS (§3.1).',
+            '<strong>Compromised, unlocked device.</strong> The vault keys and the OAuth refresh token are hardware-protected at the Keychain / Keystore class. Extracting them requires a compromised OS. The encryption password itself is not stored, so it cannot be extracted from the device — only attacked offline against the EMK + EVK pair, which requires breaching both Rhize\'s server and the user\'s PDS (§3.1).',
             "<strong>Rooted / jailbroken device.</strong> SecureStore's guarantees are weaker on a compromised OS. Vault keys remain wrapped against the OS-level secure store; if that store is compromised the attacker has full access to the session.",
           ],
         },
@@ -589,7 +589,7 @@ Store {PDK, Master, Vault} in secure device storage for session.`,
           items: [
             "Write the content-key record to the author's PDS. Payload includes the encrypted content key and a reference to the circle key used. If this write fails, the post is <strong>blocked</strong> — never downgraded to plaintext.",
             'Upload all <code>.zen</code> blobs to the PDS. These are opaque binary blobs to Bluesky; the AppView indexes them only as file attachments.',
-            'Publish the post record with: Empty text (the real text lives in <code>_text.zen</code>). A Penrose app marker. An AT URI reference to the circle key used. An AT URI reference to the content-key record. Document embeds for the <code>.zen</code> files.',
+            'Publish the post record with: Empty text (the real text lives in <code>_text.zen</code>). A Rhize app marker. An AT URI reference to the circle key used. An AT URI reference to the content-key record. Document embeds for the <code>.zen</code> files.',
             'Patch the content-key record with the final post URI (bidirectional linkage for deletion cleanup).',
           ],
         },
@@ -610,7 +610,7 @@ Store {PDK, Master, Vault} in secure device storage for session.`,
         {
           kind: 'p',
           html:
-            "For feed generation, Penrose's server maintains a <strong>metadata-only index</strong> consisting of <code>{post_uri, key_uri, author_did, indexed_at}</code>. A validation rule enforces that the key URI references the author's own repo, preventing feed poisoning. This index lets a circle member quickly enumerate posts encrypted for them without walking every contact's repo.",
+            "For feed generation, Rhize's server maintains a <strong>metadata-only index</strong> consisting of <code>{post_uri, key_uri, author_did, indexed_at}</code>. A validation rule enforces that the key URI references the author's own repo, preventing feed poisoning. This index lets a circle member quickly enumerate posts encrypted for them without walking every contact's repo.",
         },
         {
           kind: 'p',
@@ -627,14 +627,14 @@ Store {PDK, Master, Vault} in secure device storage for session.`,
         {
           kind: 'p',
           html:
-            "Penrose's target behavior is to strip all non-essential metadata from images before encryption, by default, with no user action required. The exact scrubbing policy — which tags are removed and which are preserved (e.g., orientation) — is under active design. Until this is shipped and documented here, users who care about image metadata should strip it on their own device before posting.",
+            "Rhize's target behavior is to strip all non-essential metadata from images before encryption, by default, with no user action required. The exact scrubbing policy — which tags are removed and which are preserved (e.g., orientation) — is under active design. Until this is shipped and documented here, users who care about image metadata should strip it on their own device before posting.",
         },
         { kind: 'h3', text: '5.6 Deletion', id: 'deletion' },
         { kind: 'callout', variant: 'status', label: 'Status', body: 'Partially implemented; full semantics under active design.' },
         {
           kind: 'p',
           html:
-            "Today, deleting a private post removes the post record, the content-key record, and the <code>.zen</code> attachments from the author's PDS, and removes the corresponding entry from the private-post index on Penrose's server.",
+            "Today, deleting a private post removes the post record, the content-key record, and the <code>.zen</code> attachments from the author's PDS, and removes the corresponding entry from the private-post index on Rhize's server.",
         },
         { kind: 'p', html: 'The following aspects are still being specified:' },
         {
@@ -648,7 +648,7 @@ Store {PDK, Master, Vault} in secure device storage for session.`,
         {
           kind: 'p',
           html:
-            "Once finalized, this section will state what deletion does guarantee and what it does not. Some limits are fundamental: a recipient's already-decrypted copy, a screenshot taken before deletion, and any off-device backup the recipient created are permanently outside Penrose's control.",
+            "Once finalized, this section will state what deletion does guarantee and what it does not. Some limits are fundamental: a recipient's already-decrypted copy, a screenshot taken before deletion, and any off-device backup the recipient created are permanently outside Rhize's control.",
         },
       ],
     },
@@ -932,12 +932,12 @@ Deliver sealed envelope
         {
           kind: 'p',
           html:
-            'Penrose does not currently deliver push notifications via Apple APNs or Google FCM. The posture for push — whether payloads will be opaque wake-up signals, contain encrypted content that an on-device notification-service extension decrypts locally, or include readable previews — is still being designed.',
+            'Rhize does not currently deliver push notifications via Apple APNs or Google FCM. The posture for push — whether payloads will be opaque wake-up signals, contain encrypted content that an on-device notification-service extension decrypts locally, or include readable previews — is still being designed.',
         },
         {
           kind: 'p',
           html:
-            'Push notifications are a well-known metadata surface for end-to-end encrypted applications: Apple and Google can observe the timing and addressing of every notification, along with any readable payload. When push ships on Penrose, this section will state explicitly what APNs and FCM can observe.',
+            'Push notifications are a well-known metadata surface for end-to-end encrypted applications: Apple and Google can observe the timing and addressing of every notification, along with any readable payload. When push ships on Rhize, this section will state explicitly what APNs and FCM can observe.',
         },
       ],
     },
@@ -945,7 +945,7 @@ Deliver sealed envelope
       id: 'invariant',
       heading: '9. The privacy invariant',
       blocks: [
-        { kind: 'p', html: 'Penrose operates under a single, non-negotiable invariant:' },
+        { kind: 'p', html: 'Rhize operates under a single, non-negotiable invariant:' },
         {
           kind: 'callout',
           variant: 'invariant',
@@ -1041,7 +1041,7 @@ Deliver sealed envelope
             ],
             ['Bluesky AppView / Relay', 'Post metadata, follow graph', 'Content, keys'],
             [
-              'Penrose server',
+              'Rhize server',
               'Profile rows (DID + EMK), post-index metadata, sealed-sender inbox rows (opaque envelopes), invites',
               'Sender identity for inbox messages, plaintext content, plaintext keys, passwords, vault keys',
             ],
@@ -1088,7 +1088,7 @@ Deliver sealed envelope
         {
           kind: 'p',
           html:
-            'End-to-end encryption on the private layer means Penrose cannot observe the contents of private posts, DMs, or circle-key payloads. A moderation model for private content therefore must rest on explicit user action: a recipient reports an incident, at which point their client uploads the decrypted message and the sender’s identity for review.',
+            'End-to-end encryption on the private layer means Rhize cannot observe the contents of private posts, DMs, or circle-key payloads. A moderation model for private content therefore must rest on explicit user action: a recipient reports an incident, at which point their client uploads the decrypted message and the sender’s identity for review.',
         },
         {
           kind: 'p',
@@ -1113,7 +1113,7 @@ Deliver sealed envelope
         {
           kind: 'p',
           html:
-            "Penrose's zero-trust design dictates what Penrose cannot produce under lawful compulsion, because Penrose never held the material:",
+            "Rhize's zero-trust design dictates what Rhize cannot produce under lawful compulsion, because Rhize never held the material:",
         },
         {
           kind: 'ul',
@@ -1124,7 +1124,7 @@ Deliver sealed envelope
             "No mapping from a user's DID to legal identity beyond what the user has voluntarily associated with the account.",
           ],
         },
-        { kind: 'p', html: 'What Penrose does hold, and could therefore be compelled to produce:' },
+        { kind: 'p', html: 'What Rhize does hold, and could therefore be compelled to produce:' },
         {
           kind: 'ul',
           items: [
@@ -1146,7 +1146,7 @@ Deliver sealed envelope
         {
           kind: 'p',
           html:
-            'Individual cryptographic primitives used in Penrose have been independently audited — notably <code>@noble/post-quantum</code> (ML-KEM) by Cure53. The Penrose system as a whole — the vault hierarchy, the posting and inbox protocols, the privacy invariant, and the client implementations — has not yet been independently audited. A system-level audit is a priority for a near-term release; results will be published here when available.',
+            'Individual cryptographic primitives used in Rhize have been independently audited — notably <code>@noble/post-quantum</code> (ML-KEM) by Cure53. The Rhize system as a whole — the vault hierarchy, the posting and inbox protocols, the privacy invariant, and the client implementations — has not yet been independently audited. A system-level audit is a priority for a near-term release; results will be published here when available.',
         },
         { kind: 'h3', text: 'Reporting a vulnerability' },
         {
@@ -1170,7 +1170,7 @@ Deliver sealed envelope
           kind: 'ul',
           items: [
             "<strong>Out-of-band contact verification.</strong> Safety-number / QR-code UI for users to manually confirm a contact's ML-KEM-1024 public key before Trust-On-First-Use binds (§8.4). TOFU detects key substitution on any subsequent exchange; OOB verification closes the residual first-contact window against a PDS operator who might substitute a key before the first binding. Planned for a near-term release; mirrors Signal's safety-number model when it ships.",
-            "<strong>Key transparency.</strong> The industry direction is an append-only public log of post-quantum public keys, letting any user verify that the key Penrose's server attributes to a contact matches what that contact actually published. Penrose ships with TOFU (§8.4) — strong but not equivalent to a transparency log. A future release will add one.",
+            "<strong>Key transparency.</strong> The industry direction is an append-only public log of post-quantum public keys, letting any user verify that the key Rhize's server attributes to a contact matches what that contact actually published. Rhize ships with TOFU (§8.4) — strong but not equivalent to a transparency log. A future release will add one.",
             '<strong>Reproducible builds and binary attestation.</strong> The open-source codebase is verifiable; the compiled mobile and web binaries are not yet byte-for-byte reproducible from source. Shipping reproducible builds — and, on supported platforms, code-transparency attestations — is planned.',
             '<strong>Formal post-quantum migration protocol.</strong> The <code>.zen</code> format carries a <code>version</code> field (§5.3), and clients negotiate on it: newer clients read older versions, older clients surface an “update required” placeholder for newer ones. A documented rekey-window protocol for moving circle keys and messaging keys across a primitive change is not yet specified; it will be added before the first primitive rotation.',
           ],
@@ -1184,23 +1184,23 @@ Deliver sealed envelope
         {
           kind: 'p',
           html:
-            "Signal is the most-studied end-to-end encrypted messaging system; comparing Penrose's encryption posture to Signal's is a useful way to position the trade-offs we made. Penrose targets a different design center — a privacy-first social network with persistent, server-resident ciphertext on the user's AT Protocol PDS — but most of the cryptographic mechanics overlap.",
+            "Signal is the most-studied end-to-end encrypted messaging system; comparing Rhize's encryption posture to Signal's is a useful way to position the trade-offs we made. Rhize targets a different design center — a privacy-first social network with persistent, server-resident ciphertext on the user's AT Protocol PDS — but most of the cryptographic mechanics overlap.",
         },
         {
           kind: 'table',
-          headers: ['Property', 'Penrose', 'Signal', 'Verdict'],
+          headers: ['Property', 'Rhize', 'Signal', 'Verdict'],
           rows: [
             ['End-to-end encryption', 'XSalsa20-Poly1305, AES-256', 'AES-256-CBC + HMAC-SHA256', '<strong>Comparable</strong>'],
             [
               'Post-quantum key exchange',
               'ML-KEM-1024 on every exchange (§2, §8.1)',
               'PQXDH (Kyber-768) on initial handshake only; Double Ratchet remains classical',
-              '<strong>Penrose stronger</strong>',
+              '<strong>Rhize stronger</strong>',
             ],
             [
               'Sealed-sender inbox',
               'Two-layer envelope (§8.2.1), adapted from Signal to a post-quantum KEM',
-              "Sealed Sender (the design Penrose's is modelled on)",
+              "Sealed Sender (the design Rhize's is modelled on)",
               '<strong>Comparable</strong>',
             ],
             [
@@ -1220,7 +1220,7 @@ Deliver sealed envelope
               'Identity portability',
               'DID + handle on AT Protocol — portable across PDSes and AT-Proto apps',
               "Tied to a Signal account on Signal's infrastructure",
-              '<strong>Penrose stronger</strong>',
+              '<strong>Rhize stronger</strong>',
             ],
             [
               'MITM resistance after first contact',
@@ -1245,7 +1245,7 @@ Deliver sealed envelope
         {
           kind: 'p',
           html:
-            "The rows where Penrose is weaker — forward secrecy, post-compromise security, audit maturity — are direct consequences of the design center. A social network whose messages live on a user's PDS cannot ratchet per-message without re-encrypting every historical record on every step; the trade-off is a deliberate one. The protections Penrose ships in exchange — quantum-resistant key exchange on every handshake, a portable identity on an open network, and a sealed-sender inbox that doesn't depend on a single trusted operator — are properties Signal does not (and structurally cannot) provide.",
+            "The rows where Rhize is weaker — forward secrecy, post-compromise security, audit maturity — are direct consequences of the design center. A social network whose messages live on a user's PDS cannot ratchet per-message without re-encrypting every historical record on every step; the trade-off is a deliberate one. The protections Rhize ships in exchange — quantum-resistant key exchange on every handshake, a portable identity on an open network, and a sealed-sender inbox that doesn't depend on a single trusted operator — are properties Signal does not (and structurally cannot) provide.",
         },
       ],
     },
@@ -1257,12 +1257,12 @@ Deliver sealed envelope
         {
           kind: 'ol',
           items: [
-            "<strong>No plaintext key ever crosses a network boundary.</strong> The Vault Key is generated on device; it leaves only as the EVK (wrapped under the Master Key) to the PDS and never reaches Penrose's server. The Master Key leaves only as the EMK (wrapped under the PDK) to the Penrose server.",
+            "<strong>No plaintext key ever crosses a network boundary.</strong> The Vault Key is generated on device; it leaves only as the EVK (wrapped under the Master Key) to the PDS and never reaches Rhize's server. The Master Key leaves only as the EMK (wrapped under the PDK) to the Rhize server.",
             '<strong>No plaintext content ever crosses a network boundary.</strong> Posts are encrypted on device before any upload; <code>.zen</code> blobs are opaque to Bluesky; direct messages and inbox messages are sealed under the recipient\'s Kyber key.',
             "<strong>Server-side gateways see no secrets.</strong> The write gateway handles OAuth access tokens and DPoP proofs only long enough to relay the PDS verification call. It never holds the DPoP private key (which lives in the user's secure element) and never touches vault, messaging, or circle keys. On the inbox-write path it sees neither a session token nor a sender identity — sealed-sender envelopes self-authenticate to the recipient and require no server-side caller authentication.",
             '<strong>Fail-closed discipline.</strong> The privacy invariant (§9) makes it structurally impossible for a private-intended post to become public without an explicit code change.',
             '<strong>Vendored crypto libraries.</strong> All cryptographic primitives are either pinned or copied into the repository; library updates require a deliberate change.',
-            '<strong>Independent key-at-rest layer.</strong> The vault hierarchy (§3) means compromising any single server (Bluesky <em>or</em> Penrose) does not yield an offline brute-force target — an attacker needs material from both.',
+            '<strong>Independent key-at-rest layer.</strong> The vault hierarchy (§3) means compromising any single server (Bluesky <em>or</em> Rhize) does not yield an offline brute-force target — an attacker needs material from both.',
           ],
         },
       ],
@@ -1282,13 +1282,13 @@ Deliver sealed envelope
             '<strong>PDS session verification</strong> at the single write gateway ensures callers are who they claim to be before any non-inbox server-side mutation (post-index entries, profile rows, encrypted-master-key storage).',
             "<strong>Confirmed-sender authentication via TOFU fingerprinting and sealed-sender Layer 2</strong> detects any post-first-contact key substitution by a compromised PDS — every envelope must open under the recipient's bound messaging key for the claimed sender. First-contact out-of-band verification is planned (see Future work).",
             '<strong>Fail-closed privacy invariant</strong> prevents silent downgrade from private to public at every layer.',
-            "<strong>No plaintext ever touches a server.</strong> The only trust root for content confidentiality is the user's device, the user's encryption password, and (once OOB verification ships) the user's own out-of-band attestation of contact fingerprints. Neither the Bluesky PDS nor the Penrose server is trusted for confidentiality. See §1.4 for a precise statement of what “zero-trust” does and does not cover.",
+            "<strong>No plaintext ever touches a server.</strong> The only trust root for content confidentiality is the user's device, the user's encryption password, and (once OOB verification ships) the user's own out-of-band attestation of contact fingerprints. Neither the Bluesky PDS nor the Rhize server is trusted for confidentiality. See §1.4 for a precise statement of what “zero-trust” does and does not cover.",
           ],
         },
         {
           kind: 'p',
           html:
-            "Even a fully compromised Bluesky PDS and a fully compromised Penrose server cannot, individually or together, read a single word of a user's private content — today or in a post-quantum future, given a compliant encryption password.",
+            "Even a fully compromised Bluesky PDS and a fully compromised Rhize server cannot, individually or together, read a single word of a user's private content — today or in a post-quantum future, given a compliant encryption password.",
         },
       ],
     },
@@ -1316,7 +1316,7 @@ Deliver sealed envelope
               'Decentralized Identifier. In AT Protocol, a long-lived, repository-rooted identity string (e.g., <code>did:plc:xxxxxx</code>).',
             ],
             ['<strong>E2EE</strong>', 'End-to-end encrypted.'],
-            ['<strong>EMK</strong>', "Encrypted Master Key — the Master Key wrapped under the PDK, stored on Penrose's server."],
+            ['<strong>EMK</strong>', "Encrypted Master Key — the Master Key wrapped under the PDK, stored on Rhize's server."],
             ['<strong>EVK</strong>', "Encrypted Vault Key — the Vault Key wrapped under the Master Key, stored on the user's PDS."],
             [
               '<strong>HKDF</strong>',

@@ -65,9 +65,9 @@ interface VariantConfig {
 }
 
 const VARIANTS: Record<string, VariantConfig> = {
-  'dev.denazen.com':  { scheme: 'com.denazen.dev',  client_name: 'Denazen Dev',  client_uri_host: 'dev.denazen.com'  },
-  'beta.denazen.com': { scheme: 'com.denazen.beta', client_name: 'Denazen Beta', client_uri_host: 'beta.denazen.com' },
-  'denazen.com':      { scheme: 'com.denazen',      client_name: 'Denazen',      client_uri_host: 'denazen.com'      },
+  'dev.denazen.com':  { scheme: 'com.denazen.dev',  client_name: 'Rhize Dev',  client_uri_host: 'dev.denazen.com'  },
+  'beta.denazen.com': { scheme: 'com.denazen.beta', client_name: 'Rhize Beta', client_uri_host: 'beta.denazen.com' },
+  'denazen.com':      { scheme: 'com.denazen',      client_name: 'Rhize',      client_uri_host: 'denazen.com'      },
 };
 
 const DEFAULT_VARIANT: VariantConfig = VARIANTS['denazen.com'];

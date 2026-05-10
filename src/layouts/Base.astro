@@ -37,7 +37,7 @@ const xDefault = alternates.find((a) => a.lang === defaultLang)?.href;
 const ogImageResolved = localizeAsset(ogImage, lang);
 const ogImageUrl = new URL(ogImageResolved, site).href;
 const shareTagline = lang === 'es' ? SHARE_TAGLINE_ES : SHARE_TAGLINE_EN;
-const ogTitleResolved = ogTitle ?? `Penrose — ${shareTagline}`;
+const ogTitleResolved = ogTitle ?? `Rhize — ${shareTagline}`;
 ---
 <!doctype html>
 <html lang={lang}>
@@ -52,11 +52,11 @@ const ogTitleResolved = ogTitle ?? `Penrose — ${shareTagline}`;
     ))}
     {xDefault && <link rel="alternate" hreflang="x-default" href={xDefault} />}
 
-    <link rel="icon" type="image/png" href="/favicon/icon.png?v=3" />
-    <link rel="apple-touch-icon" href="/favicon/icon.png?v=3" />
-    <meta name="theme-color" content="#2884E0" />
+    <link rel="icon" type="image/png" href="/favicon/icon.png?v=4" />
+    <link rel="apple-touch-icon" href="/favicon/icon.png?v=4" />
+    <meta name="theme-color" content="#2EAB42" />
 
-    <meta property="og:site_name" content="Penrose" />
+    <meta property="og:site_name" content="Rhize" />
     <meta property="og:title" content={ogTitleResolved} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
@@ -64,14 +64,14 @@ const ogTitleResolved = ogTitle ?? `Penrose — ${shareTagline}`;
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`Penrose — ${shareTagline}`} />
+    <meta property="og:image:alt" content={`Rhize — ${shareTagline}`} />
     <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={ogTitleResolved} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
-    <meta name="twitter:image:alt" content={`Penrose — ${shareTagline}`} />
+    <meta name="twitter:image:alt" content={`Rhize — ${shareTagline}`} />
 
     <link rel="preload" href="/fonts/inter/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/inter/Inter-ExtraBold.woff2" as="font" type="font/woff2" crossorigin />

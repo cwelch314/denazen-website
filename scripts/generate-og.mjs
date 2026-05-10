@@ -20,7 +20,7 @@ const FONT_STACK = "'Inter', 'Helvetica Neue', 'Liberation Sans', 'DejaVu Sans',
 const variants = [
   {
     out: 'public/images/og-default.png',
-    wordmark: 'Penrose',
+    wordmark: 'Rhize',
     headingLines: ['Social media,', 'without compromise.'],
     sub: [
       'Privacy inspired by Signal.',
@@ -31,7 +31,7 @@ const variants = [
   },
   {
     out: 'public/images/es/og-default.png',
-    wordmark: 'Penrose',
+    wordmark: 'Rhize',
     headingLines: ['Las redes sociales,', 'sin concesiones.'],
     sub: [
       'Privacidad inspirada en Signal.',
@@ -65,12 +65,12 @@ function buildSvg(v) {
 <svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#003A6B"/>
-      <stop offset="100%" stop-color="#002647"/>
+      <stop offset="0%" stop-color="#0F4D1A"/>
+      <stop offset="100%" stop-color="#082F11"/>
     </linearGradient>
     <radialGradient id="glow" cx="22%" cy="42%" r="40%">
-      <stop offset="0%" stop-color="#2884E0" stop-opacity="0.35"/>
-      <stop offset="100%" stop-color="#2884E0" stop-opacity="0"/>
+      <stop offset="0%" stop-color="#2EAB42" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#2EAB42" stop-opacity="0"/>
     </radialGradient>
   </defs>
 
@@ -83,7 +83,7 @@ function buildSvg(v) {
     <text x="${TEXT_X}" y="190" font-size="64" font-weight="800" letter-spacing="-1.6">${heading[0]}</text>
     <text x="${TEXT_X}" y="262" font-size="64" font-weight="800" letter-spacing="-1.6">${heading[1]}</text>
 
-    <g fill="#ABD5FF" font-size="32" font-weight="500">
+    <g fill="#A8DDB3" font-size="32" font-weight="500">
       <text x="${TEXT_X}" y="346">${sub[0]}</text>
       <text x="${TEXT_X}" y="392">${sub[1]}</text>
       <text x="${TEXT_X}" y="438">${sub[2]}</text>

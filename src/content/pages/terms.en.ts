@@ -1,8 +1,8 @@
 export default {
   meta: {
-    title: 'Penrose',
+    title: 'Rhize',
     description:
-      "Penrose's terms of service — the rules for using the service, covering acceptable use, accounts, content, and liability.",
+      "Rhize's terms of service — the rules for using the service, covering acceptable use, accounts, content, and liability.",
   },
   heading: 'Terms of Service',
   lastUpdatedLabel: 'Last updated: ',
@@ -13,16 +13,16 @@ export default {
   sections: [
     {
       heading: '1. Agreement',
-      paragraphs: ['By using Penrose, you agree to these Terms. If you do not agree, do not use the service.'],
+      paragraphs: ['By using Rhize, you agree to these Terms. If you do not agree, do not use the service.'],
     },
     {
       heading: '2. Eligibility',
-      paragraphs: ['You must meet the minimum age required by applicable law in your jurisdiction to use Penrose.'],
+      paragraphs: ['You must meet the minimum age required by applicable law in your jurisdiction to use Rhize.'],
     },
     {
       heading: '3. Accounts',
       paragraphs: [
-        'Penrose uses AT Protocol identity. You are responsible for the security of your credentials and the devices that hold your encryption keys. If you lose access to your keys, you may permanently lose access to your private content.',
+        'Rhize uses AT Protocol identity. You are responsible for the security of your credentials and the devices that hold your encryption keys. If you lose access to your keys, you may permanently lose access to your private content.',
       ],
     },
     {
@@ -40,7 +40,7 @@ export default {
     {
       heading: '5. Content',
       paragraphs: [
-        'You retain rights to the content you post. You grant Penrose the limited rights needed to operate the service (store, transmit, and display your content to the audiences you specify).',
+        'You retain rights to the content you post. You grant Rhize the limited rights needed to operate the service (store, transmit, and display your content to the audiences you specify).',
       ],
     },
     {
@@ -64,7 +64,7 @@ export default {
     {
       heading: '9. Limitation of liability',
       paragraphs: [
-        'To the maximum extent permitted by law, Penrose is not liable for indirect, incidental, or consequential damages arising from use of the service.',
+        'To the maximum extent permitted by law, Rhize is not liable for indirect, incidental, or consequential damages arising from use of the service.',
       ],
     },
     {
