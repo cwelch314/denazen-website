@@ -36,23 +36,22 @@
 }
 
 /* ---------- Design tokens ---------- */
-/* Brand palette mirrors the rebrand from the denazen app
- * (src/theme/tokens.ts on the rebranding branch). Brand blue
- * is derived from the impossible-triangle (Penrose) logo;
- * navy supports the dark-band sections. */
+/* Brand palette derived from the tree-of-life logo: a vibrant
+ * leaf-green primary, with deep forest greens for the dark-band
+ * sections and a soft mint tint for accents. */
 :root {
   --c-bg: #ffffff;
-  --c-bg-tint: #EEF4FB;            /* subtle blue tint, derived from brandBlue100 */
+  --c-bg-tint: #ECF7EE;            /* subtle green tint, derived from brandGreen100 */
   --c-text: #212529;               /* gray900 */
   --c-text-soft: #495057;          /* gray700 */
   --c-text-muted: #6C757D;         /* gray600 */
   --c-border: #DEE2E6;             /* gray300 */
   --c-border-strong: #CED4DA;      /* gray400 */
-  --c-accent: #2884E0;             /* brandBlue500 */
-  --c-accent-hover: #005091;       /* brandBlue700 */
-  --c-accent-tint: #D9EBFF;        /* brandBlue100 */
-  --c-dark: #003A6B;               /* brandBlue800 (top of dark gradient) */
-  --c-dark-2: #002647;             /* brandBlue900 (bottom of dark gradient) */
+  --c-accent: #2EAB42;             /* brandGreen500 */
+  --c-accent-hover: #1F7A2C;       /* brandGreen700 */
+  --c-accent-tint: #D6F1DB;        /* brandGreen100 */
+  --c-dark: #0F4D1A;               /* brandGreen800 (top of dark gradient) */
+  --c-dark-2: #082F11;             /* brandGreen900 (bottom of dark gradient) */
 
   --font-sans: 'Inter', system-ui, -apple-system, Segoe UI, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -65,7 +64,7 @@
   --section-pad: 6rem;
   --section-pad-sm: 4rem;
 
-  --focus-ring: 0 0 0 3px rgba(40, 132, 224, 0.25);
+  --focus-ring: 0 0 0 3px rgba(46, 171, 66, 0.25);
 }
 
 /* ---------- Reset ---------- */
@@ -148,8 +147,8 @@ code {
   border-radius: 4px;
 }
 pre {
-  background: #0F1525;
-  color: #D9EBFF;
+  background: #0E1F12;
+  color: #D6F1DB;
   padding: 1rem 1.25rem;
   border-radius: var(--radius);
   overflow-x: auto;
@@ -183,7 +182,7 @@ section { padding-block: var(--section-pad); }
 .section-dark h1,
 .section-dark h2,
 .section-dark h3 { color: #ffffff; }
-.section-dark p { color: #D9EBFF; }
+.section-dark p { color: #D6F1DB; }
 
 .section-heading {
   text-align: center;
@@ -344,7 +343,7 @@ section { padding-block: var(--section-pad); }
   height: 1rem;
   cursor: pointer;
 }
-.section-dark .waitlist-checkbox { color: #ABD5FF; }
+.section-dark .waitlist-checkbox { color: #A8DDB3; }
 .waitlist input[type="email"] {
   flex: 1;
   padding: 0.75rem 1rem;
@@ -392,13 +391,13 @@ section { padding-block: var(--section-pad); }
 .section-dark .waitlist-error { color: #ffc9c9; }
 .waitlist input[type="email"]:disabled,
 .waitlist button:disabled { opacity: 0.6; cursor: not-allowed; }
-.section-dark .waitlist-note { color: #ABD5FF; }
+.section-dark .waitlist-note { color: #A8DDB3; }
 .section-dark .waitlist input[type="email"] {
   background: rgba(255,255,255,0.08);
   border-color: rgba(255,255,255,0.25);
   color: #ffffff;
 }
-.section-dark .waitlist input[type="email"]::placeholder { color: #ABD5FF; }
+.section-dark .waitlist input[type="email"]::placeholder { color: #A8DDB3; }
 .section-dark .waitlist input[type="email"]:focus-visible {
   background: rgba(255,255,255,0.12);
   border-color: #ffffff;
@@ -593,13 +592,13 @@ section { padding-block: var(--section-pad); }
 }
 
 .home-prose--dark p {
-  color: #D9EBFF;
+  color: #D6F1DB;
 }
 .home-prose--dark .home-list li {
-  color: #D9EBFF;
+  color: #D6F1DB;
 }
 .home-prose--dark .home-list li::before {
-  background: #D9EBFF;
+  background: #D6F1DB;
 }
 
 .home-closing {
@@ -1153,7 +1152,7 @@ section { padding-block: var(--section-pad); }
   border-radius: var(--radius);
   margin: 0 0 2.5rem;
 }
-.doc-lead p { color: #D9EBFF; margin: 0; }
+.doc-lead p { color: #D6F1DB; margin: 0; }
 .doc-lead p + p { margin-top: 0.75rem; }
 .doc-lead strong { color: #ffffff; }
 @media (max-width: 900px) {
