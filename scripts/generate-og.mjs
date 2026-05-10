@@ -20,7 +20,7 @@ const FONT_STACK = "'Inter', 'Helvetica Neue', 'Liberation Sans', 'DejaVu Sans',
 const variants = [
   {
     out: 'public/images/og-default.png',
-    wordmark: 'Penrose',
+    wordmark: 'Rhize',
     headingLines: ['Social media,', 'without compromise.'],
     sub: [
       'Privacy inspired by Signal.',
@@ -31,7 +31,7 @@ const variants = [
   },
   {
     out: 'public/images/es/og-default.png',
-    wordmark: 'Penrose',
+    wordmark: 'Rhize',
     headingLines: ['Las redes sociales,', 'sin concesiones.'],
     sub: [
       'Privacidad inspirada en Signal.',

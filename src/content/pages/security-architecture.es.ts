@@ -38,13 +38,13 @@ const content: {
   sections: Section[];
 } = {
   meta: {
-    title: 'Penrose',
+    title: 'Rhize',
     description:
-      'La arquitectura de cifrado de extremo a extremo de Penrose: modelo de contenido de confianza cero, intercambio de llaves post-cuántico (ML-KEM-1024, NIST Nivel 5), jerarquía de bóveda de cuatro niveles, inbox con metadatos mínimos y el invariante de privacidad a prueba de fallos.',
+      'La arquitectura de cifrado de extremo a extremo de Rhize: modelo de contenido de confianza cero, intercambio de llaves post-cuántico (ML-KEM-1024, NIST Nivel 5), jerarquía de bóveda de cuatro niveles, inbox con metadatos mínimos y el invariante de privacidad a prueba de fallos.',
   },
   heading: 'Arquitectura de seguridad y cifrado',
   lead:
-    'Un libro blanco técnico que describe el modelo de cifrado de extremo a extremo usado por Penrose. Escrito para ingenieros de seguridad, criptógrafos y desarrolladores que evalúan las garantías de privacidad de Penrose.',
+    'Un libro blanco técnico que describe el modelo de cifrado de extremo a extremo usado por Rhize. Escrito para ingenieros de seguridad, criptógrafos y desarrolladores que evalúan las garantías de privacidad de Rhize.',
   plainLang: {
     before: '¿Prefieres la versión en lenguaje sencillo? Consulta las ',
     linkText: 'preguntas frecuentes',
@@ -59,7 +59,7 @@ const content: {
   },
   draftNotice: {
     title: 'Borrador — aún no listo para revisión técnica o de investigación',
-    body: 'Este documento de arquitectura es un borrador previo al lanzamiento. El contenido, el alcance y las afirmaciones pueden cambiar antes de que Penrose esté disponible públicamente. No cites esta versión.',
+    body: 'Este documento de arquitectura es un borrador previo al lanzamiento. El contenido, el alcance y las afirmaciones pueden cambiar antes de que Rhize esté disponible públicamente. No cites esta versión.',
   },
   placeholder: {
     notice: {
@@ -68,7 +68,7 @@ const content: {
     },
     formHeading: 'Avísame cuando se publique',
     formIntro:
-      'Déjanos tu correo para solicitar una invitación a Penrose. Marca la casilla y también te enviaremos una copia del libro blanco de arquitectura de cifrado en cuanto sea público.',
+      'Déjanos tu correo para solicitar una invitación a Rhize. Marca la casilla y también te enviaremos una copia del libro blanco de arquitectura de cifrado en cuanto sea público.',
     buttonLabel: 'Solicitar invitación',
     note: 'Beta solo por invitación. Solo te escribiremos sobre tu invitación y, si lo solicitas, sobre el libro blanco de arquitectura.',
     archDocCheckboxLabel: 'También envíenme una copia del libro blanco de arquitectura de cifrado cuando se publique.',
@@ -113,17 +113,17 @@ const content: {
     {
       kind: 'p',
       html:
-        'Penrose es un cliente social centrado en la privacidad construido sobre el AT Protocol — la red abierta que impulsa Bluesky. Combina publicaciones públicas en la red de Bluesky con publicaciones privadas, mensajes directos y contenido compartido en círculo que se cifran de extremo a extremo en el dispositivo del usuario antes de tocar cualquier servidor.',
+        'Rhize es un cliente social centrado en la privacidad construido sobre el AT Protocol — la red abierta que impulsa Bluesky. Combina publicaciones públicas en la red de Bluesky con publicaciones privadas, mensajes directos y contenido compartido en círculo que se cifran de extremo a extremo en el dispositivo del usuario antes de tocar cualquier servidor.',
     },
     {
       kind: 'p',
       html:
-        'Esta página describe la arquitectura de cifrado: la jerarquía de llaves, las primitivas criptográficas, los protocolos del inbox y de intercambio de llaves, y el modelo de amenazas que el diseño está construido para resistir. Está escrita para una audiencia técnica — ingenieros de seguridad, criptógrafos y desarrolladores que evalúan las garantías de privacidad de Penrose.',
+        'Esta página describe la arquitectura de cifrado: la jerarquía de llaves, las primitivas criptográficas, los protocolos del inbox y de intercambio de llaves, y el modelo de amenazas que el diseño está construido para resistir. Está escrita para una audiencia técnica — ingenieros de seguridad, criptógrafos y desarrolladores que evalúan las garantías de privacidad de Rhize.',
     },
     {
       kind: 'p',
       html:
-        '<strong>Afirmación central.</strong> Penrose apunta a un modelo de contenido de confianza cero. Ningún servidor, proveedor de infraestructura o desarrollador de Penrose puede leer contenido en texto plano o material de llaves, y ningún atacante de red — incluido un Personal Data Server (PDS) comprometido — puede sustituir llaves sin ser detectado. §1.4 establece el alcance exacto de esta afirmación.',
+        '<strong>Afirmación central.</strong> Rhize apunta a un modelo de contenido de confianza cero. Ningún servidor, proveedor de infraestructura o desarrollador de Rhize puede leer contenido en texto plano o material de llaves, y ningún atacante de red — incluido un Personal Data Server (PDS) comprometido — puede sustituir llaves sin ser detectado. §1.4 establece el alcance exacto de esta afirmación.',
     },
     { kind: 'hr' },
   ],
@@ -148,7 +148,7 @@ const content: {
         { kind: 'h3', text: '1.2 Adversarios considerados' },
         {
           kind: 'table',
-          headers: ['Adversario', 'Capacidad', 'Resultado bajo Penrose'],
+          headers: ['Adversario', 'Capacidad', 'Resultado bajo Rhize'],
           rows: [
             ['Observador pasivo de red', 'Interceptación TLS', 'Solo ve texto cifrado y tráfico protegido por TLS'],
             [
@@ -162,7 +162,7 @@ const content: {
               'Ve metadatos de publicaciones y el grafo de seguimientos; no ve contenido ni llaves',
             ],
             [
-              'Relay / base de datos de Penrose',
+              'Relay / base de datos de Rhize',
               'Lectura completa del lado del servidor',
               'Solo ve payloads cifrados, DIDs y metadatos',
             ],
@@ -172,7 +172,7 @@ const content: {
               'Solo ve tokens de acceso emitidos por OAuth y pruebas DPoP por solicitud para verificación de identidad; sin secretos de larga vida. Los tokens de acceso están ligados mediante DPoP a pares de llaves por sesión guardados en los elementos seguros del dispositivo del usuario (RFC 9449), así que capturar un token no permite por sí solo suplantar al usuario.',
             ],
             [
-              'Desarrollador de Penrose con acceso a la base de datos',
+              'Desarrollador de Rhize con acceso a la base de datos',
               'Metadatos + texto cifrado del servidor',
               'No puede derivar texto plano — la misma posición que el servidor',
             ],
@@ -195,21 +195,21 @@ const content: {
             '<strong>Sin secreto perfecto hacia adelante para llaves de larga vida.</strong> Las llaves de círculo y las llaves de mensajería persisten hasta que se rotan; el compromiso de una llave de mensajería actual expone los mensajes pasados cifrados con esa llave. La rotación está disponible pero no es automática por mensaje.',
             '<strong>Sin protección ante un dispositivo comprometido.</strong> Si un atacante tiene el dispositivo desbloqueado <em>y</em> la contraseña de cifrado del usuario, lo lee todo. Esta es la línea base estándar para sistemas cifrados de extremo a extremo.',
             '<strong>Los metadatos son parcialmente visibles.</strong> Los conteos de publicaciones, los tiempos y el grafo de seguimiento de Bluesky siguen siendo visibles para Bluesky mismo. El inbox (para mensajes directos e intercambios de llaves) está diseñado para ocultar la identidad del remitente y el tipo de mensaje al servidor que los almacena.',
-            '<strong>Las direcciones IP y los metadatos a nivel de red son visibles.</strong> Los clientes se comunican directamente con el servidor de Penrose y con los PDS de Bluesky sobre TLS; no se aplica ruteo tipo onion, proxy ni capa de transporte sellada. Cualquiera con visibilidad a nivel de red ve que una IP determinada se comunica con Penrose, aunque no pueda ver lo que se dice. Los usuarios que requieran anonimato a nivel de red deben enrutar su tráfico a través de una capa de anonimato separada.',
+            '<strong>Las direcciones IP y los metadatos a nivel de red son visibles.</strong> Los clientes se comunican directamente con el servidor de Rhize y con los PDS de Bluesky sobre TLS; no se aplica ruteo tipo onion, proxy ni capa de transporte sellada. Cualquiera con visibilidad a nivel de red ve que una IP determinada se comunica con Rhize, aunque no pueda ver lo que se dice. Los usuarios que requieran anonimato a nivel de red deben enrutar su tráfico a través de una capa de anonimato separada.',
           ],
         },
         { kind: 'h3', text: '1.4 Qué cubre la confianza cero — y qué no', id: 'zero-trust-scope' },
         {
           kind: 'p',
           html:
-            'El «modelo de contenido de confianza cero» de Penrose es una afirmación precisa y auditable. No es una afirmación de que nada es de confianza. Esta subsección indica exactamente qué cubre la afirmación y qué no, para que los revisores puedan evaluarla contra un alcance concreto.',
+            'El «modelo de contenido de confianza cero» de Rhize es una afirmación precisa y auditable. No es una afirmación de que nada es de confianza. Esta subsección indica exactamente qué cubre la afirmación y qué no, para que los revisores puedan evaluarla contra un alcance concreto.',
         },
         { kind: 'h4', text: 'Qué SÍ es de confianza cero' },
         {
           kind: 'ul',
           items: [
-            '<strong>Confidencialidad del contenido.</strong> Ningún servidor — PDS de Bluesky, relay de Penrose, función edge de Penrose — puede leer una publicación privada, un DM o un intercambio de llave de círculo. El texto cifrado es opaco en reposo y en tránsito; el material de descifrado vive solo en los dispositivos de los destinatarios elegidos.',
-            '<strong>Confidencialidad del material de llaves.</strong> La Llave de Bóveda nunca sale del dispositivo en texto plano. La Llave Maestra llega al servidor de Penrose solo como EMK (envuelta por la PDK). Las llaves simétricas de larga vida — mensajería, círculo, contenido, secreto Kyber — se envuelven en reposo y se cifran bajo secretos compartidos efímeros en tránsito. Ningún servidor posee, ni puede derivar, material de llaves en texto plano.',
+            '<strong>Confidencialidad del contenido.</strong> Ningún servidor — PDS de Bluesky, relay de Rhize, función edge de Rhize — puede leer una publicación privada, un DM o un intercambio de llave de círculo. El texto cifrado es opaco en reposo y en tránsito; el material de descifrado vive solo en los dispositivos de los destinatarios elegidos.',
+            '<strong>Confidencialidad del material de llaves.</strong> La Llave de Bóveda nunca sale del dispositivo en texto plano. La Llave Maestra llega al servidor de Rhize solo como EMK (envuelta por la PDK). Las llaves simétricas de larga vida — mensajería, círculo, contenido, secreto Kyber — se envuelven en reposo y se cifran bajo secretos compartidos efímeros en tránsito. Ningún servidor posee, ni puede derivar, material de llaves en texto plano.',
             '<strong>Resistencia a MITM (con verificación fuera de banda, planificada).</strong> Trust-On-First-Use vincula la llave pública ML-KEM-1024 de un contacto en el primer intercambio y detecta cualquier sustitución posterior. Cuando se entregue la verificación fuera de banda (consulta Trabajo futuro), la ventana residual de primer contacto se cierra y un PDS comprometido no puede sustituir la llave pública de un contacto sin ser detectado.',
             '<strong>No vinculabilidad del remitente en el inbox.</strong> El servidor del inbox no puede saber quién envió un mensaje dado. La identidad del remitente se cifra bajo la llave pública post-cuántica del destinatario dentro del sobre sellado (§8.2.1) y solo el destinatario puede recuperarla. Dos sobres del mismo remitente al mismo destinatario son indistinguibles como texto cifrado.',
             '<strong>El invariante de privacidad a prueba de fallos (§9).</strong> Un usuario que quiere crear una publicación privada no puede producir silenciosamente una pública. Esto se aplica como una propiedad estructural del cliente, no como una política.',
@@ -221,9 +221,9 @@ const content: {
           kind: 'ul',
           items: [
             '<strong>Metadatos y tiempos.</strong> El AppView y el Relay de Bluesky ven conteos de publicaciones, marcas de tiempo, grafos de seguimiento y contenido público. El inbox oculta la identidad del remitente y el tipo de mensaje, pero no los tiempos de actividad por usuario ni los conteos de mensajes.',
-            '<strong>Disponibilidad.</strong> Los servidores de Penrose y la infraestructura de Bluesky deben estar activos para que el servicio sea usable. Un operador malicioso puede negar el servicio; simplemente no puede leer contenido privado.',
-            '<strong>Publicaciones en texto plano de la capa de Bluesky.</strong> Las publicaciones públicas (registros <code>app.bsky.feed.post</code> sin el marcador de cifrado de Penrose) están en texto plano en la infraestructura de Bluesky por diseño — eso es lo que las hace públicas. Su integridad es la que Bluesky proporcione.',
-            '<strong>Credenciales de la cuenta de Bluesky.</strong> La contraseña de Bluesky (o passkey, factor 2FA, etc.) se ingresa en la página de inicio de sesión alojada por Bluesky y es procesada por la infraestructura de Bluesky. Penrose no ve, toca ni posee estas credenciales en ningún momento — pero su confidencialidad es responsabilidad de Bluesky, no de Penrose. Un usuario que reutiliza su contraseña de Bluesky en otros lugares acepta los riesgos de esa reutilización. Un usuario cuya cuenta de Bluesky se vea comprometida a nivel de Bluesky verá que su contenido privado de Penrose permanece cifrado (eso es lo que protege la contraseña de cifrado), pero el atacante podrá autorizar una sesión OAuth nueva en Penrose y estaría entonces limitado solo por la barrera de la contraseña de cifrado.',
+            '<strong>Disponibilidad.</strong> Los servidores de Rhize y la infraestructura de Bluesky deben estar activos para que el servicio sea usable. Un operador malicioso puede negar el servicio; simplemente no puede leer contenido privado.',
+            '<strong>Publicaciones en texto plano de la capa de Bluesky.</strong> Las publicaciones públicas (registros <code>app.bsky.feed.post</code> sin el marcador de cifrado de Rhize) están en texto plano en la infraestructura de Bluesky por diseño — eso es lo que las hace públicas. Su integridad es la que Bluesky proporcione.',
+            '<strong>Credenciales de la cuenta de Bluesky.</strong> La contraseña de Bluesky (o passkey, factor 2FA, etc.) se ingresa en la página de inicio de sesión alojada por Bluesky y es procesada por la infraestructura de Bluesky. Rhize no ve, toca ni posee estas credenciales en ningún momento — pero su confidencialidad es responsabilidad de Bluesky, no de Rhize. Un usuario que reutiliza su contraseña de Bluesky en otros lugares acepta los riesgos de esa reutilización. Un usuario cuya cuenta de Bluesky se vea comprometida a nivel de Bluesky verá que su contenido privado de Rhize permanece cifrado (eso es lo que protege la contraseña de cifrado), pero el atacante podrá autorizar una sesión OAuth nueva en Rhize y estaría entonces limitado solo por la barrera de la contraseña de cifrado.',
             '<strong>Intercambios de primer contacto antes de que se entregue la verificación fuera de banda.</strong> TOFU detecta cualquier sustitución de llave tras el primer contacto, pero no durante él. Un operador de PDS que sustituya la llave de un contacto <em>antes</em> de la primera vinculación puede inyectarse; la detección requiere la función de verificación OOB (consulta Trabajo futuro).',
             '<strong>Equivalencia de contraseña elegida por el usuario.</strong> Toda garantía criptográfica se apoya en última instancia en la entropía de la contraseña de cifrado (§4.1). Un usuario que elige una contraseña de baja entropía acepta un margen más débil frente a ataques offline. La arquitectura ofrece herramientas; no puede imponer buenas elecciones de contraseña más allá del mínimo de 12 caracteres.',
           ],
@@ -235,13 +235,13 @@ const content: {
           items: [
             '<strong>El dispositivo del usuario.</strong> El almacenamiento seguro de la plataforma (iOS Keychain / Android Keystore) guarda las llaves desbloqueadas por la sesión; un dispositivo comprometido queda explícitamente fuera del alcance (§1.3).',
             '<strong>La contraseña de cifrado del usuario.</strong> Nunca se transmite. La entropía determina el margen frente a ataques offline (§4.1).',
-            '<strong>(Una vez que se entregue la verificación fuera de banda)</strong> La atestación fuera de banda del usuario de las huellas de los contactos — un segundo canal que no pasa por la infraestructura de Penrose ni de Bluesky.',
+            '<strong>(Una vez que se entregue la verificación fuera de banda)</strong> La atestación fuera de banda del usuario de las huellas de los contactos — un segundo canal que no pasa por la infraestructura de Rhize ni de Bluesky.',
           ],
         },
         {
           kind: 'p',
           html:
-            'Ni el PDS de Bluesky, ni el relay de Penrose, ni ningún operador externo aparecen en esta lista. Eso es lo que significa «confianza cero» aquí, y ese es su alcance preciso.',
+            'Ni el PDS de Bluesky, ni el relay de Rhize, ni ningún operador externo aparecen en esta lista. Eso es lo que significa «confianza cero» aquí, y ese es su alcance preciso.',
         },
       ],
     },
@@ -289,7 +289,7 @@ const content: {
         {
           kind: 'p',
           html:
-            'Penrose usa una <strong>jerarquía de bóveda de cuatro niveles</strong> para la protección de llaves en reposo y una familia separada de <strong>llaves de contenido / intercambio</strong> para mensajería y publicaciones.',
+            'Rhize usa una <strong>jerarquía de bóveda de cuatro niveles</strong> para la protección de llaves en reposo y una familia separada de <strong>llaves de contenido / intercambio</strong> para mensajería y publicaciones.',
         },
         { kind: 'h3', text: '3.1 Jerarquía de bóveda (en reposo)' },
         {
@@ -308,8 +308,8 @@ const content: {
         {
           kind: 'ul',
           items: [
-            'La <strong>Llave Maestra</strong> vive en el servidor de Penrose (cifrada por la PDK); la <strong>EVK</strong> vive en el PDS de Bluesky del usuario (cifrada por la Llave Maestra).',
-            'Para montar un ataque offline de fuerza bruta contra la contraseña de cifrado, un atacante necesita <em>tanto</em> (a) la EMK del servidor de Penrose como (b) la EVK más la sal y los parámetros de Argon2 del PDS. Ningún servidor individual, y ningún operador comprometido individual, posee material suficiente para ejecutar el ataque.',
+            'La <strong>Llave Maestra</strong> vive en el servidor de Rhize (cifrada por la PDK); la <strong>EVK</strong> vive en el PDS de Bluesky del usuario (cifrada por la Llave Maestra).',
+            'Para montar un ataque offline de fuerza bruta contra la contraseña de cifrado, un atacante necesita <em>tanto</em> (a) la EMK del servidor de Rhize como (b) la EVK más la sal y los parámetros de Argon2 del PDS. Ningún servidor individual, y ningún operador comprometido individual, posee material suficiente para ejecutar el ataque.',
             'Los cambios de contraseña reenvuelven la Llave Maestra con una nueva PDK pero dejan la Llave de Bóveda (y por tanto todo el cifrado por registro) intacta — sin tormenta de recifrado.',
           ],
         },
@@ -369,7 +369,7 @@ El usuario envía la contraseña de cifrado.
    ▼
 Derivar PDK = Argon2id(contraseña_de_cifrado, sal).
    ▼
-Obtener EMK del servidor de Penrose.
+Obtener EMK del servidor de Rhize.
    ▼
 Llave Maestra = descifrar(EMK, PDK, XSalsa20-Poly1305).
    Fallo de MAC → "contraseña de cifrado incorrecta" (no "no hay cuenta").
@@ -383,7 +383,7 @@ Almacenar {PDK, Maestra, Bóveda} en el almacenamiento seguro del dispositivo pa
         {
           kind: 'p',
           html:
-            'La parte de autenticación con Bluesky corre en la página alojada por Bluesky (<code>bsky.social</code>) dentro de una hoja de navegador gestionada por el SO (<code>ASWebAuthenticationSession</code> en iOS, Custom Tabs en Android). Bluesky maneja el ingreso de usuario / correo, contraseña (o passkey), 2FA, captcha y confirmación por correo — Penrose nunca ve las credenciales de Bluesky del usuario. El flujo OAuth retorna un token de acceso ligado a un par de llaves DPoP por sesión (RFC 9449); el par de llaves se genera en el dispositivo, se persiste de forma no extraíble en iOS Keychain / Android Keystore, y se usa para firmar cada solicitud al PDS. La renovación del token la maneja de forma transparente <code>@atproto/oauth-client-expo</code> sin re-solicitud visible.',
+            'La parte de autenticación con Bluesky corre en la página alojada por Bluesky (<code>bsky.social</code>) dentro de una hoja de navegador gestionada por el SO (<code>ASWebAuthenticationSession</code> en iOS, Custom Tabs en Android). Bluesky maneja el ingreso de usuario / correo, contraseña (o passkey), 2FA, captcha y confirmación por correo — Rhize nunca ve las credenciales de Bluesky del usuario. El flujo OAuth retorna un token de acceso ligado a un par de llaves DPoP por sesión (RFC 9449); el par de llaves se genera en el dispositivo, se persiste de forma no extraíble en iOS Keychain / Android Keystore, y se usa para firmar cada solicitud al PDS. La renovación del token la maneja de forma transparente <code>@atproto/oauth-client-expo</code> sin re-solicitud visible.',
         },
         { kind: 'p', html: '<strong>La configuración inicial</strong> es a prueba de fallos en tres fases:' },
         {
@@ -407,7 +407,7 @@ Almacenar {PDK, Maestra, Bóveda} en el almacenamiento seguro del dispositivo pa
           items: [
             '<strong>Longitud mínima:</strong> 12 caracteres. Este es el único requisito duro para el envío.',
             '<strong>Sin longitud máxima.</strong> Las frases de paso son bienvenidas.',
-            '<strong>Independiente de la contraseña de Bluesky.</strong> Las credenciales de Bluesky se ingresan en la página alojada de inicio de sesión de Bluesky durante el flujo OAuth y nunca tocan el proceso de Penrose; no hay oportunidad de que la contraseña de cifrado se filtre de forma cruzada a través de Penrose aunque el usuario elija cadenas idénticas. (Aun así, se recomienda encarecidamente elegir contraseñas distintas y de alta entropía para ambos sistemas.)',
+            '<strong>Independiente de la contraseña de Bluesky.</strong> Las credenciales de Bluesky se ingresan en la página alojada de inicio de sesión de Bluesky durante el flujo OAuth y nunca tocan el proceso de Rhize; no hay oportunidad de que la contraseña de cifrado se filtre de forma cruzada a través de Rhize aunque el usuario elija cadenas idénticas. (Aun así, se recomienda encarecidamente elegir contraseñas distintas y de alta entropía para ambos sistemas.)',
           ],
         },
         { kind: 'h4', text: 'El medidor de fuerza en tiempo real' },
@@ -464,13 +464,13 @@ Almacenar {PDK, Maestra, Bóveda} en el almacenamiento seguro del dispositivo pa
         {
           kind: 'p',
           html:
-            '<strong>Penrose no ofrece recuperación de contraseña.</strong> Si un usuario pierde su contraseña de cifrado, su contenido privado se vuelve permanentemente inaccesible:',
+            '<strong>Rhize no ofrece recuperación de contraseña.</strong> Si un usuario pierde su contraseña de cifrado, su contenido privado se vuelve permanentemente inaccesible:',
         },
         {
           kind: 'ul',
           items: [
             'La PDK no puede re-derivarse de una contraseña olvidada.',
-            'La EMK en el servidor de Penrose queda como texto cifrado que nadie puede desbloquear.',
+            'La EMK en el servidor de Rhize queda como texto cifrado que nadie puede desbloquear.',
             'La EVK en el PDS del usuario queda como texto cifrado que nadie puede desbloquear.',
             'Todo el material privado — publicaciones pasadas, DMs recibidos, membresías de círculos — se pierde para la cuenta.',
           ],
@@ -483,18 +483,18 @@ Almacenar {PDK, Maestra, Bóveda} en el almacenamiento seguro del dispositivo pa
         {
           kind: 'p',
           html:
-            'Las publicaciones públicas (la capa de Bluesky) no se ven afectadas: viven bajo la identidad del AT Protocol, a la cual el usuario puede seguir accediendo mediante los propios clientes de Bluesky y los flujos de recuperación de cuenta. La pérdida de la bóveda de Penrose no toca la cuenta de Bluesky.',
+            'Las publicaciones públicas (la capa de Bluesky) no se ven afectadas: viven bajo la identidad del AT Protocol, a la cual el usuario puede seguir accediendo mediante los propios clientes de Bluesky y los flujos de recuperación de cuenta. La pérdida de la bóveda de Rhize no toca la cuenta de Bluesky.',
         },
         { kind: 'h3', text: '4.3 Dispositivos', id: 'devices' },
         {
           kind: 'p',
           html:
-            'Penrose es multi-dispositivo por diseño. Una cuenta no está ligada a un teléfono específico ni a un blob de llaves que debe sincronizarse entre dispositivos; está ligada a una identidad criptográfica cuyo material en reposo vive en infraestructura pública:',
+            'Rhize es multi-dispositivo por diseño. Una cuenta no está ligada a un teléfono específico ni a un blob de llaves que debe sincronizarse entre dispositivos; está ligada a una identidad criptográfica cuyo material en reposo vive en infraestructura pública:',
         },
         {
           kind: 'ul',
           items: [
-            'La <strong>EMK</strong> (Llave Maestra cifrada) vive en el servidor de Penrose, direccionable por el DID del usuario.',
+            'La <strong>EMK</strong> (Llave Maestra cifrada) vive en el servidor de Rhize, direccionable por el DID del usuario.',
             'La <strong>EVK</strong> (Llave de Bóveda cifrada) vive en el PDS de Bluesky del usuario bajo el registro de seguridad.',
             'Todas las llaves simétricas de larga vida — llaves de mensajería, llaves de círculo, llaves de amigo, llave secreta Kyber — viven en el PDS como registros cifrados envueltos bajo la Llave de Bóveda.',
           ],
@@ -503,7 +503,7 @@ Almacenar {PDK, Maestra, Bóveda} en el almacenamiento seguro del dispositivo pa
         {
           kind: 'ol',
           items: [
-            '<strong>OAuth de Bluesky</strong> en la página alojada de inicio de sesión de Bluesky — nombre de usuario, contraseña (o passkey), 2FA y cualquier otra credencial se ingresan en <code>bsky.social</code> mismo. Penrose recibe solo un token de acceso emitido por OAuth ligado a un par de llaves DPoP por sesión.',
+            '<strong>OAuth de Bluesky</strong> en la página alojada de inicio de sesión de Bluesky — nombre de usuario, contraseña (o passkey), 2FA y cualquier otra credencial se ingresan en <code>bsky.social</code> mismo. Rhize recibe solo un token de acceso emitido por OAuth ligado a un par de llaves DPoP por sesión.',
             '<strong>Contraseña de cifrado</strong> — para derivar la PDK, desbloquear la EMK, luego la EVK, y finalmente cada llave por registro en la bóveda.',
           ],
         },
@@ -521,7 +521,7 @@ Almacenar {PDK, Maestra, Bóveda} en el almacenamiento seguro del dispositivo pa
         {
           kind: 'p',
           html:
-            'Penrose no guarda contraseña de Bluesky ni contraseña de cifrado en el dispositivo. Tras un desbloqueo exitoso, el almacenamiento seguro del dispositivo (iOS Keychain / Android Keystore) contiene:',
+            'Rhize no guarda contraseña de Bluesky ni contraseña de cifrado en el dispositivo. Tras un desbloqueo exitoso, el almacenamiento seguro del dispositivo (iOS Keychain / Android Keystore) contiene:',
         },
         {
           kind: 'ul',
@@ -542,7 +542,7 @@ Almacenar {PDK, Maestra, Bóveda} en el almacenamiento seguro del dispositivo pa
             '<strong>Cierre de la app (sin cierre de sesión explícito).</strong> Las llaves de bóveda persisten en el almacenamiento seguro; los tokens OAuth persisten en el almacén respaldado por MMKV de la biblioteca. El próximo lanzamiento restaura ambos silenciosamente — sin solicitudes.',
             '<strong>Expiración de token.</strong> La biblioteca OAuth refresca el token de acceso en su próxima llamada saliente. Sin re-solicitud visible para el usuario; sin re-autenticación del lado de Bluesky.',
             '<strong>Cierre de sesión explícito.</strong> Las llaves de bóveda en caché se borran del almacenamiento seguro; los tokens OAuth se revocan del lado del servidor y el almacén local de la biblioteca se limpia. El próximo lanzamiento requiere el flujo completo de OAuth de Bluesky + contraseña de cifrado.',
-            '<strong>Dispositivo comprometido y desbloqueado.</strong> Las llaves de bóveda y el token de refresco OAuth están protegidos por hardware en la clase de Keychain / Keystore. Extraerlas requiere un SO comprometido. La contraseña de cifrado en sí no se almacena, así que no puede extraerse del dispositivo — solo atacarse offline contra el par EMK + EVK, lo cual requiere vulnerar tanto el servidor de Penrose como el PDS del usuario (§3.1).',
+            '<strong>Dispositivo comprometido y desbloqueado.</strong> Las llaves de bóveda y el token de refresco OAuth están protegidos por hardware en la clase de Keychain / Keystore. Extraerlas requiere un SO comprometido. La contraseña de cifrado en sí no se almacena, así que no puede extraerse del dispositivo — solo atacarse offline contra el par EMK + EVK, lo cual requiere vulnerar tanto el servidor de Rhize como el PDS del usuario (§3.1).',
             '<strong>Dispositivo con root / jailbreak.</strong> Las garantías de SecureStore son más débiles en un SO comprometido. Las llaves de bóveda permanecen envueltas frente al almacén seguro a nivel de SO; si ese almacén se ve comprometido, el atacante tiene acceso completo a la sesión.',
           ],
         },
@@ -586,7 +586,7 @@ Almacenar {PDK, Maestra, Bóveda} en el almacenamiento seguro del dispositivo pa
           items: [
             'Escribe el registro de llave de contenido en el PDS del autor. El payload incluye la llave de contenido cifrada y una referencia a la llave de círculo usada. Si esta escritura falla, la publicación queda <strong>bloqueada</strong> — nunca se degrada a texto plano.',
             'Sube todos los blobs <code>.zen</code> al PDS. Estos son blobs binarios opacos para Bluesky; el AppView los indexa solo como archivos adjuntos.',
-            'Publica el registro de la publicación con: Texto vacío (el texto real vive en <code>_text.zen</code>). Un marcador de app de Penrose. Una referencia AT URI a la llave de círculo usada. Una referencia AT URI al registro de llave de contenido. Embeds de documento para los archivos <code>.zen</code>.',
+            'Publica el registro de la publicación con: Texto vacío (el texto real vive en <code>_text.zen</code>). Un marcador de app de Rhize. Una referencia AT URI a la llave de círculo usada. Una referencia AT URI al registro de llave de contenido. Embeds de documento para los archivos <code>.zen</code>.',
             'Parchea el registro de llave de contenido con la URI final de la publicación (enlace bidireccional para limpieza al eliminar).',
           ],
         },
@@ -607,7 +607,7 @@ Almacenar {PDK, Maestra, Bóveda} en el almacenamiento seguro del dispositivo pa
         {
           kind: 'p',
           html:
-            'Para la generación del feed, el servidor de Penrose mantiene un <strong>índice solo de metadatos</strong> que consiste en <code>{post_uri, key_uri, author_did, indexed_at}</code>. Una regla de validación impone que la URI de la llave haga referencia al repositorio del propio autor, previniendo el envenenamiento del feed. Este índice permite a un miembro de un círculo enumerar rápidamente las publicaciones cifradas para él sin recorrer el repositorio de cada contacto.',
+            'Para la generación del feed, el servidor de Rhize mantiene un <strong>índice solo de metadatos</strong> que consiste en <code>{post_uri, key_uri, author_did, indexed_at}</code>. Una regla de validación impone que la URI de la llave haga referencia al repositorio del propio autor, previniendo el envenenamiento del feed. Este índice permite a un miembro de un círculo enumerar rápidamente las publicaciones cifradas para él sin recorrer el repositorio de cada contacto.',
         },
         {
           kind: 'p',
@@ -624,14 +624,14 @@ Almacenar {PDK, Maestra, Bóveda} en el almacenamiento seguro del dispositivo pa
         {
           kind: 'p',
           html:
-            'El comportamiento objetivo de Penrose es eliminar todos los metadatos no esenciales de las imágenes antes del cifrado, por defecto, sin acción requerida del usuario. La política exacta de limpieza — qué etiquetas se eliminan y cuáles se conservan (p. ej., la orientación) — está en diseño activo. Hasta que esto se entregue y se documente aquí, los usuarios que se preocupen por los metadatos de las imágenes deberían eliminarlos en su propio dispositivo antes de publicar.',
+            'El comportamiento objetivo de Rhize es eliminar todos los metadatos no esenciales de las imágenes antes del cifrado, por defecto, sin acción requerida del usuario. La política exacta de limpieza — qué etiquetas se eliminan y cuáles se conservan (p. ej., la orientación) — está en diseño activo. Hasta que esto se entregue y se documente aquí, los usuarios que se preocupen por los metadatos de las imágenes deberían eliminarlos en su propio dispositivo antes de publicar.',
         },
         { kind: 'h3', text: '5.6 Eliminación', id: 'deletion' },
         { kind: 'callout', variant: 'status', label: 'Estado', body: 'Parcialmente implementada; semántica completa en diseño activo.' },
         {
           kind: 'p',
           html:
-            'Hoy, eliminar una publicación privada quita el registro de la publicación, el registro de llave de contenido y los adjuntos <code>.zen</code> del PDS del autor, y quita la entrada correspondiente del índice de publicaciones privadas en el servidor de Penrose.',
+            'Hoy, eliminar una publicación privada quita el registro de la publicación, el registro de llave de contenido y los adjuntos <code>.zen</code> del PDS del autor, y quita la entrada correspondiente del índice de publicaciones privadas en el servidor de Rhize.',
         },
         { kind: 'p', html: 'Los siguientes aspectos aún se están especificando:' },
         {
@@ -645,7 +645,7 @@ Almacenar {PDK, Maestra, Bóveda} en el almacenamiento seguro del dispositivo pa
         {
           kind: 'p',
           html:
-            'Una vez finalizado, esta sección indicará qué garantiza la eliminación y qué no. Algunos límites son fundamentales: la copia ya descifrada del destinatario, una captura de pantalla tomada antes de la eliminación y cualquier copia de seguridad fuera del dispositivo que el destinatario haya creado están permanentemente fuera del control de Penrose.',
+            'Una vez finalizado, esta sección indicará qué garantiza la eliminación y qué no. Algunos límites son fundamentales: la copia ya descifrada del destinatario, una captura de pantalla tomada antes de la eliminación y cualquier copia de seguridad fuera del dispositivo que el destinatario haya creado están permanentemente fuera del control de Rhize.',
         },
       ],
     },
@@ -929,12 +929,12 @@ Entregar sobre sellado
         {
           kind: 'p',
           html:
-            'Penrose no entrega actualmente notificaciones push vía Apple APNs o Google FCM. La postura para push — si los payloads serán señales opacas de activación, contendrán contenido cifrado que una extensión de servicio de notificaciones en el dispositivo descifra localmente, o incluirán vistas previas legibles — todavía se está diseñando.',
+            'Rhize no entrega actualmente notificaciones push vía Apple APNs o Google FCM. La postura para push — si los payloads serán señales opacas de activación, contendrán contenido cifrado que una extensión de servicio de notificaciones en el dispositivo descifra localmente, o incluirán vistas previas legibles — todavía se está diseñando.',
         },
         {
           kind: 'p',
           html:
-            'Las notificaciones push son una superficie de metadatos bien conocida para aplicaciones cifradas de extremo a extremo: Apple y Google pueden observar los tiempos y el destinatario de cada notificación, junto con cualquier payload legible. Cuando push se entregue en Penrose, esta sección indicará explícitamente qué pueden observar APNs y FCM.',
+            'Las notificaciones push son una superficie de metadatos bien conocida para aplicaciones cifradas de extremo a extremo: Apple y Google pueden observar los tiempos y el destinatario de cada notificación, junto con cualquier payload legible. Cuando push se entregue en Rhize, esta sección indicará explícitamente qué pueden observar APNs y FCM.',
         },
       ],
     },
@@ -942,7 +942,7 @@ Entregar sobre sellado
       id: 'invariant',
       heading: '9. El invariante de privacidad',
       blocks: [
-        { kind: 'p', html: 'Penrose opera bajo un único invariante no negociable:' },
+        { kind: 'p', html: 'Rhize opera bajo un único invariante no negociable:' },
         {
           kind: 'callout',
           variant: 'invariant',
@@ -1038,7 +1038,7 @@ Entregar sobre sellado
             ],
             ['AppView / Relay de Bluesky', 'Metadatos de publicaciones, grafo de seguimiento', 'Contenido, llaves'],
             [
-              'Servidor de Penrose',
+              'Servidor de Rhize',
               'Filas de perfil (DID + EMK), metadatos del índice de publicaciones, filas del inbox de remitente sellado (sobres opacos), invitaciones',
               'Identidad del remitente para mensajes del inbox, contenido en texto plano, llaves en texto plano, contraseñas, llaves de bóveda',
             ],
@@ -1085,7 +1085,7 @@ Entregar sobre sellado
         {
           kind: 'p',
           html:
-            'El cifrado de extremo a extremo en la capa privada significa que Penrose no puede observar el contenido de las publicaciones privadas, los DMs o los payloads de intercambio de llaves de círculo. Por tanto, un modelo de moderación para contenido privado debe descansar en una acción explícita del usuario: un destinatario reporta un incidente, momento en el cual su cliente sube el mensaje descifrado y la identidad del remitente para revisión.',
+            'El cifrado de extremo a extremo en la capa privada significa que Rhize no puede observar el contenido de las publicaciones privadas, los DMs o los payloads de intercambio de llaves de círculo. Por tanto, un modelo de moderación para contenido privado debe descansar en una acción explícita del usuario: un destinatario reporta un incidente, momento en el cual su cliente sube el mensaje descifrado y la identidad del remitente para revisión.',
         },
         {
           kind: 'p',
@@ -1110,7 +1110,7 @@ Entregar sobre sellado
         {
           kind: 'p',
           html:
-            'El diseño de confianza cero de Penrose dicta qué no puede producir Penrose bajo compulsión legal, porque Penrose nunca poseyó el material:',
+            'El diseño de confianza cero de Rhize dicta qué no puede producir Rhize bajo compulsión legal, porque Rhize nunca poseyó el material:',
         },
         {
           kind: 'ul',
@@ -1121,7 +1121,7 @@ Entregar sobre sellado
             'Ningún mapeo del DID de un usuario a su identidad legal más allá de lo que el usuario haya asociado voluntariamente con la cuenta.',
           ],
         },
-        { kind: 'p', html: 'Lo que Penrose sí posee, y por tanto podría ser compelido a producir:' },
+        { kind: 'p', html: 'Lo que Rhize sí posee, y por tanto podría ser compelido a producir:' },
         {
           kind: 'ul',
           items: [
@@ -1143,7 +1143,7 @@ Entregar sobre sellado
         {
           kind: 'p',
           html:
-            'Primitivas criptográficas individuales usadas en Penrose han sido auditadas de forma independiente — notablemente <code>@noble/post-quantum</code> (ML-KEM) por Cure53. El sistema Penrose como un todo — la jerarquía de bóveda, los protocolos de publicación e inbox, el invariante de privacidad y las implementaciones del cliente — aún no ha sido auditado de forma independiente. Una auditoría a nivel de sistema es prioridad para una versión próxima; los resultados se publicarán aquí cuando estén disponibles.',
+            'Primitivas criptográficas individuales usadas en Rhize han sido auditadas de forma independiente — notablemente <code>@noble/post-quantum</code> (ML-KEM) por Cure53. El sistema Rhize como un todo — la jerarquía de bóveda, los protocolos de publicación e inbox, el invariante de privacidad y las implementaciones del cliente — aún no ha sido auditado de forma independiente. Una auditoría a nivel de sistema es prioridad para una versión próxima; los resultados se publicarán aquí cuando estén disponibles.',
         },
         { kind: 'h3', text: 'Reportar una vulnerabilidad' },
         {
@@ -1167,7 +1167,7 @@ Entregar sobre sellado
           kind: 'ul',
           items: [
             '<strong>Verificación de contacto fuera de banda.</strong> UI de números de seguridad / código QR para que los usuarios confirmen manualmente la llave pública ML-KEM-1024 de un contacto antes de que Trust-On-First-Use la vincule (§8.4). TOFU detecta sustitución de llaves en cualquier intercambio posterior; la verificación OOB cierra la ventana residual de primer contacto ante un operador de PDS que pudiera sustituir una llave antes de la primera vinculación. Planificada para una versión próxima; replica el modelo de números de seguridad de Signal cuando se entregue.',
-            '<strong>Transparencia de llaves.</strong> La dirección de la industria es un registro público de solo-adición de llaves públicas post-cuánticas, que permite a cualquier usuario verificar que la llave que el servidor de Penrose atribuye a un contacto coincide con la que ese contacto realmente publicó. Penrose se entrega con TOFU (§8.4) — fuerte pero no equivalente a un registro de transparencia. Una versión futura añadirá uno.',
+            '<strong>Transparencia de llaves.</strong> La dirección de la industria es un registro público de solo-adición de llaves públicas post-cuánticas, que permite a cualquier usuario verificar que la llave que el servidor de Rhize atribuye a un contacto coincide con la que ese contacto realmente publicó. Rhize se entrega con TOFU (§8.4) — fuerte pero no equivalente a un registro de transparencia. Una versión futura añadirá uno.',
             '<strong>Builds reproducibles y atestación binaria.</strong> La base de código open source es verificable; los binarios móviles y web compilados aún no son reproducibles byte a byte a partir del código fuente. Se planea entregar builds reproducibles — y, en las plataformas compatibles, atestaciones de transparencia de código.',
             '<strong>Protocolo formal de migración post-cuántica.</strong> El formato <code>.zen</code> lleva un campo <code>version</code> (§5.3), y los clientes negocian sobre él: los clientes más nuevos leen versiones más antiguas, los clientes más antiguos muestran un marcador «se requiere actualización» para las más nuevas. Un protocolo documentado de ventana de rotación de llaves para mover llaves de círculo y de mensajería a través de un cambio de primitiva aún no está especificado; se añadirá antes de la primera rotación de primitiva.',
           ],
@@ -1181,23 +1181,23 @@ Entregar sobre sellado
         {
           kind: 'p',
           html:
-            'Signal es el sistema de mensajería cifrada de extremo a extremo más estudiado; comparar la postura de cifrado de Penrose con la de Signal es una forma útil de posicionar las concesiones que tomamos. Penrose apunta a un centro de diseño diferente — una red social centrada en la privacidad con texto cifrado persistente y residente en el servidor en el PDS del AT Protocol del usuario — pero la mayor parte de la mecánica criptográfica se solapa.',
+            'Signal es el sistema de mensajería cifrada de extremo a extremo más estudiado; comparar la postura de cifrado de Rhize con la de Signal es una forma útil de posicionar las concesiones que tomamos. Rhize apunta a un centro de diseño diferente — una red social centrada en la privacidad con texto cifrado persistente y residente en el servidor en el PDS del AT Protocol del usuario — pero la mayor parte de la mecánica criptográfica se solapa.',
         },
         {
           kind: 'table',
-          headers: ['Propiedad', 'Penrose', 'Signal', 'Veredicto'],
+          headers: ['Propiedad', 'Rhize', 'Signal', 'Veredicto'],
           rows: [
             ['Cifrado de extremo a extremo', 'XSalsa20-Poly1305, AES-256', 'AES-256-CBC + HMAC-SHA256', '<strong>Comparable</strong>'],
             [
               'Intercambio de llaves post-cuántico',
               'ML-KEM-1024 en cada intercambio (§2, §8.1)',
               'PQXDH (Kyber-768) solo en el handshake inicial; el Double Ratchet sigue siendo clásico',
-              '<strong>Penrose más fuerte</strong>',
+              '<strong>Rhize más fuerte</strong>',
             ],
             [
               'Inbox de remitente sellado',
               'Sobre de dos capas (§8.2.1), adaptado de Signal a un KEM post-cuántico',
-              'Sealed Sender (el diseño en el que se basa el de Penrose)',
+              'Sealed Sender (el diseño en el que se basa el de Rhize)',
               '<strong>Comparable</strong>',
             ],
             [
@@ -1217,7 +1217,7 @@ Entregar sobre sellado
               'Portabilidad de identidad',
               'DID + handle en el AT Protocol — portable entre PDSes y apps del AT Protocol',
               'Atada a una cuenta de Signal en la infraestructura de Signal',
-              '<strong>Penrose más fuerte</strong>',
+              '<strong>Rhize más fuerte</strong>',
             ],
             [
               'Resistencia a MITM tras el primer contacto',
@@ -1242,7 +1242,7 @@ Entregar sobre sellado
         {
           kind: 'p',
           html:
-            'Las filas en las que Penrose es más débil — secreto hacia adelante, seguridad post-compromiso, madurez de auditoría — son consecuencias directas del centro de diseño. Una red social cuyos mensajes viven en el PDS de un usuario no puede aplicar un ratchet por mensaje sin volver a cifrar cada registro histórico en cada paso; la concesión es deliberada. Las protecciones que Penrose entrega a cambio — intercambio de llaves resistente a la cuántica en cada handshake, una identidad portable en una red abierta, y un inbox de remitente sellado que no depende de un único operador de confianza — son propiedades que Signal no proporciona, y estructuralmente no puede proporcionar.',
+            'Las filas en las que Rhize es más débil — secreto hacia adelante, seguridad post-compromiso, madurez de auditoría — son consecuencias directas del centro de diseño. Una red social cuyos mensajes viven en el PDS de un usuario no puede aplicar un ratchet por mensaje sin volver a cifrar cada registro histórico en cada paso; la concesión es deliberada. Las protecciones que Rhize entrega a cambio — intercambio de llaves resistente a la cuántica en cada handshake, una identidad portable en una red abierta, y un inbox de remitente sellado que no depende de un único operador de confianza — son propiedades que Signal no proporciona, y estructuralmente no puede proporcionar.',
         },
       ],
     },
@@ -1254,12 +1254,12 @@ Entregar sobre sellado
         {
           kind: 'ol',
           items: [
-            '<strong>Ninguna llave en texto plano cruza jamás un límite de red.</strong> La Llave de Bóveda se genera en el dispositivo; sale solo como la EVK (envuelta bajo la Llave Maestra) hacia el PDS y nunca llega al servidor de Penrose. La Llave Maestra sale solo como la EMK (envuelta bajo la PDK) hacia el servidor de Penrose.',
+            '<strong>Ninguna llave en texto plano cruza jamás un límite de red.</strong> La Llave de Bóveda se genera en el dispositivo; sale solo como la EVK (envuelta bajo la Llave Maestra) hacia el PDS y nunca llega al servidor de Rhize. La Llave Maestra sale solo como la EMK (envuelta bajo la PDK) hacia el servidor de Rhize.',
             '<strong>Ningún contenido en texto plano cruza jamás un límite de red.</strong> Las publicaciones se cifran en el dispositivo antes de cualquier subida; los blobs <code>.zen</code> son opacos para Bluesky; los mensajes directos y los mensajes del inbox se sellan bajo la llave Kyber del destinatario.',
             '<strong>Los gateways del lado del servidor no ven secretos.</strong> El gateway de escritura maneja tokens de acceso OAuth y pruebas DPoP solo el tiempo necesario para retransmitir la llamada de verificación al PDS. Nunca posee la llave privada DPoP (que vive en el elemento seguro del usuario) y nunca toca llaves de bóveda, mensajería o círculo. En la ruta de escritura al inbox no ve ni un token de sesión ni una identidad de remitente — los sobres de remitente sellado se autentican por sí mismos ante el destinatario y no requieren autenticación del lado del servidor de quien llama.',
             '<strong>Disciplina a prueba de fallos.</strong> El invariante de privacidad (§9) hace estructuralmente imposible que una publicación pretendida privada se vuelva pública sin un cambio explícito de código.',
             '<strong>Bibliotecas criptográficas vendidas.</strong> Todas las primitivas criptográficas están fijadas o copiadas en el repositorio; las actualizaciones de bibliotecas requieren un cambio deliberado.',
-            '<strong>Capa independiente de llaves en reposo.</strong> La jerarquía de bóveda (§3) significa que comprometer cualquier servidor individual (Bluesky <em>o</em> Penrose) no produce un objetivo para fuerza bruta offline — un atacante necesita material de ambos.',
+            '<strong>Capa independiente de llaves en reposo.</strong> La jerarquía de bóveda (§3) significa que comprometer cualquier servidor individual (Bluesky <em>o</em> Rhize) no produce un objetivo para fuerza bruta offline — un atacante necesita material de ambos.',
           ],
         },
       ],
@@ -1279,13 +1279,13 @@ Entregar sobre sellado
             '<strong>Verificación de sesión del PDS</strong> en el único gateway de escritura asegura que quienes llaman son quienes dicen ser antes de cualquier mutación del lado del servidor que no sea del inbox (entradas del índice de publicaciones, filas de perfil, almacenamiento de la llave maestra cifrada).',
             '<strong>Autenticación de remitente confirmado mediante huella TOFU y Capa 2 de remitente sellado</strong> detecta cualquier sustitución de llave posterior al primer contacto por parte de un PDS comprometido — cada sobre debe abrir bajo la llave de mensajería que el destinatario tiene vinculada para el remitente declarado. La verificación fuera de banda de primer contacto está planificada (consulta Trabajo futuro).',
             '<strong>Invariante de privacidad a prueba de fallos</strong> previene la degradación silenciosa de privado a público en cada capa.',
-            '<strong>Ningún texto plano toca jamás un servidor.</strong> La única raíz de confianza para la confidencialidad del contenido es el dispositivo del usuario, la contraseña de cifrado del usuario y (una vez que se entregue la verificación OOB) la atestación fuera de banda del propio usuario de las huellas de los contactos. Ni el PDS de Bluesky ni el servidor de Penrose son de confianza para la confidencialidad. Consulta §1.4 para una declaración precisa de qué cubre y qué no cubre la «confianza cero».',
+            '<strong>Ningún texto plano toca jamás un servidor.</strong> La única raíz de confianza para la confidencialidad del contenido es el dispositivo del usuario, la contraseña de cifrado del usuario y (una vez que se entregue la verificación OOB) la atestación fuera de banda del propio usuario de las huellas de los contactos. Ni el PDS de Bluesky ni el servidor de Rhize son de confianza para la confidencialidad. Consulta §1.4 para una declaración precisa de qué cubre y qué no cubre la «confianza cero».',
           ],
         },
         {
           kind: 'p',
           html:
-            'Incluso un PDS de Bluesky completamente comprometido y un servidor de Penrose completamente comprometido no pueden, individualmente ni en conjunto, leer una sola palabra del contenido privado de un usuario — hoy ni en un futuro post-cuántico, dado que la contraseña de cifrado cumpla los requisitos.',
+            'Incluso un PDS de Bluesky completamente comprometido y un servidor de Rhize completamente comprometido no pueden, individualmente ni en conjunto, leer una sola palabra del contenido privado de un usuario — hoy ni en un futuro post-cuántico, dado que la contraseña de cifrado cumpla los requisitos.',
         },
       ],
     },
@@ -1313,7 +1313,7 @@ Entregar sobre sellado
               'Identificador Descentralizado. En AT Protocol, una cadena de identidad de larga vida con raíz en un repositorio (p. ej., <code>did:plc:xxxxxx</code>).',
             ],
             ['<strong>E2EE</strong>', 'Cifrado de extremo a extremo.'],
-            ['<strong>EMK</strong>', 'Llave Maestra Cifrada — la Llave Maestra envuelta bajo la PDK, almacenada en el servidor de Penrose.'],
+            ['<strong>EMK</strong>', 'Llave Maestra Cifrada — la Llave Maestra envuelta bajo la PDK, almacenada en el servidor de Rhize.'],
             ['<strong>EVK</strong>', 'Llave de Bóveda Cifrada — la Llave de Bóveda envuelta bajo la Llave Maestra, almacenada en el PDS del usuario.'],
             [
               '<strong>HKDF</strong>',
