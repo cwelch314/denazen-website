@@ -4,7 +4,7 @@ export default {
     description: 'Rhize - Privacidad. Conexión. Libertad.',
   },
   hero: {
-    heading: 'Las redes sociales, sin concesiones.',
+    heading: 'Tu capa privada sobre lo social público.',
     linesBefore: ['Privacidad inspirada en Signal.'],
     rotator: {
       prefix: 'Conexión como ',
@@ -14,7 +14,7 @@ export default {
     linesAfter: [
       'Libertad de Bluesky.',
     ],
-    tagline: ['El triángulo imposible. Resuelto.'],
+    tagline: ['Comparte con libertad. Ni siquiera nosotros podemos ver tus publicaciones privadas.'],
     waitlistButton: 'Solicitar invitación',
     waitlistNote: 'Beta solo por invitación próximamente. Ayuda a dar forma al futuro de las redes sociales.',
     imagePublic: {

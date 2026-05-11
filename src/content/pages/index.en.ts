@@ -4,7 +4,7 @@ export default {
     description: 'Rhize - Privacy. Connection. Freedom.',
   },
   hero: {
-    heading: 'Social media, without compromise.',
+    heading: 'Your private layer on public social.',
     linesBefore: ['Privacy inspired by Signal.'],
     rotator: {
       prefix: 'Connection like <em>early</em> ',
@@ -14,7 +14,7 @@ export default {
     linesAfter: [
       'Freedom of Bluesky.',
     ],
-    tagline: ['The impossible triangle. Solved.'],
+    tagline: ['Share freely. Not even we can see your private posts.'],
     waitlistButton: 'Request invite',
     waitlistNote: 'Invite-only beta launching soon. Help shape the future of social.',
     imagePublic: {
