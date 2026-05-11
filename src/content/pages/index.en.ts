@@ -4,7 +4,7 @@ export default {
     description: 'Rhize - Privacy. Connection. Freedom.',
   },
   hero: {
-    heading: 'Your private layer on public social.',
+    heading: 'Your private network on public social.',
     linesBefore: ['Privacy inspired by Signal.'],
     rotator: {
       prefix: 'Connection like <em>early</em> ',
@@ -47,10 +47,10 @@ export default {
   privacy: {
     heading: 'Private means private.',
     paragraphs: [
-      'Posts you share with a circle are encrypted on your device before they leave it. Only the people you trust hold the keys to decrypt them.',
+      'Share freely with those you trust.Posts you share with your private circles are encrypted on your device before they leave it. Only the people you trust hold the keys to decrypt them.',
       'Not advertisers. Not AI. Not governments. <em>No one else.</em> Not even us.',
     ],
-    closer: 'Privacy by design. Not by promise.',
+    closer: 'Private by design. Not by promise.',
     image: {
       src: '/images/screenshots/private-network.webp',
       alt: "Rhize's Private Network screen on iPhone, explaining end-to-end encryption.",

@@ -4,7 +4,7 @@ export default {
     description: 'Rhize - Privacidad. Conexión. Libertad.',
   },
   hero: {
-    heading: 'Tu capa privada sobre lo social público.',
+    heading: 'Tu red privada sobre lo social público.',
     linesBefore: ['Privacidad inspirada en Signal.'],
     rotator: {
       prefix: 'Conexión como ',
@@ -47,10 +47,10 @@ export default {
   privacy: {
     heading: 'Privado significa privado.',
     paragraphs: [
-      'Las publicaciones que compartes con un círculo se cifran en tu dispositivo antes de salir de él. Solo las personas en las que confías tienen las llaves para descifrarlas.',
+      'Comparte con libertad con las personas en las que confías. Las publicaciones que compartes con tus círculos privados se cifran en tu dispositivo antes de salir de él. Solo las personas en las que confías tienen las llaves para descifrarlas.',
       'Ni los anunciantes. Ni la IA. Ni los gobiernos. <em>Nadie más.</em> Ni siquiera nosotros.',
     ],
-    closer: 'Privacidad por diseño. No por promesa.',
+    closer: 'Privado por diseño. No por promesa.',
     image: {
       src: '/images/screenshots/private-network.webp',
       alt: 'La pantalla de Red Privada de Rhize en iPhone, explicando el cifrado de extremo a extremo.',
