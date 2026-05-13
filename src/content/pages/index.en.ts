@@ -7,14 +7,14 @@ export default {
     heading: 'Where real connection takes root.',
     linesBefore: ['Privacy inspired by Signal.'],
     rotator: {
-      prefix: 'Connection like <em>early</em> ',
+      prefix: 'Connection surpassing <em>early</em> ',
       words: ['Facebook', 'Instagram'],
       suffix: '.',
     },
     linesAfter: [
-      'Freedom of Bluesky.',
+      'Freedom and choice of the Bluesky network.',
     ],
-    tagline: ['Rhize helps you share with the people you trust — privately, authentically, securely.'],
+    tagline: ['Share with the people you trust — privately, authentically, securely.'],
     waitlistButton: 'Request invite',
     waitlistNote: 'Invite-only beta launching soon. Help shape the future of social.',
     imagePublic: {
@@ -30,14 +30,13 @@ export default {
     heading: 'Remember when social was social?',
     paragraphs: [
       "Social media started as a way to keep up with the people in your life. The people you'd actually call. Your sister. Your roommate from college. Your closest friends.",
-      'Somewhere along the way, the feed stopped being them. It became strangers, performers, and ads. Whatever an algorithm decided would keep you scrolling.',
+      'Somewhere along the way, the feed stopped being the people you wanted to see. It became strangers, performers, and ads. Whatever an algorithm decided would keep you scrolling.',
     ],
     resolution: 'Rhize puts the people back at the center.',
     list: [
-      'Build circles for the people who matter: close friends, family, your book club',
-      'A chronological feed of the people you actually chose to follow',
+      'Strengthen your roots and grow a network that reflects your real life.',
+      "Build private circles for the people who matter: close friends, family, your book club, your co-workers. It's your network, you decide.",
       'Share moments meant for a few, not posts engineered for reach',
-      'Less performance. More presence.',
     ],
     image: {
       src: '/images/screenshots/whats-denazen.webp',
@@ -47,7 +46,8 @@ export default {
   privacy: {
     heading: 'Private means private.',
     paragraphs: [
-      'Share freely with those you trust.Posts you share with your private circles are encrypted on your device before they leave it. Only the people you trust hold the keys to decrypt them.',
+      'Share freely with those you trust.',
+      'Posts you share with your private circles are encrypted on your device before they leave it. Only the people you trust hold the keys to decrypt them.',
       'Not advertisers. Not AI. Not governments. <em>No one else.</em> Not even us.',
     ],
     closer: 'Private by design. Not by promise.',
@@ -81,8 +81,7 @@ export default {
     paragraphs: [
       "Rhize is a Public Benefit Corporation. That means our mission isn't just a promise. It's part of our legal structure.",
       "We're accountable to the people using the platform and the world we're building in. From day one we will be contributing a portion of profits to causes including conservation and environmental protection, civil & human rights, and privacy.",
-      "Rhize is free to use for all, with premium features to enable us to stay independent on not rely on ads, tracking, or attention extraction.",
-      "We're building a model based on reciprocity, designed to give back to the people who make this network what it is.",
+      "Rhize is free to use for all, with premium features to enable us to stay independent and not rely on ads, tracking, or attention extraction.",
     ],
   },
 };

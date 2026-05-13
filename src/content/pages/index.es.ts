@@ -7,14 +7,14 @@ export default {
     heading: 'Donde la conexión real echa raíces.',
     linesBefore: ['Privacidad inspirada en Signal.'],
     rotator: {
-      prefix: 'Conexión como ',
+      prefix: 'Conexión que supera a ',
       words: ['Facebook', 'Instagram'],
       suffix: ' en sus <em>primeros días</em>.',
     },
     linesAfter: [
-      'Libertad de Bluesky.',
+      'Libertad y elección de la red Bluesky.',
     ],
-    tagline: ['Rhize te ayuda a compartir con las personas en las que confías — de forma privada, auténtica y segura.'],
+    tagline: ['Comparte con las personas en las que confías — de forma privada, auténtica y segura.'],
     waitlistButton: 'Solicitar invitación',
     waitlistNote: 'Beta solo por invitación próximamente. Ayuda a dar forma al futuro de las redes sociales.',
     imagePublic: {
@@ -30,14 +30,13 @@ export default {
     heading: '¿Te acuerdas cuando lo social era social?',
     paragraphs: [
       'Las redes sociales empezaron como una forma de mantenerte al día con las personas de tu vida. Las personas a las que de verdad llamarías. Tu hermana. Tu compañera de cuarto de la universidad. Tus amigos más cercanos.',
-      'En algún momento, el feed dejó de ser sobre ellos. Se convirtió en extraños, performers y anuncios. Lo que un algoritmo decidiera para mantenerte desplazándote.',
+      'En algún momento, el feed dejó de ser sobre las personas que querías ver. Se convirtió en extraños, performers y anuncios. Lo que un algoritmo decidiera para mantenerte desplazándote.',
     ],
     resolution: 'Rhize vuelve a poner a las personas en el centro.',
     list: [
-      'Crea círculos para las personas que importan: amigos cercanos, familia, tu club de lectura',
-      'Un feed cronológico de las personas que realmente elegiste seguir',
+      'Fortalece tus raíces y haz crecer una red que refleje tu vida real.',
+      'Crea círculos privados para las personas que importan: amigos cercanos, familia, tu club de lectura, tus compañeros de trabajo. Es tu red, tú decides.',
       'Comparte momentos pensados para unos pocos, no publicaciones diseñadas para alcanzar a millones',
-      'Menos performance. Más presencia.',
     ],
     image: {
       src: '/images/screenshots/whats-denazen.webp',
@@ -47,7 +46,8 @@ export default {
   privacy: {
     heading: 'Privado significa privado.',
     paragraphs: [
-      'Comparte con libertad con las personas en las que confías. Las publicaciones que compartes con tus círculos privados se cifran en tu dispositivo antes de salir de él. Solo las personas en las que confías tienen las llaves para descifrarlas.',
+      'Comparte con libertad con las personas en las que confías.',
+      'Las publicaciones que compartes con tus círculos privados se cifran en tu dispositivo antes de salir de él. Solo las personas en las que confías tienen las llaves para descifrarlas.',
       'Ni los anunciantes. Ni la IA. Ni los gobiernos. <em>Nadie más.</em> Ni siquiera nosotros.',
     ],
     closer: 'Privado por diseño. No por promesa.',
@@ -82,7 +82,6 @@ export default {
       'Rhize es una Public Benefit Corporation. Eso significa que nuestra misión no es solo una promesa. Es parte de nuestra estructura legal.',
       'Somos responsables ante las personas que usan la plataforma y el mundo en el que estamos construyendo. Desde el primer día contribuiremos con una parte de las ganancias a causas que incluyen la conservación y la protección del medio ambiente, los derechos civiles y humanos, y la privacidad.',
       'Rhize es gratis para todos, con funciones premium que nos permiten mantenernos independientes y no depender de anuncios, rastreo ni extracción de atención.',
-      'Estamos construyendo un modelo basado en la reciprocidad, diseñado para devolver a las personas que hacen esta red lo que es.',
     ],
   },
 };
