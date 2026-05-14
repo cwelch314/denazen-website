@@ -7,9 +7,9 @@ export default {
     heading: 'Donde la conexión real echa raíces',
     linesBefore: ['Privacidad inspirada en Signal'],
     rotator: {
-      prefix: 'Conexión que supera a ',
+      prefix: 'Conexión como en los <em>primeros días</em> de ',
       words: ['Facebook', 'Instagram'],
-      suffix: ' en sus <em>primeros días</em>',
+      suffix: '',
     },
     linesAfter: [
       'Libertad y elección de Bluesky',
