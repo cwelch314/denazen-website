@@ -12,7 +12,7 @@ export default {
       suffix: '',
     },
     linesAfter: [
-      'Freedom and choice of the Bluesky network',
+      'Freedom and choice of Bluesky',
     ],
     tagline: ['Share with the people you trust — privately, authentically, securely.'],
     waitlistButton: 'Request invite',
