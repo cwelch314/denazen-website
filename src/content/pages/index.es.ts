@@ -12,7 +12,7 @@ export default {
       suffix: ' en sus <em>primeros días</em>',
     },
     linesAfter: [
-      'Libertad y elección de la red Bluesky',
+      'Libertad y elección de Bluesky',
     ],
     tagline: ['Comparte con las personas en las que confías — de forma privada, auténtica y segura.'],
     waitlistButton: 'Solicitar invitación',
