@@ -48,7 +48,7 @@ export default {
         },
         {
           q: '¿Qué pasa cuando quito a alguien de un Círculo?',
-          a: ['Pierden acceso inmediatamente a las publicaciones futuras en ese Círculo. La criptografía se rota para que lo nuevo no se pueda leer con las llaves viejas. Las publicaciones que ya descargaron antes de ser quitadas no se pueden «des-ver» — ese es un límite fundamental del compartir — pero nada a partir de ese momento será legible para ellos.'],
+          a: ['Pierden acceso inmediatamente a las publicaciones futuras en ese Círculo. La llave de cifrado se rota para que lo nuevo no se pueda leer con las llaves viejas. Las publicaciones que ya descargaron antes de ser quitadas no se pueden «des-ver» — ese es un límite fundamental del compartir — pero nada a partir de ese momento será legible para ellos.'],
         },
         {
           q: '¿Hay anuncios o rastreadores?',

@@ -4,15 +4,15 @@ export default {
     description: 'Rhize - Privacidad. Conexión. Libertad.',
   },
   hero: {
-    heading: 'Donde la conexión real echa raíces.',
-    linesBefore: ['Privacidad inspirada en Signal.'],
+    heading: 'Donde la conexión real echa raíces',
+    linesBefore: ['Privacidad inspirada en Signal'],
     rotator: {
       prefix: 'Conexión que supera a ',
       words: ['Facebook', 'Instagram'],
-      suffix: ' en sus <em>primeros días</em>.',
+      suffix: ' en sus <em>primeros días</em>',
     },
     linesAfter: [
-      'Libertad y elección de la red Bluesky.',
+      'Libertad y elección de la red Bluesky',
     ],
     tagline: ['Comparte con las personas en las que confías — de forma privada, auténtica y segura.'],
     waitlistButton: 'Solicitar invitación',
@@ -69,8 +69,6 @@ export default {
       'Tú eliges lo que importa. Tú eliges cómo experimentarlo.',
       'Si algún día dejamos de ser el lugar adecuado para ti, tu red se va contigo.',
     ],
-    bskyNote:
-      'Los usuarios actuales de Bluesky pueden iniciar sesión con su cuenta existente, o puedes crear una nueva en la app.',
     image: {
       src: '/images/screenshots/circles.webp',
       alt: 'La pantalla de gestión de círculos de Rhize mostrando círculos definidos por el usuario como Amigos Más Cercanos, Familia y Club de Lectura.',
@@ -82,6 +80,14 @@ export default {
       'Rhize es una Public Benefit Corporation. Eso significa que nuestra misión no es solo una promesa. Es parte de nuestra estructura legal.',
       'Somos responsables ante las personas que usan la plataforma y el mundo en el que estamos construyendo. Desde el primer día contribuiremos con una parte de las ganancias a causas que incluyen la conservación y la protección del medio ambiente, los derechos civiles y humanos, y la privacidad.',
       'Rhize es gratis para todos, con funciones premium que nos permiten mantenernos independientes y no depender de anuncios, rastreo ni extracción de atención.',
+    ],
+  },
+  whyRhize: {
+    heading: '¿Por qué "Rhize"?',
+    subheading: 'Inspirado en las micorrizas.',
+    paragraphs: [
+      'Las micorrizas son redes vivas que se forman entre hongos y raíces de plantas, donde cada parte le da a la otra algo que necesita. Los hongos ayudan a las raíces a llegar más lejos, comparten nutrientes y las conectan con el ecosistema que las rodea; la planta proporciona energía a cambio. Juntos crean un sistema de apoyo oculto que ayuda a cada planta a crecer más fuerte a través de la conexión de confianza.',
+      'Rhize se construye sobre la misma idea: conexiones de confianza que ayudan a las personas a crecer. Como las micorrizas bajo un bosque, Rhize crea una capa social más intencional donde la comunicación auténtica, el apoyo mutuo y la conexión privada ayudan a las personas a sentirse arraigadas, nutridas y conectadas con algo más grande que ellas mismas.',
     ],
   },
 };

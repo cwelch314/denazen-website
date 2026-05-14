@@ -105,12 +105,20 @@ const img = (p: string) => localizeAsset(p, lang);
           {c.freedom.list.map((item) => <li>{item}</li>)}
         </ul>
         {c.freedom.closing.map((p) => <p>{p}</p>)}
-        <p class="home-prose-closer">{c.freedom.bskyNote}</p>
       </div>
       <div class="home-visual">
         <img src={img(c.freedom.image.src)} alt={c.freedom.image.alt} width="560" height="1112" />
       </div>
     </div>
+  </div>
+</section>
+
+<!-- Why Rhize -->
+<section class="home-prose">
+  <div class="container-narrow">
+    <h2>{c.whyRhize.heading}</h2>
+    <p class="home-prose-resolution">{c.whyRhize.subheading}</p>
+    {c.whyRhize.paragraphs.map((p) => <p>{p}</p>)}
   </div>
 </section>
 

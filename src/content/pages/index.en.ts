@@ -4,15 +4,15 @@ export default {
     description: 'Rhize - Privacy. Connection. Freedom.',
   },
   hero: {
-    heading: 'Where real connection takes root.',
-    linesBefore: ['Privacy inspired by Signal.'],
+    heading: 'Where real connection takes root',
+    linesBefore: ['Privacy inspired by Signal'],
     rotator: {
       prefix: 'Connection surpassing <em>early</em> ',
       words: ['Facebook', 'Instagram'],
-      suffix: '.',
+      suffix: '',
     },
     linesAfter: [
-      'Freedom and choice of the Bluesky network.',
+      'Freedom and choice of the Bluesky network',
     ],
     tagline: ['Share with the people you trust — privately, authentically, securely.'],
     waitlistButton: 'Request invite',
@@ -69,8 +69,6 @@ export default {
       'You choose what matters. You choose how to experience it.',
       'If we ever stop being the right home for you, your network comes with you.',
     ],
-    bskyNote:
-      'Current Bluesky users can log in with their existing account, or you can create one in the app.',
     image: {
       src: '/images/screenshots/circles.webp',
       alt: "Rhize's circles management screen showing user-defined circles like Closest Friends, Family, and Book Club.",
@@ -82,6 +80,14 @@ export default {
       "Rhize is a Public Benefit Corporation. That means our mission isn't just a promise. It's part of our legal structure.",
       "We're accountable to the people using the platform and the world we're building in. From day one we will be contributing a portion of profits to causes including conservation and environmental protection, civil & human rights, and privacy.",
       "Rhize is free to use for all, with premium features to enable us to stay independent and not rely on ads, tracking, or attention extraction.",
+    ],
+  },
+  whyRhize: {
+    heading: 'Why "Rhize"',
+    subheading: 'Inspired by mycorrhizae.',
+    paragraphs: [
+      'Mycorrhizae are living networks formed between fungi and plant roots, where each side gives something the other needs. The fungi help roots reach farther, share nutrients, and connect with the surrounding ecosystem; the plant provides energy in return. Together, they create a hidden support system that helps individual plants grow stronger through trusted connection.',
+      'Rhize is built on the same idea: trusted connections that help people grow. Like mycorrhizae beneath a forest, Rhize creates a more intentional social layer where authentic communication, mutual support, and private connection help individuals feel rooted, nourished, and connected to something larger than themselves.',
     ],
   },
 };

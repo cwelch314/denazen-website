@@ -48,7 +48,7 @@ export default {
         },
         {
           q: 'What happens when I remove someone from a Circle?',
-          a: ["They immediately lose access to future posts in that Circle. The cryptography gets rotated so anything new can't be read with the old keys. Posts they already downloaded before being removed can't be un-seen — that's a fundamental limit of sharing — but nothing going forward is readable to them."],
+          a: ["They immediately lose access to future posts in that Circle. The encryption key is rotated so anything new can't be read with the old keys. Posts they already downloaded before being removed can't be un-seen — that's a fundamental limit of sharing — but nothing going forward is readable to them."],
         },
         {
           q: 'Are there ads or trackers?',

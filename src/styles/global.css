@@ -47,8 +47,8 @@
   --c-text-muted: #6C757D;         /* gray600 */
   --c-border: #DEE2E6;             /* gray300 */
   --c-border-strong: #CED4DA;      /* gray400 */
-  --c-accent: #2EAB42;             /* brandGreen500 */
-  --c-accent-hover: #1F7A2C;       /* brandGreen700 */
+  --c-accent: #1F7A2C;             /* brandGreen700 — WCAG AA with white text */
+  --c-accent-hover: #2EAB42;       /* brandGreen500 — lighter lift on hover */
   --c-accent-tint: #D6F1DB;        /* brandGreen100 */
   --c-dark: #0F4D1A;               /* brandGreen800 (top of dark gradient) */
   --c-dark-2: #082F11;             /* brandGreen900 (bottom of dark gradient) */
@@ -64,7 +64,7 @@
   --section-pad: 6rem;
   --section-pad-sm: 4rem;
 
-  --focus-ring: 0 0 0 3px rgba(46, 171, 66, 0.25);
+  --focus-ring: 0 0 0 3px rgba(31, 122, 44, 0.25);
 }
 
 /* ---------- Reset ---------- */
@@ -404,14 +404,14 @@ section { padding-block: var(--section-pad); }
   box-shadow: 0 0 0 3px rgba(255,255,255,0.2);
 }
 .section-dark .btn-primary {
-  background: #ffffff;
-  color: var(--c-dark);
-  border-color: #ffffff;
+  background: #2EAB42;
+  color: var(--c-dark-2);
+  border-color: #2EAB42;
 }
 .section-dark .btn-primary:hover {
-  background: var(--c-accent-tint);
-  border-color: var(--c-accent-tint);
-  color: var(--c-dark);
+  background: #3FC558;
+  border-color: #3FC558;
+  color: var(--c-dark-2);
 }
 
 @media (max-width: 520px) {

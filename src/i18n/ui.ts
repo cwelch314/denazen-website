@@ -12,7 +12,7 @@ export const ui = {
     'nav.primaryAria': 'Primary',
     'nav.languageAria': 'Language',
 
-    'footer.tagline': 'Real connection. Real privacy. Real control.',
+    'footer.tagline': 'Where real connection takes root.',
     'footer.product': 'Product',
     'footer.company': 'Company',
     'footer.legal': 'Legal',
@@ -49,7 +49,7 @@ export const ui = {
     'nav.primaryAria': 'Principal',
     'nav.languageAria': 'Idioma',
 
-    'footer.tagline': 'Conexión real. Privacidad real. Control real.',
+    'footer.tagline': 'Donde la conexión real echa raíces.',
     'footer.product': 'Producto',
     'footer.company': 'Empresa',
     'footer.legal': 'Legal',
