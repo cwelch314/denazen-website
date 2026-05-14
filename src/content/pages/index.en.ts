@@ -7,7 +7,7 @@ export default {
     heading: 'Where real connection takes root',
     linesBefore: ['Privacy inspired by Signal'],
     rotator: {
-      prefix: 'Connection surpassing <em>early</em> ',
+      prefix: 'Connection like <em>early</em> ',
       words: ['Facebook', 'Instagram'],
       suffix: '',
     },
