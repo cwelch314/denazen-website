@@ -25,7 +25,7 @@ const variants = [
     sub: [
       'Privacy inspired by Signal.',
       'Connection like early Facebook.',
-      'Freedom of Bluesky.',
+      'Freedom and choice of Bluesky.',
     ],
     tagline: 'The impossible triangle. Solved.',
   },
@@ -36,7 +36,7 @@ const variants = [
     sub: [
       'Privacidad inspirada en Signal.',
       'Conexión como Facebook en sus primeros días.',
-      'Libertad de Bluesky.',
+      'Libertad y elección de Bluesky.',
     ],
     tagline: 'El triángulo imposible. Resuelto.',
   },
