@@ -15,17 +15,25 @@ interface Props {
   lang?: Lang;
 }
 
-const SHARE_TAGLINE_EN = 'Social media, without compromise.';
-const SHARE_TAGLINE_ES = 'Las redes sociales, sin concesiones.';
+const SHARE_TAGLINE_EN = 'Where real connection takes root.';
+const SHARE_TAGLINE_ES = 'Donde la conexión real echa raíces.';
+
+const SHARE_DESCRIPTION_EN =
+  'Privacy inspired by Signal. Connection like early Facebook. Freedom and choice of Bluesky. Share with the people you trust — privately, authentically, securely.';
+const SHARE_DESCRIPTION_ES =
+  'Privacidad inspirada en Signal. Conexión como en los primeros días de Facebook. Libertad y elección de Bluesky. Comparte con las personas en las que confías — de forma privada, auténtica y segura.';
 
 const {
   title,
-  description = 'A privacy-first social network. Public when you choose, private when it matters.',
+  description,
   ogTitle,
   ogImage = '/images/og-default.png',
   pathname,
   lang = defaultLang,
 } = Astro.props;
+
+const resolvedDescription =
+  description ?? (lang === 'es' ? SHARE_DESCRIPTION_ES : SHARE_DESCRIPTION_EN);
 
 const t = useTranslations(lang);
 const site = Astro.site ?? new URL('https://www.denazen.com');
@@ -45,7 +53,7 @@ const ogTitleResolved = ogTitle ?? `Rhize — ${shareTagline}`;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    <meta name="description" content={description} />
+    <meta name="description" content={resolvedDescription} />
     <link rel="canonical" href={canonical} />
     {alternates.map((a) => (
       <link rel="alternate" hreflang={a.lang} href={a.href} />
@@ -58,7 +66,7 @@ const ogTitleResolved = ogTitle ?? `Rhize — ${shareTagline}`;
 
     <meta property="og:site_name" content="Rhize" />
     <meta property="og:title" content={ogTitleResolved} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={resolvedDescription} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageUrl} />
@@ -69,7 +77,7 @@ const ogTitleResolved = ogTitle ?? `Rhize — ${shareTagline}`;
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={ogTitleResolved} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={resolvedDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
     <meta name="twitter:image:alt" content={`Rhize — ${shareTagline}`} />
 
