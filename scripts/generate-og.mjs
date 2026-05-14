@@ -84,30 +84,34 @@ function buildSvg(v) {
   const wordmark = escapeXml(v.wordmark);
   const headingLines = wrapText(v.heading, { maxWidth: 880, fontSize: 70, maxLines: 2 }).map(escapeXml);
   const sub = v.sub.map(escapeXml);
-  const taglineLines = wrapText(v.tagline, { maxWidth: 980, fontSize: 28, maxLines: 2 }).map(escapeXml);
+  const taglineLines = wrapText(v.tagline, { maxWidth: 980, fontSize: 26, maxLines: 2 }).map(escapeXml);
 
   // Layout constants
   const PAD_X = 80;
-  const LOGO_SIZE = 96;
+  const LOGO_SIZE = 88;
   const LOGO_X = PAD_X;
-  const LOGO_Y = 70;
-  const WORDMARK_X = LOGO_X + LOGO_SIZE + 22;
-  const WORDMARK_Y = LOGO_Y + LOGO_SIZE / 2 + 22;
+  const LOGO_Y = 60;
+  const WORDMARK_X = LOGO_X + LOGO_SIZE + 20;
+  const WORDMARK_Y = LOGO_Y + LOGO_SIZE / 2 + 20;
 
-  // Heading positioning (vertically centered block)
+  // Top (white) band holds the brand row and the heading.
+  // Bottom (green) band holds the three pillars and the tagline.
+  const BAND_SPLIT_Y = 330;
+
+  // Heading positioning inside the white band
   const HEADING_X = PAD_X;
-  const HEADING_BASELINE_1 = headingLines.length === 1 ? 260 : 240;
+  const HEADING_BASELINE_1 = headingLines.length === 1 ? 260 : 230;
   const HEADING_LINE_GAP = 78;
 
-  // Sub-lines (three brand pillars) start under the heading block
+  // Three pillars sit just under the band split
   const SUB_X = PAD_X;
-  const SUB_BASELINE_1 = HEADING_BASELINE_1 + (headingLines.length === 1 ? 0 : HEADING_LINE_GAP) + 60;
+  const SUB_BASELINE_1 = BAND_SPLIT_Y + 70;
   const SUB_GAP = 44;
 
-  // Tagline near bottom
+  // Tagline near bottom of green band
   const TAGLINE_X = PAD_X;
-  const TAGLINE_BASELINE_1 = 540;
-  const TAGLINE_LINE_GAP = 34;
+  const TAGLINE_BASELINE_1 = 555;
+  const TAGLINE_LINE_GAP = 32;
 
   const headingTspans = headingLines
     .map((line, i) => `<tspan x="${HEADING_X}" y="${HEADING_BASELINE_1 + i * HEADING_LINE_GAP}">${line}</tspan>`)
@@ -120,23 +124,29 @@ function buildSvg(v) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
-    <!-- Deep forest gradient anchored in the brand palette -->
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <!-- Soft cream/mint wash for the upper band -->
+    <linearGradient id="bgLight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#F4FBF5"/>
+    </linearGradient>
+
+    <!-- Warm leaf-light tint for the white band, evoking sun through canopy -->
+    <radialGradient id="glowLight" cx="86%" cy="20%" r="58%">
+      <stop offset="0%" stop-color="#2EAB42" stop-opacity="0.10"/>
+      <stop offset="60%" stop-color="#2EAB42" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#2EAB42" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Deep forest gradient for the lower band -->
+    <linearGradient id="bgDark" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#0F4D1A"/>
       <stop offset="55%" stop-color="#0A3B14"/>
       <stop offset="100%" stop-color="#06230C"/>
     </linearGradient>
 
-    <!-- Warm leaf-light glow from upper-right, evoking sun through canopy -->
-    <radialGradient id="glow1" cx="82%" cy="18%" r="55%">
-      <stop offset="0%" stop-color="#7BD389" stop-opacity="0.32"/>
-      <stop offset="55%" stop-color="#2EAB42" stop-opacity="0.10"/>
-      <stop offset="100%" stop-color="#2EAB42" stop-opacity="0"/>
-    </radialGradient>
-
-    <!-- Subtle cool counter-glow in lower-left for depth -->
-    <radialGradient id="glow2" cx="0%" cy="105%" r="65%">
-      <stop offset="0%" stop-color="#1F7A2C" stop-opacity="0.30"/>
+    <!-- Subtle counter-glow in the green band for depth -->
+    <radialGradient id="glowDark" cx="0%" cy="105%" r="60%">
+      <stop offset="0%" stop-color="#1F7A2C" stop-opacity="0.32"/>
       <stop offset="100%" stop-color="#1F7A2C" stop-opacity="0"/>
     </radialGradient>
 
@@ -147,33 +157,29 @@ function buildSvg(v) {
     </radialGradient>
   </defs>
 
-  <!-- Base layers -->
-  <rect width="${W}" height="${H}" fill="url(#bg)"/>
-  <rect width="${W}" height="${H}" fill="url(#glow1)"/>
-  <rect width="${W}" height="${H}" fill="url(#glow2)"/>
+  <!-- White upper band -->
+  <rect x="0" y="0" width="${W}" height="${BAND_SPLIT_Y}" fill="url(#bgLight)"/>
+  <rect x="0" y="0" width="${W}" height="${BAND_SPLIT_Y}" fill="url(#glowLight)"/>
 
-  <!-- Faint hairline frame for a polished, premium feel -->
-  <rect x="24" y="24" width="${W - 48}" height="${H - 48}" rx="20" ry="20"
-        fill="none" stroke="#A8DDB3" stroke-opacity="0.10" stroke-width="1"/>
+  <!-- Green lower band -->
+  <rect x="0" y="${BAND_SPLIT_Y}" width="${W}" height="${H - BAND_SPLIT_Y}" fill="url(#bgDark)"/>
+  <rect x="0" y="${BAND_SPLIT_Y}" width="${W}" height="${H - BAND_SPLIT_Y}" fill="url(#glowDark)"/>
 
-  <!-- Brand row: logo + wordmark -->
+  <!-- Thin accent rule along the band seam -->
+  <rect x="0" y="${BAND_SPLIT_Y - 2}" width="${W}" height="2" fill="#2EAB42" fill-opacity="0.55"/>
+
+  <!-- Brand wordmark on the white band -->
   <g font-family="${SERIF_STACK}">
     <text x="${WORDMARK_X}" y="${WORDMARK_Y}"
-          font-size="52" font-weight="700" letter-spacing="-1"
-          fill="#A8DDB3">${wordmark}</text>
+          font-size="48" font-weight="700" letter-spacing="-1"
+          fill="#1F7A2C">${wordmark}</text>
   </g>
 
-  <!-- Decorative left rule under the brand row -->
-  <line x1="${PAD_X}" y1="${LOGO_Y + LOGO_SIZE + 30}"
-        x2="${PAD_X + 72}" y2="${LOGO_Y + LOGO_SIZE + 30}"
-        stroke="#2EAB42" stroke-width="3" stroke-linecap="round"/>
+  <!-- Heading on the white band, in deep forest green -->
+  <text font-family="${FONT_STACK}" fill="#0F4D1A"
+        font-size="70" font-weight="800" letter-spacing="-2.4">${headingTspans}</text>
 
-  <!-- Heading: hero h1 echo -->
-  <text font-family="${FONT_STACK}" fill="#FFFFFF"
-        font-size="70" font-weight="800" letter-spacing="-2.4"
-        style="line-height: 1.05;">${headingTspans}</text>
-
-  <!-- Three pillars (mirror the hero rotator lines) -->
+  <!-- Three pillars on the green band -->
   <g font-family="${FONT_STACK}" font-size="30" font-weight="500" fill="#D6F1DB">
     <circle cx="${SUB_X + 7}" cy="${SUB_BASELINE_1 - 10}" r="6" fill="url(#dot)"/>
     <text x="${SUB_X + 28}" y="${SUB_BASELINE_1}">${sub[0]}</text>
@@ -185,9 +191,9 @@ function buildSvg(v) {
     <text x="${SUB_X + 28}" y="${SUB_BASELINE_1 + SUB_GAP * 2}">${sub[2]}</text>
   </g>
 
-  <!-- Tagline -->
+  <!-- Tagline on the green band -->
   <text font-family="${FONT_STACK}" fill="#FFFFFF"
-        font-size="28" font-weight="500" font-style="italic"
+        font-size="26" font-weight="500" font-style="italic"
         opacity="0.92" letter-spacing="-0.2">${taglineTspans}</text>
 </svg>`;
 }
@@ -195,23 +201,10 @@ function buildSvg(v) {
 async function main() {
   const markPath = path.join(projectRoot, 'public/images/brand/rhize-mark.png');
 
-  // Small brand mark next to the wordmark.
-  const markSize = 96;
+  // Small brand mark next to the wordmark on the white band.
+  const markSize = 88;
   const mark = await sharp(markPath)
     .resize(markSize, markSize, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-    .toBuffer();
-
-  // Large, faded mark anchored to the right as a decorative accent.
-  const accentSize = 520;
-  const accentMark = await sharp(markPath)
-    .resize(accentSize, accentSize, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
-    // Drop the alpha way down so it reads as a subtle watermark over the gradient.
-    .composite([{
-      input: Buffer.from([255, 255, 255, 45]),
-      raw: { width: 1, height: 1, channels: 4 },
-      tile: true,
-      blend: 'dest-in',
-    }])
     .toBuffer();
 
   for (const v of variants) {
@@ -220,10 +213,7 @@ async function main() {
     await fs.mkdir(path.dirname(outPath), { recursive: true });
 
     await sharp(Buffer.from(svg))
-      .composite([
-        { input: accentMark, top: 60, left: W - accentSize - 20 },
-        { input: mark, top: 70, left: 80 },
-      ])
+      .composite([{ input: mark, top: 60, left: 80 }])
       .png({ compressionLevel: 9 })
       .toFile(outPath);
 
