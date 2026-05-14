@@ -87,7 +87,7 @@ export default {
     subheading: 'Inspired by mycorrhizae.',
     paragraphs: [
       'Mycorrhizae are living networks formed between fungi and plant roots, where each side gives something the other needs. The fungi help roots reach farther, share nutrients, and connect with the surrounding ecosystem; the plant provides energy in return. Together, they create a hidden support system that helps individual plants grow stronger through a symbiotic relationship.',
-      'Rhize is built on the same idea: trusted connections that help people grow. Like mycorrhizae beneath a forest, Rhize creates a more intentional social layer where authentic communication, mutual support, and private connection help individuals feel rooted, nourished, and connected to something larger than themselves.',
+      'Rhize is built on the same idea: trusted connections help people grow. Like mycorrhizae beneath a forest, Rhize creates a more intentional social layer where authentic communication, mutual support, and private connection help individuals feel rooted, nourished, and connected to something larger than themselves.',
     ],
   },
 };
