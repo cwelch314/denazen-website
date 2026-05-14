@@ -87,7 +87,7 @@ export default {
     subheading: 'Inspirado en las micorrizas.',
     paragraphs: [
       'Las micorrizas son redes vivas que se forman entre hongos y raíces de plantas, donde cada parte le da a la otra algo que necesita. Los hongos ayudan a las raíces a llegar más lejos, comparten nutrientes y las conectan con el ecosistema que las rodea; la planta proporciona energía a cambio. Juntos crean un sistema de apoyo oculto que ayuda a cada planta a crecer más fuerte a través de una relación simbiótica.',
-      'Rhize se construye sobre la misma idea: conexiones de confianza que ayudan a las personas a crecer. Como las micorrizas bajo un bosque, Rhize crea una capa social más intencional donde la comunicación auténtica, el apoyo mutuo y la conexión privada ayudan a las personas a sentirse arraigadas, nutridas y conectadas con algo más grande que ellas mismas.',
+      'Rhize se construye sobre la misma idea: las conexiones de confianza ayudan a las personas a crecer. Como las micorrizas bajo un bosque, Rhize crea una capa social más intencional donde la comunicación auténtica, el apoyo mutuo y la conexión privada ayudan a las personas a sentirse arraigadas, nutridas y conectadas con algo más grande que ellas mismas.',
     ],
   },
 };
