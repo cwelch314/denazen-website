@@ -841,7 +841,7 @@ section { padding-block: var(--section-pad); }
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1.4fr 1fr 1fr 1fr;
   gap: 2.5rem;
 }
 .footer-brand .brand {
