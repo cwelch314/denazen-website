@@ -19,11 +19,11 @@ export default {
     waitlistNote: 'Invite-only beta launching soon. Help shape the future of social.',
     imagePublic: {
       src: '/images/screenshots/hero-public.webp',
-      alt: 'Rhize app on iPhone showing a public feed of posts from Bluesky.',
+      alt: 'Rhize app on iPhone showing the public feed with a post by Sam Wilson about a rescued husky from Dogs of Bluesky.',
     },
     imagePrivate: {
-      src: '/images/screenshots/hero-private.webp',
-      alt: "Rhize app on iPhone showing a private feed with a post tagged 'Shared with your Trusted Friends circle'.",
+      src: '/images/screenshots/hero-connection.webp',
+      alt: "Rhize app on iPhone showing the private feed with a family weekend post by Luna García shared with her Trusted Friends circle.",
     },
   },
   whatRhize: {
@@ -39,8 +39,8 @@ export default {
       'Share moments meant for a few, not posts engineered for reach',
     ],
     image: {
-      src: '/images/screenshots/whats-denazen.webp',
-      alt: "Rhize's private feed showing a couple's trip post shared with the user's Family circle.",
+      src: '/images/screenshots/circle.webp',
+      alt: "Rhize's circle management screen on iPhone listing private circles like Family, Close Friends, Book Club, and Coworkers.",
     },
   },
   privacy: {
@@ -52,8 +52,8 @@ export default {
     ],
     closer: 'Private by design. Not by promise.',
     image: {
-      src: '/images/screenshots/private-network.webp',
-      alt: "Rhize's Private Network screen on iPhone, explaining end-to-end encryption.",
+      src: '/images/screenshots/network.webp',
+      alt: "Rhize's Your Private Network screen on iPhone, showing who you share with, who shares with you, and end-to-end encryption.",
     },
   },
   freedom: {
@@ -70,8 +70,8 @@ export default {
       'If we ever stop being the right home for you, your network comes with you.',
     ],
     image: {
-      src: '/images/screenshots/circles.webp',
-      alt: "Rhize's circles management screen showing user-defined circles like Closest Friends, Family, and Book Club.",
+      src: '/images/screenshots/freedom.webp',
+      alt: "Rhize's Customize Feed screen on iPhone showing suggested public feeds like Discover, Popular With Friends, Mutuals, Science, Artists: Trending, and News.",
     },
   },
   values: {
@@ -86,7 +86,7 @@ export default {
     heading: 'Why "Rhize"',
     subheading: 'Inspired by mycorrhizae.',
     paragraphs: [
-      'Mycorrhizae are living networks formed between fungi and plant roots, where each side gives something the other needs. The fungi help roots reach farther, share nutrients, and connect with the surrounding ecosystem; the plant provides energy in return. Together, they create a hidden support system that helps individual plants grow stronger through trusted connection.',
+      'Mycorrhizae are living networks formed between fungi and plant roots, where each side gives something the other needs. The fungi help roots reach farther, share nutrients, and connect with the surrounding ecosystem; the plant provides energy in return. Together, they create a hidden support system that helps individual plants grow stronger through a symbiotic relationship.',
       'Rhize is built on the same idea: trusted connections that help people grow. Like mycorrhizae beneath a forest, Rhize creates a more intentional social layer where authentic communication, mutual support, and private connection help individuals feel rooted, nourished, and connected to something larger than themselves.',
     ],
   },

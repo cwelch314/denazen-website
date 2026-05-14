@@ -19,11 +19,11 @@ export default {
     waitlistNote: 'Beta solo por invitación próximamente. Ayuda a dar forma al futuro de las redes sociales.',
     imagePublic: {
       src: '/images/screenshots/hero-public.webp',
-      alt: 'La app de Rhize en un iPhone mostrando un feed público de publicaciones de Bluesky.',
+      alt: 'La app de Rhize en un iPhone mostrando el feed público con una publicación de Sam Wilson sobre un husky rescatado de Dogs of Bluesky.',
     },
     imagePrivate: {
-      src: '/images/screenshots/hero-private.webp',
-      alt: 'La app de Rhize en un iPhone mostrando un feed privado con una publicación etiquetada como "Compartida con tu círculo de amigos de confianza".',
+      src: '/images/screenshots/hero-connection.webp',
+      alt: 'La app de Rhize en un iPhone mostrando el feed privado con una publicación familiar de fin de semana de Luna García compartida con su círculo de amigos de confianza.',
     },
   },
   whatRhize: {
@@ -39,8 +39,8 @@ export default {
       'Comparte momentos pensados para unos pocos, no publicaciones diseñadas para alcanzar a millones',
     ],
     image: {
-      src: '/images/screenshots/whats-denazen.webp',
-      alt: 'El feed privado de Rhize mostrando una publicación del viaje de una pareja compartida con el círculo Familia del usuario.',
+      src: '/images/screenshots/circle.webp',
+      alt: 'La pantalla de gestión de círculos de Rhize en un iPhone mostrando círculos privados como Familia, Amigos Cercanos, Club de Lectura y Compañeros de Trabajo.',
     },
   },
   privacy: {
@@ -52,8 +52,8 @@ export default {
     ],
     closer: 'Privado por diseño. No por promesa.',
     image: {
-      src: '/images/screenshots/private-network.webp',
-      alt: 'La pantalla de Red Privada de Rhize en iPhone, explicando el cifrado de extremo a extremo.',
+      src: '/images/screenshots/network.webp',
+      alt: 'La pantalla "Tu Red Privada" de Rhize en un iPhone, mostrando con quién compartes, quién comparte contigo y el cifrado de extremo a extremo.',
     },
   },
   freedom: {
@@ -70,8 +70,8 @@ export default {
       'Si algún día dejamos de ser el lugar adecuado para ti, tu red se va contigo.',
     ],
     image: {
-      src: '/images/screenshots/circles.webp',
-      alt: 'La pantalla de gestión de círculos de Rhize mostrando círculos definidos por el usuario como Amigos Más Cercanos, Familia y Club de Lectura.',
+      src: '/images/screenshots/freedom.webp',
+      alt: 'La pantalla "Personalizar Feed" de Rhize en un iPhone mostrando feeds públicos sugeridos como Discover, Popular With Friends, Mutuals, Science, Artists: Trending y News.',
     },
   },
   values: {
@@ -86,7 +86,7 @@ export default {
     heading: '¿Por qué "Rhize"?',
     subheading: 'Inspirado en las micorrizas.',
     paragraphs: [
-      'Las micorrizas son redes vivas que se forman entre hongos y raíces de plantas, donde cada parte le da a la otra algo que necesita. Los hongos ayudan a las raíces a llegar más lejos, comparten nutrientes y las conectan con el ecosistema que las rodea; la planta proporciona energía a cambio. Juntos crean un sistema de apoyo oculto que ayuda a cada planta a crecer más fuerte a través de la conexión de confianza.',
+      'Las micorrizas son redes vivas que se forman entre hongos y raíces de plantas, donde cada parte le da a la otra algo que necesita. Los hongos ayudan a las raíces a llegar más lejos, comparten nutrientes y las conectan con el ecosistema que las rodea; la planta proporciona energía a cambio. Juntos crean un sistema de apoyo oculto que ayuda a cada planta a crecer más fuerte a través de una relación simbiótica.',
       'Rhize se construye sobre la misma idea: conexiones de confianza que ayudan a las personas a crecer. Como las micorrizas bajo un bosque, Rhize crea una capa social más intencional donde la comunicación auténtica, el apoyo mutuo y la conexión privada ayudan a las personas a sentirse arraigadas, nutridas y conectadas con algo más grande que ellas mismas.',
     ],
   },
