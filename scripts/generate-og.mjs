@@ -82,9 +82,9 @@ function wrapText(text, { maxWidth, fontSize, avgCharRatio = 0.55, maxLines = 3 
 
 function buildSvg(v) {
   const wordmark = escapeXml(v.wordmark);
-  const headingLines = wrapText(v.heading, { maxWidth: 880, fontSize: 70, maxLines: 2 }).map(escapeXml);
+  const headingLines = wrapText(v.heading, { maxWidth: 980, fontSize: 60, maxLines: 2 }).map(escapeXml);
   const sub = v.sub.map(escapeXml);
-  const taglineLines = wrapText(v.tagline, { maxWidth: 980, fontSize: 26, maxLines: 2 }).map(escapeXml);
+  const taglineLines = wrapText(v.tagline, { maxWidth: 1040, fontSize: 30, maxLines: 2 }).map(escapeXml);
 
   // Layout constants
   const PAD_X = 80;
@@ -100,18 +100,18 @@ function buildSvg(v) {
 
   // Heading positioning inside the white band
   const HEADING_X = PAD_X;
-  const HEADING_BASELINE_1 = headingLines.length === 1 ? 260 : 230;
-  const HEADING_LINE_GAP = 78;
+  const HEADING_BASELINE_1 = headingLines.length === 1 ? 260 : 240;
+  const HEADING_LINE_GAP = 68;
 
   // Three pillars sit just under the band split
   const SUB_X = PAD_X;
-  const SUB_BASELINE_1 = BAND_SPLIT_Y + 70;
-  const SUB_GAP = 44;
+  const SUB_BASELINE_1 = BAND_SPLIT_Y + 72;
+  const SUB_GAP = 50;
 
   // Tagline near bottom of green band
   const TAGLINE_X = PAD_X;
-  const TAGLINE_BASELINE_1 = 555;
-  const TAGLINE_LINE_GAP = 32;
+  const TAGLINE_BASELINE_1 = 568;
+  const TAGLINE_LINE_GAP = 36;
 
   const headingTspans = headingLines
     .map((line, i) => `<tspan x="${HEADING_X}" y="${HEADING_BASELINE_1 + i * HEADING_LINE_GAP}">${line}</tspan>`)
@@ -177,23 +177,23 @@ function buildSvg(v) {
 
   <!-- Heading on the white band, in deep forest green -->
   <text font-family="${FONT_STACK}" fill="#0F4D1A"
-        font-size="70" font-weight="800" letter-spacing="-2.4">${headingTspans}</text>
+        font-size="60" font-weight="800" letter-spacing="-2">${headingTspans}</text>
 
   <!-- Three pillars on the green band -->
-  <g font-family="${FONT_STACK}" font-size="30" font-weight="500" fill="#D6F1DB">
-    <circle cx="${SUB_X + 7}" cy="${SUB_BASELINE_1 - 10}" r="6" fill="url(#dot)"/>
-    <text x="${SUB_X + 28}" y="${SUB_BASELINE_1}">${sub[0]}</text>
+  <g font-family="${FONT_STACK}" font-size="34" font-weight="500" fill="#D6F1DB">
+    <circle cx="${SUB_X + 8}" cy="${SUB_BASELINE_1 - 12}" r="7" fill="url(#dot)"/>
+    <text x="${SUB_X + 32}" y="${SUB_BASELINE_1}">${sub[0]}</text>
 
-    <circle cx="${SUB_X + 7}" cy="${SUB_BASELINE_1 + SUB_GAP - 10}" r="6" fill="url(#dot)"/>
-    <text x="${SUB_X + 28}" y="${SUB_BASELINE_1 + SUB_GAP}">${sub[1]}</text>
+    <circle cx="${SUB_X + 8}" cy="${SUB_BASELINE_1 + SUB_GAP - 12}" r="7" fill="url(#dot)"/>
+    <text x="${SUB_X + 32}" y="${SUB_BASELINE_1 + SUB_GAP}">${sub[1]}</text>
 
-    <circle cx="${SUB_X + 7}" cy="${SUB_BASELINE_1 + SUB_GAP * 2 - 10}" r="6" fill="url(#dot)"/>
-    <text x="${SUB_X + 28}" y="${SUB_BASELINE_1 + SUB_GAP * 2}">${sub[2]}</text>
+    <circle cx="${SUB_X + 8}" cy="${SUB_BASELINE_1 + SUB_GAP * 2 - 12}" r="7" fill="url(#dot)"/>
+    <text x="${SUB_X + 32}" y="${SUB_BASELINE_1 + SUB_GAP * 2}">${sub[2]}</text>
   </g>
 
   <!-- Tagline on the green band -->
   <text font-family="${FONT_STACK}" fill="#FFFFFF"
-        font-size="26" font-weight="500" font-style="italic"
+        font-size="30" font-weight="500" font-style="italic"
         opacity="0.92" letter-spacing="-0.2">${taglineTspans}</text>
 </svg>`;
 }
