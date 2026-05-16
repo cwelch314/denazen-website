@@ -1,7 +1,7 @@
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-  site: 'https://www.denazen.com',
+  site: 'https://rhize.social',
   trailingSlash: 'always',
   devToolbar: {
     enabled: false

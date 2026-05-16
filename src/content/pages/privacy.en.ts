@@ -14,7 +14,7 @@ export default {
     {
       heading: 'Who we are',
       paragraphs: [
-        'Rhize (“we”, “us”, “our”) operates the website denazen.com and the Rhize social application. Rhize is built on top of the AT Protocol; some public content you create on Rhize is handled by the AT Protocol / Bluesky infrastructure.',
+        'Rhize (“we”, “us”, “our”) operates the website rhize.social and the Rhize social application. Rhize is built on top of the AT Protocol; some public content you create on Rhize is handled by the AT Protocol / Bluesky infrastructure.',
       ],
     },
     {

@@ -36,7 +36,7 @@ const resolvedDescription =
   description ?? (lang === 'es' ? SHARE_DESCRIPTION_ES : SHARE_DESCRIPTION_EN);
 
 const t = useTranslations(lang);
-const site = Astro.site ?? new URL('https://www.denazen.com');
+const site = Astro.site ?? new URL('https://rhize.social');
 const canonical = new URL(Astro.url.pathname, site).href;
 const currentPath = pathname ?? Astro.url.pathname;
 const langlessPath = stripLangFromPath(currentPath);
