@@ -2,7 +2,7 @@ export default {
   meta: {
     title: 'Rhize — Donde la conexión real echa raíces',
     description:
-      'Privacidad inspirada en Signal. Conexión como en los primeros días de Facebook. Libertad y elección de Bluesky. Comparte con las personas en las que confías — de forma privada, auténtica y segura.',
+      'Privacidad inspirada en Signal. Conexión como en los primeros días de Facebook. Libertad y elección de Bluesky. Donde la conexión real echa raíces.',
   },
   hero: {
     heading: 'Un espacio privado y cifrado para tus relaciones reales',
