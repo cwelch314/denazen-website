@@ -1,0 +1,8 @@
+---
+import Base from '../layouts/Base.astro';
+import HomePage from '../components/pages/HomePage.astro';
+import content from '../content/pages/bsky.en';
+---
+<Base title={content.meta.title} description={content.meta.description} pathname="/bsky/" lang="en">
+  <HomePage lang="en" content={content} />
+</Base>

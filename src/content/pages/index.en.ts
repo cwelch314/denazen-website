@@ -6,6 +6,7 @@ export default {
   },
   hero: {
     heading: 'Where real connection takes root',
+    subheading: '',
     linesBefore: ['Privacy inspired by Signal'],
     rotator: {
       prefix: 'Connection like <em>early</em> ',
