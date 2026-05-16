@@ -15,13 +15,10 @@ interface Props {
   lang?: Lang;
 }
 
-const SHARE_TAGLINE_EN = 'Where real connection takes root.';
-const SHARE_TAGLINE_ES = 'Donde la conexión real echa raíces.';
-
 const SHARE_DESCRIPTION_EN =
-  'Privacy inspired by Signal. Connection like early Facebook. Freedom and choice of Bluesky. Share with the people you trust — privately, authentically, securely.';
+  'Privacy inspired by Signal. Connection like early Facebook. Freedom and choice of Bluesky.';
 const SHARE_DESCRIPTION_ES =
-  'Privacidad inspirada en Signal. Conexión como en los primeros días de Facebook. Libertad y elección de Bluesky. Comparte con las personas en las que confías — de forma privada, auténtica y segura.';
+  'Privacidad inspirada en Signal. Conexión como en los primeros días de Facebook. Libertad y elección de Bluesky.';
 
 const {
   title,
@@ -46,8 +43,7 @@ const ogImageResolved = localizeAsset(ogImage, lang);
 const ogImageVersion = publicAssetVersion(ogImageResolved);
 const ogImagePath = ogImageVersion ? `${ogImageResolved}?v=${ogImageVersion}` : ogImageResolved;
 const ogImageUrl = new URL(ogImagePath, site).href;
-const shareTagline = lang === 'es' ? SHARE_TAGLINE_ES : SHARE_TAGLINE_EN;
-const ogTitleResolved = ogTitle ?? `Rhize — ${shareTagline}`;
+const ogTitleResolved = ogTitle ?? title;
 ---
 <!doctype html>
 <html lang={lang}>
@@ -74,14 +70,14 @@ const ogTitleResolved = ogTitle ?? `Rhize — ${shareTagline}`;
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`Rhize — ${shareTagline}`} />
+    <meta property="og:image:alt" content={ogTitleResolved} />
     <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={ogTitleResolved} />
     <meta name="twitter:description" content={resolvedDescription} />
     <meta name="twitter:image" content={ogImageUrl} />
-    <meta name="twitter:image:alt" content={`Rhize — ${shareTagline}`} />
+    <meta name="twitter:image:alt" content={ogTitleResolved} />
 
     <link rel="preload" href="/fonts/inter/Inter-Regular.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/inter/Inter-ExtraBold.woff2" as="font" type="font/woff2" crossorigin />

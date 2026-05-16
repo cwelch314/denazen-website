@@ -2,7 +2,7 @@ export default {
   meta: {
     title: 'Rhize — Where real connection takes root',
     description:
-      'Privacy inspired by Signal. Connection like early Facebook. Freedom and choice of Bluesky. Where real connection takes root.',
+      'Privacy inspired by Signal. Connection like early Facebook. Freedom and choice of Bluesky.',
   },
   hero: {
     heading: 'A private, encrypted space for your real relationships',
