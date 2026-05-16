@@ -3,13 +3,13 @@ import indexContent from './index.es';
 const bskyContent: typeof indexContent = {
   ...indexContent,
   meta: {
-    title: 'Rhize — Tu capa privada y cifrada sobre Bluesky',
+    title: 'Rhize — Añade una capa privada y cifrada a Bluesky',
     description: indexContent.meta.description,
   },
   hero: {
     ...indexContent.hero,
-    heading: 'Tu capa privada y cifrada sobre Bluesky',
-    tagline: ['Donde la conexión real echa raíces.'],
+    heading: 'Añade una capa privada y cifrada a Bluesky',
+    tagline: ['Donde la conexión real echa raíces'],
   },
 };
 
