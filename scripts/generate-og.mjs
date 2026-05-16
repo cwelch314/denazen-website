@@ -94,21 +94,21 @@ function buildSvg(v) {
   const WORDMARK_X = LOGO_X + LOGO_SIZE + 20;
   const WORDMARK_Y = LOGO_Y + LOGO_SIZE / 2 + 20;
 
-  // Top (white) band holds the brand row and the heading.
-  // Bottom (green) band holds the three pillars and the tagline.
-  const BAND_SPLIT_Y = 330;
-
-  // Heading positioning inside the white band
+  // Heading positioning
   const HEADING_X = PAD_X;
-  const HEADING_BASELINE_1 = headingLines.length === 1 ? 260 : 240;
+  const HEADING_BASELINE_1 = headingLines.length === 1 ? 250 : 230;
   const HEADING_LINE_GAP = 68;
 
-  // Three pillars sit just under the band split
+  // Thin accent rule sits between the heading and the pillars
+  const RULE_Y = headingLines.length === 1 ? 290 : 332;
+  const RULE_WIDTH = 120;
+
+  // Three pillars under the heading
   const SUB_X = PAD_X;
-  const SUB_BASELINE_1 = BAND_SPLIT_Y + 72;
+  const SUB_BASELINE_1 = headingLines.length === 1 ? 360 : 400;
   const SUB_GAP = 50;
 
-  // Tagline near bottom of green band
+  // Tagline near bottom of canvas
   const TAGLINE_X = PAD_X;
   const TAGLINE_BASELINE_1 = 568;
   const TAGLINE_LINE_GAP = 36;
@@ -124,29 +124,23 @@ function buildSvg(v) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
-    <!-- Soft cream/mint wash for the upper band -->
+    <!-- Soft cream/mint wash across the full canvas -->
     <linearGradient id="bgLight" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#FFFFFF"/>
       <stop offset="100%" stop-color="#F4FBF5"/>
     </linearGradient>
 
-    <!-- Warm leaf-light tint for the white band, evoking sun through canopy -->
-    <radialGradient id="glowLight" cx="86%" cy="20%" r="58%">
-      <stop offset="0%" stop-color="#2EAB42" stop-opacity="0.10"/>
+    <!-- Warm leaf-light tint at top right, evoking sun through canopy -->
+    <radialGradient id="glowTop" cx="92%" cy="6%" r="62%">
+      <stop offset="0%" stop-color="#2EAB42" stop-opacity="0.14"/>
       <stop offset="60%" stop-color="#2EAB42" stop-opacity="0.04"/>
       <stop offset="100%" stop-color="#2EAB42" stop-opacity="0"/>
     </radialGradient>
 
-    <!-- Deep forest gradient for the lower band -->
-    <linearGradient id="bgDark" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#0F4D1A"/>
-      <stop offset="55%" stop-color="#0A3B14"/>
-      <stop offset="100%" stop-color="#06230C"/>
-    </linearGradient>
-
-    <!-- Subtle counter-glow in the green band for depth -->
-    <radialGradient id="glowDark" cx="0%" cy="105%" r="60%">
-      <stop offset="0%" stop-color="#1F7A2C" stop-opacity="0.32"/>
+    <!-- Counter-glow at bottom left for depth -->
+    <radialGradient id="glowBottom" cx="0%" cy="100%" r="55%">
+      <stop offset="0%" stop-color="#1F7A2C" stop-opacity="0.10"/>
+      <stop offset="60%" stop-color="#1F7A2C" stop-opacity="0.03"/>
       <stop offset="100%" stop-color="#1F7A2C" stop-opacity="0"/>
     </radialGradient>
 
@@ -157,30 +151,28 @@ function buildSvg(v) {
     </radialGradient>
   </defs>
 
-  <!-- White upper band -->
-  <rect x="0" y="0" width="${W}" height="${BAND_SPLIT_Y}" fill="url(#bgLight)"/>
-  <rect x="0" y="0" width="${W}" height="${BAND_SPLIT_Y}" fill="url(#glowLight)"/>
+  <!-- Full-canvas white background with soft brand glows -->
+  <rect x="0" y="0" width="${W}" height="${H}" fill="url(#bgLight)"/>
+  <rect x="0" y="0" width="${W}" height="${H}" fill="url(#glowTop)"/>
+  <rect x="0" y="0" width="${W}" height="${H}" fill="url(#glowBottom)"/>
 
-  <!-- Green lower band -->
-  <rect x="0" y="${BAND_SPLIT_Y}" width="${W}" height="${H - BAND_SPLIT_Y}" fill="url(#bgDark)"/>
-  <rect x="0" y="${BAND_SPLIT_Y}" width="${W}" height="${H - BAND_SPLIT_Y}" fill="url(#glowDark)"/>
-
-  <!-- Thin accent rule along the band seam -->
-  <rect x="0" y="${BAND_SPLIT_Y - 2}" width="${W}" height="2" fill="#2EAB42" fill-opacity="0.55"/>
-
-  <!-- Brand wordmark on the white band -->
+  <!-- Brand wordmark -->
   <g font-family="${SERIF_STACK}">
     <text x="${WORDMARK_X}" y="${WORDMARK_Y}"
           font-size="48" font-weight="700" letter-spacing="-1"
           fill="#1F7A2C">${wordmark}</text>
   </g>
 
-  <!-- Heading on the white band, in deep forest green -->
+  <!-- Heading in deep forest green -->
   <text font-family="${FONT_STACK}" fill="#0F4D1A"
         font-size="60" font-weight="800" letter-spacing="-2">${headingTspans}</text>
 
-  <!-- Three pillars on the green band -->
-  <g font-family="${FONT_STACK}" font-size="34" font-weight="500" fill="#D6F1DB">
+  <!-- Short accent rule between heading and pillars -->
+  <rect x="${PAD_X}" y="${RULE_Y}" width="${RULE_WIDTH}" height="3" rx="1.5"
+        fill="#2EAB42" fill-opacity="0.85"/>
+
+  <!-- Three pillars in body text gray -->
+  <g font-family="${FONT_STACK}" font-size="34" font-weight="500" fill="#212529">
     <circle cx="${SUB_X + 8}" cy="${SUB_BASELINE_1 - 12}" r="7" fill="url(#dot)"/>
     <text x="${SUB_X + 32}" y="${SUB_BASELINE_1}">${sub[0]}</text>
 
@@ -191,10 +183,10 @@ function buildSvg(v) {
     <text x="${SUB_X + 32}" y="${SUB_BASELINE_1 + SUB_GAP * 2}">${sub[2]}</text>
   </g>
 
-  <!-- Tagline on the green band -->
-  <text font-family="${FONT_STACK}" fill="#FFFFFF"
+  <!-- Tagline in muted gray -->
+  <text font-family="${FONT_STACK}" fill="#495057"
         font-size="30" font-weight="500" font-style="italic"
-        opacity="0.92" letter-spacing="-0.2">${taglineTspans}</text>
+        letter-spacing="-0.2">${taglineTspans}</text>
 </svg>`;
 }
 
