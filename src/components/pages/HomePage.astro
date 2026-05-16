@@ -18,6 +18,9 @@ const img = (p: string) => localizeAsset(p, lang);
     <div class="home-grid">
       <div class="home-text">
         <h1 set:html={c.hero.heading}></h1>
+        {c.hero.subheading && (
+          <p class="home-hero-subhead" set:html={c.hero.subheading} />
+        )}
         <p class="home-hero-lines">
           {c.hero.linesBefore.map((line) => (
             <>
