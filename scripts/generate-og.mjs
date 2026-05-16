@@ -1,6 +1,7 @@
-// Regenerates the Open Graph image at public/images/og-default.png (and the
-// Spanish variant at public/images/es/og-default.png) so they parallel the
-// hero copy on the homepage.
+// Regenerates the Open Graph images so they parallel the hero copy. The
+// homepage uses public/images/og-default.png (with its Spanish variant at
+// public/images/es/og-default.png); /bsky uses public/images/og-bsky.png
+// (es/og-bsky.png).
 //
 // Run with: node scripts/generate-og.mjs
 
@@ -22,24 +23,26 @@ const variants = [
   {
     out: 'public/images/og-default.png',
     wordmark: 'Rhize',
-    heading: 'Where real connection takes root',
-    sub: [
-      'Privacy inspired by Signal.',
-      'Connection like early Facebook.',
-      'Freedom and choice of Bluesky.',
-    ],
-    tagline: 'Share with the people you trust — privately, authentically, securely.',
+    heading: 'A private, encrypted space for your real relationships',
+    tagline: 'Where real connection takes root',
   },
   {
     out: 'public/images/es/og-default.png',
     wordmark: 'Rhize',
-    heading: 'Donde la conexión real echa raíces',
-    sub: [
-      'Privacidad inspirada en Signal.',
-      'Conexión como en los primeros días de Facebook.',
-      'Libertad y elección de Bluesky.',
-    ],
-    tagline: 'Comparte con las personas en las que confías — de forma privada, auténtica y segura.',
+    heading: 'Un espacio privado y cifrado para tus relaciones reales',
+    tagline: 'Donde la conexión real echa raíces',
+  },
+  {
+    out: 'public/images/og-bsky.png',
+    wordmark: 'Rhize',
+    heading: 'Add a private, encrypted layer to Bluesky',
+    tagline: 'Where real connection takes root',
+  },
+  {
+    out: 'public/images/es/og-bsky.png',
+    wordmark: 'Rhize',
+    heading: 'Añade una capa privada y cifrada a Bluesky',
+    tagline: 'Donde la conexión real echa raíces',
   },
 ];
 
@@ -82,9 +85,8 @@ function wrapText(text, { maxWidth, fontSize, avgCharRatio = 0.55, maxLines = 3 
 
 function buildSvg(v) {
   const wordmark = escapeXml(v.wordmark);
-  const headingLines = wrapText(v.heading, { maxWidth: 980, fontSize: 60, maxLines: 2 }).map(escapeXml);
-  const sub = v.sub.map(escapeXml);
-  const taglineLines = wrapText(v.tagline, { maxWidth: 1040, fontSize: 30, maxLines: 2 }).map(escapeXml);
+  const headingLines = wrapText(v.heading, { maxWidth: 1040, fontSize: 76, maxLines: 3 }).map(escapeXml);
+  const taglineLines = wrapText(v.tagline, { maxWidth: 1040, fontSize: 36, maxLines: 2 }).map(escapeXml);
 
   // Layout constants
   const PAD_X = 80;
@@ -94,24 +96,28 @@ function buildSvg(v) {
   const WORDMARK_X = LOGO_X + LOGO_SIZE + 20;
   const WORDMARK_Y = LOGO_Y + LOGO_SIZE / 2 + 20;
 
-  // Heading positioning
-  const HEADING_X = PAD_X;
-  const HEADING_BASELINE_1 = headingLines.length === 1 ? 250 : 230;
-  const HEADING_LINE_GAP = 68;
-
-  // Thin accent rule sits between the heading and the pillars
-  const RULE_Y = headingLines.length === 1 ? 290 : 332;
+  // Center the heading + accent rule + tagline as a single block in the
+  // canvas, with the heading visually anchored slightly above center.
+  const HEADING_FONT_SIZE = 76;
+  const HEADING_LINE_GAP = 86;
+  const RULE_GAP_ABOVE = 56;
+  const RULE_HEIGHT = 3;
   const RULE_WIDTH = 120;
+  const TAGLINE_GAP_ABOVE = 70;
+  const TAGLINE_LINE_GAP = 44;
 
-  // Three pillars under the heading
-  const SUB_X = PAD_X;
-  const SUB_BASELINE_1 = headingLines.length === 1 ? 360 : 400;
-  const SUB_GAP = 50;
+  const headingBlockHeight = (headingLines.length - 1) * HEADING_LINE_GAP + HEADING_FONT_SIZE;
+  const taglineBlockHeight = (taglineLines.length - 1) * TAGLINE_LINE_GAP + 36;
+  const totalHeight =
+    headingBlockHeight + RULE_GAP_ABOVE + RULE_HEIGHT + TAGLINE_GAP_ABOVE + taglineBlockHeight;
+  // Bias the block upward so it doesn't crowd the wordmark and feels balanced.
+  const blockTop = Math.max(220, Math.round((H - totalHeight) / 2) + 24);
 
-  // Tagline near bottom of canvas
+  const HEADING_X = PAD_X;
+  const HEADING_BASELINE_1 = blockTop + HEADING_FONT_SIZE - 4;
+  const RULE_Y = blockTop + headingBlockHeight + RULE_GAP_ABOVE;
   const TAGLINE_X = PAD_X;
-  const TAGLINE_BASELINE_1 = 568;
-  const TAGLINE_LINE_GAP = 36;
+  const TAGLINE_BASELINE_1 = RULE_Y + RULE_HEIGHT + TAGLINE_GAP_ABOVE;
 
   const headingTspans = headingLines
     .map((line, i) => `<tspan x="${HEADING_X}" y="${HEADING_BASELINE_1 + i * HEADING_LINE_GAP}">${line}</tspan>`)
@@ -143,12 +149,6 @@ function buildSvg(v) {
       <stop offset="60%" stop-color="#1F7A2C" stop-opacity="0.03"/>
       <stop offset="100%" stop-color="#1F7A2C" stop-opacity="0"/>
     </radialGradient>
-
-    <!-- Accent pillar bullet -->
-    <radialGradient id="dot" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#A8DDB3"/>
-      <stop offset="100%" stop-color="#2EAB42"/>
-    </radialGradient>
   </defs>
 
   <!-- Full-canvas white background with soft brand glows -->
@@ -165,27 +165,15 @@ function buildSvg(v) {
 
   <!-- Heading in deep forest green -->
   <text font-family="${FONT_STACK}" fill="#0F4D1A"
-        font-size="60" font-weight="800" letter-spacing="-2">${headingTspans}</text>
+        font-size="${HEADING_FONT_SIZE}" font-weight="800" letter-spacing="-2">${headingTspans}</text>
 
-  <!-- Short accent rule between heading and pillars -->
-  <rect x="${PAD_X}" y="${RULE_Y}" width="${RULE_WIDTH}" height="3" rx="1.5"
+  <!-- Short accent rule between heading and tagline -->
+  <rect x="${PAD_X}" y="${RULE_Y}" width="${RULE_WIDTH}" height="${RULE_HEIGHT}" rx="1.5"
         fill="#2EAB42" fill-opacity="0.85"/>
-
-  <!-- Three pillars in body text gray -->
-  <g font-family="${FONT_STACK}" font-size="34" font-weight="500" fill="#212529">
-    <circle cx="${SUB_X + 8}" cy="${SUB_BASELINE_1 - 12}" r="7" fill="url(#dot)"/>
-    <text x="${SUB_X + 32}" y="${SUB_BASELINE_1}">${sub[0]}</text>
-
-    <circle cx="${SUB_X + 8}" cy="${SUB_BASELINE_1 + SUB_GAP - 12}" r="7" fill="url(#dot)"/>
-    <text x="${SUB_X + 32}" y="${SUB_BASELINE_1 + SUB_GAP}">${sub[1]}</text>
-
-    <circle cx="${SUB_X + 8}" cy="${SUB_BASELINE_1 + SUB_GAP * 2 - 12}" r="7" fill="url(#dot)"/>
-    <text x="${SUB_X + 32}" y="${SUB_BASELINE_1 + SUB_GAP * 2}">${sub[2]}</text>
-  </g>
 
   <!-- Tagline in muted gray -->
   <text font-family="${FONT_STACK}" fill="#495057"
-        font-size="30" font-weight="500" font-style="italic"
+        font-size="36" font-weight="500" font-style="italic"
         letter-spacing="-0.2">${taglineTspans}</text>
 </svg>`;
 }
