@@ -6,7 +6,6 @@ export default {
   },
   hero: {
     heading: 'Donde la conexión real echa raíces',
-    subheading: '',
     linesBefore: ['Privacidad inspirada en Signal'],
     rotator: {
       prefix: 'Conexión como en los <em>primeros días</em> de ',
