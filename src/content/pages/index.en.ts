@@ -1,6 +1,6 @@
 export default {
   meta: {
-    title: 'Rhize — Where real connection takes root',
+    title: 'Rhize — A private, encrypted space for your real relationships',
     description:
       'Privacy inspired by Signal. Connection like early Facebook. Freedom and choice of Bluesky.',
   },
