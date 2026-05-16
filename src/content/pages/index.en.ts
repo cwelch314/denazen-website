@@ -5,7 +5,7 @@ export default {
       'Privacy inspired by Signal. Connection like early Facebook. Freedom and choice of Bluesky. Share with the people you trust — privately, authentically, securely.',
   },
   hero: {
-    heading: 'Where real connection takes root',
+    heading: 'A private, encrypted space for your real relationships',
     linesBefore: ['Privacy inspired by Signal'],
     rotator: {
       prefix: 'Connection like <em>early</em> ',
@@ -15,7 +15,7 @@ export default {
     linesAfter: [
       'Freedom and choice of Bluesky',
     ],
-    tagline: ['Share with the people you trust — privately, authentically, securely.'],
+    tagline: ['Where real connection takes root'],
     waitlistButton: 'Request invite',
     waitlistNote: 'Invite-only beta launching soon. Help shape the future of social.',
     imagePublic: {
