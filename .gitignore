@@ -33,3 +33,6 @@ pnpm-debug.log*
 # Uncompressed source mockups (kept local; committed versions in public/images/screenshots/)
 apple-iphone-*-mockup*/
 product_images/
+
+# Root-level PNG drops from design tools (kept local; committed brand assets live in public/images/)
+/*.png
