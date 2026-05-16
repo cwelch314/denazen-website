@@ -19,7 +19,7 @@ interface Content {
   lastUpdatedLabel: string;
   lastUpdatedDate: string;
   lastUpdatedText: string;
-  placeholderNotice: string;
+  placeholderNotice?: string;
   sections: Section[];
 }
 
@@ -35,7 +35,7 @@ const { content: c } = Astro.props;
     <h1>{c.heading}</h1>
     <p class="legal-meta">{c.lastUpdatedLabel}<time datetime={c.lastUpdatedDate}>{c.lastUpdatedText}</time></p>
 
-    <p><em>{c.placeholderNotice}</em></p>
+    {c.placeholderNotice && <p><em>{c.placeholderNotice}</em></p>}
 
     {c.sections.map((s) => (
       <>
