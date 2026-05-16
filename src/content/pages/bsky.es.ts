@@ -9,7 +9,7 @@ const bskyContent: typeof indexContent = {
   hero: {
     ...indexContent.hero,
     heading: 'Tu capa privada y cifrada sobre Bluesky',
-    subheading: 'Donde la conexión real echa raíces',
+    tagline: ['Donde la conexión real echa raíces.'],
   },
 };
 

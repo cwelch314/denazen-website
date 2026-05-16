@@ -452,15 +452,6 @@ section { padding-block: var(--section-pad); }
   font-size: clamp(2rem, 4.5vw, 3rem);
   margin-bottom: 1.5rem;
 }
-.home-hero-subhead {
-  margin-top: -0.75rem;
-  margin-bottom: 1.5rem;
-  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
-  font-weight: 600;
-  color: var(--c-accent);
-  line-height: 1.3;
-  letter-spacing: -0.01em;
-}
 .home-hero-visual {
   position: relative;
 }
