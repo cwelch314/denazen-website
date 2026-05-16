@@ -14,7 +14,7 @@ export default {
     {
       heading: 'Quiénes somos',
       paragraphs: [
-        'Rhize («nosotros», «nos», «nuestro») opera el sitio web denazen.com y la aplicación social Rhize. Rhize está construido sobre el AT Protocol; parte del contenido público que creas en Rhize es manejado por la infraestructura del AT Protocol / Bluesky.',
+        'Rhize («nosotros», «nos», «nuestro») opera el sitio web rhize.social y la aplicación social Rhize. Rhize está construido sobre el AT Protocol; parte del contenido público que creas en Rhize es manejado por la infraestructura del AT Protocol / Bluesky.',
       ],
     },
     {
