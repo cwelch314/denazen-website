@@ -83,41 +83,51 @@ function wrapText(text, { maxWidth, fontSize, avgCharRatio = 0.55, maxLines = 3 
   return lines.slice(0, maxLines);
 }
 
+const LOGO_SIZE = 140;
+
 function buildSvg(v) {
   const wordmark = escapeXml(v.wordmark);
-  const headingLines = wrapText(v.heading, { maxWidth: 1040, fontSize: 76, maxLines: 3 }).map(escapeXml);
-  const taglineLines = wrapText(v.tagline, { maxWidth: 1040, fontSize: 36, maxLines: 2 }).map(escapeXml);
+  const HEADING_FONT_SIZE = 52;
+  const TAGLINE_FONT_SIZE = 42;
+  const headingLines = wrapText(v.heading, { maxWidth: 1040, fontSize: HEADING_FONT_SIZE, maxLines: 3 }).map(escapeXml);
+  const taglineLines = wrapText(v.tagline, { maxWidth: 1040, fontSize: TAGLINE_FONT_SIZE, maxLines: 2 }).map(escapeXml);
 
-  // Layout constants
+  // Brand mark + wordmark sit on a band along the top edge.
   const PAD_X = 80;
-  const LOGO_SIZE = 88;
   const LOGO_X = PAD_X;
-  const LOGO_Y = 60;
-  const WORDMARK_X = LOGO_X + LOGO_SIZE + 20;
-  const WORDMARK_Y = LOGO_Y + LOGO_SIZE / 2 + 20;
+  const LOGO_Y = 70;
+  const WORDMARK_FONT_SIZE = 76;
+  const WORDMARK_X = LOGO_X + LOGO_SIZE + 28;
+  // Position the wordmark baseline near the vertical center of the brand mark.
+  const WORDMARK_Y = LOGO_Y + LOGO_SIZE / 2 + WORDMARK_FONT_SIZE / 2 - 10;
 
-  // Center the heading + accent rule + tagline as a single block in the
-  // canvas, with the heading visually anchored slightly above center.
-  const HEADING_FONT_SIZE = 76;
-  const HEADING_LINE_GAP = 86;
-  const RULE_GAP_ABOVE = 56;
+  // Heading + accent rule + tagline are centered as a single block beneath
+  // the brand band, biased slightly upward so the bottom of the canvas
+  // doesn't feel crowded.
+  const HEADING_LINE_GAP = 62;
+  const RULE_GAP_ABOVE = 44;
   const RULE_HEIGHT = 3;
   const RULE_WIDTH = 120;
-  const TAGLINE_GAP_ABOVE = 70;
-  const TAGLINE_LINE_GAP = 44;
+  const TAGLINE_GAP_ABOVE = 50;
+  const TAGLINE_LINE_GAP = 50;
 
   const headingBlockHeight = (headingLines.length - 1) * HEADING_LINE_GAP + HEADING_FONT_SIZE;
-  const taglineBlockHeight = (taglineLines.length - 1) * TAGLINE_LINE_GAP + 36;
+  const taglineBlockHeight = (taglineLines.length - 1) * TAGLINE_LINE_GAP + TAGLINE_FONT_SIZE;
   const totalHeight =
     headingBlockHeight + RULE_GAP_ABOVE + RULE_HEIGHT + TAGLINE_GAP_ABOVE + taglineBlockHeight;
-  // Bias the block upward so it doesn't crowd the wordmark and feels balanced.
-  const blockTop = Math.max(220, Math.round((H - totalHeight) / 2) + 24);
+  const brandBandBottom = LOGO_Y + LOGO_SIZE;
+  // Center the block in the remaining canvas below the brand band, with a
+  // small upward bias for balance.
+  const blockTop = Math.max(
+    brandBandBottom + 70,
+    Math.round((H - brandBandBottom - totalHeight) / 2) + brandBandBottom - 10,
+  );
 
   const HEADING_X = PAD_X;
   const HEADING_BASELINE_1 = blockTop + HEADING_FONT_SIZE - 4;
   const RULE_Y = blockTop + headingBlockHeight + RULE_GAP_ABOVE;
   const TAGLINE_X = PAD_X;
-  const TAGLINE_BASELINE_1 = RULE_Y + RULE_HEIGHT + TAGLINE_GAP_ABOVE;
+  const TAGLINE_BASELINE_1 = RULE_Y + RULE_HEIGHT + TAGLINE_GAP_ABOVE + TAGLINE_FONT_SIZE - 8;
 
   const headingTspans = headingLines
     .map((line, i) => `<tspan x="${HEADING_X}" y="${HEADING_BASELINE_1 + i * HEADING_LINE_GAP}">${line}</tspan>`)
@@ -159,13 +169,13 @@ function buildSvg(v) {
   <!-- Brand wordmark -->
   <g font-family="${SERIF_STACK}">
     <text x="${WORDMARK_X}" y="${WORDMARK_Y}"
-          font-size="48" font-weight="700" letter-spacing="-1"
+          font-size="${WORDMARK_FONT_SIZE}" font-weight="700" letter-spacing="-1.5"
           fill="#1F7A2C">${wordmark}</text>
   </g>
 
   <!-- Heading in deep forest green -->
   <text font-family="${FONT_STACK}" fill="#0F4D1A"
-        font-size="${HEADING_FONT_SIZE}" font-weight="800" letter-spacing="-2">${headingTspans}</text>
+        font-size="${HEADING_FONT_SIZE}" font-weight="800" letter-spacing="-1.4">${headingTspans}</text>
 
   <!-- Short accent rule between heading and tagline -->
   <rect x="${PAD_X}" y="${RULE_Y}" width="${RULE_WIDTH}" height="${RULE_HEIGHT}" rx="1.5"
@@ -173,18 +183,16 @@ function buildSvg(v) {
 
   <!-- Tagline in muted gray -->
   <text font-family="${FONT_STACK}" fill="#495057"
-        font-size="36" font-weight="500" font-style="italic"
-        letter-spacing="-0.2">${taglineTspans}</text>
+        font-size="${TAGLINE_FONT_SIZE}" font-weight="500" font-style="italic"
+        letter-spacing="-0.4">${taglineTspans}</text>
 </svg>`;
 }
 
 async function main() {
   const markPath = path.join(projectRoot, 'public/images/brand/rhize-mark.png');
 
-  // Small brand mark next to the wordmark on the white band.
-  const markSize = 88;
   const mark = await sharp(markPath)
-    .resize(markSize, markSize, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .resize(LOGO_SIZE, LOGO_SIZE, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .toBuffer();
 
   for (const v of variants) {
@@ -193,7 +201,7 @@ async function main() {
     await fs.mkdir(path.dirname(outPath), { recursive: true });
 
     await sharp(Buffer.from(svg))
-      .composite([{ input: mark, top: 60, left: 80 }])
+      .composite([{ input: mark, top: 70, left: 80 }])
       .png({ compressionLevel: 9 })
       .toFile(outPath);
 
