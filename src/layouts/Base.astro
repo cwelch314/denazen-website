@@ -13,6 +13,7 @@ interface Props {
   ogImage?: string;
   pathname?: string;
   lang?: Lang;
+  noindex?: boolean;
 }
 
 const SHARE_DESCRIPTION_EN =
@@ -27,6 +28,7 @@ const {
   ogImage = '/images/og-default.png',
   pathname,
   lang = defaultLang,
+  noindex = false,
 } = Astro.props;
 
 const resolvedDescription =
@@ -52,6 +54,7 @@ const ogTitleResolved = ogTitle ?? title;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={resolvedDescription} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="canonical" href={canonical} />
     {alternates.map((a) => (
       <link rel="alternate" hreflang={a.lang} href={a.href} />

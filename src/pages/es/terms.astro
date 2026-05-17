@@ -3,6 +3,6 @@ import Base from '../../layouts/Base.astro';
 import LegalPage from '../../components/pages/LegalPage.astro';
 import content from '../../content/pages/terms.es';
 ---
-<Base title={content.meta.title} description={content.meta.description} pathname="/es/terms/" lang="es">
+<Base title={content.meta.title} description={content.meta.description} pathname="/es/terms/" lang="es" noindex>
   <LegalPage lang="es" content={content} />
 </Base>
