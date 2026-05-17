@@ -40,7 +40,8 @@ const year = new Date().getFullYear();
         <h4>{t('footer.legal')}</h4>
         <ul>
           <li><a href={localizePath('/privacy/', lang)}>{t('footer.privacy')}</a></li>
-          <li><a href={localizePath('/terms/', lang)}>{t('footer.terms')}</a></li>
+          {/* Terms of Service hidden while the finalized copy is in legal review (see docs/terms-draft.md). Restore this <li> when the new ToS lands in src/content/pages/terms.{en,es}.ts. */}
+          {/* <li><a href={localizePath('/terms/', lang)}>{t('footer.terms')}</a></li> */}
         </ul>
       </div>
     </div>
