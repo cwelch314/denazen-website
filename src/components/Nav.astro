@@ -15,7 +15,10 @@ const basePath = langlessPath ?? stripLangFromPath(currentPath);
 const links = [
   { key: 'nav.home' as const, path: '/', mobileOnly: true },
   { key: 'nav.faq' as const, path: '/faq/' },
-  { key: 'nav.security' as const, path: '/security/' },
+  // Security link hidden while the security pages are unpublished. Restore this entry
+  // when the routes under src/pages/_security/ (and src/pages/es/_security/) are moved
+  // back to src/pages/security/.
+  // { key: 'nav.security' as const, path: '/security/' },
 ];
 
 const isActive = (path: string) => {
