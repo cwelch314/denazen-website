@@ -31,28 +31,43 @@
 // usage". Re-test sign-in after any version bump of the OAuth client
 // library in case the assertion changes.
 //
-// Routing:
+// Routing (NEW rhize.social variants — primary going forward):
+//   GET https://dev.rhize.social/.well-known/oauth-client-metadata.json
+//     → client_id: https://dev.rhize.social/.well-known/oauth-client-metadata.json
+//     → redirect_uris:
+//         [ "https://dev.rhize.social/oauth-callback",
+//           "social.rhize.dev:/oauth-callback" ]
+//
+//   GET https://beta.rhize.social/.well-known/oauth-client-metadata.json
+//     → client_id: https://beta.rhize.social/.well-known/oauth-client-metadata.json
+//     → redirect_uris:
+//         [ "https://beta.rhize.social/oauth-callback",
+//           "social.rhize.beta:/oauth-callback" ]
+//
+//   GET https://rhize.social/.well-known/oauth-client-metadata.json
+//     → client_id: https://rhize.social/.well-known/oauth-client-metadata.json
+//     → redirect_uris:
+//         [ "https://rhize.social/oauth-callback",
+//           "social.rhize:/oauth-callback" ]
+//
+// Routing (LEGACY denazen.com variants — kept during the rebrand
+// transition so existing TestFlight / Play Internal installs that
+// hard-code denazen.com client_ids keep working. Remove this entire
+// block after Step 7 of plan-rebrand-denazen-to-rhize.md — the
+// teardown that follows EAS rebuilds + new app records being in
+// users' hands):
 //   GET https://dev.denazen.com/.well-known/oauth-client-metadata.json
-//     → client_id: https://dev.denazen.com/.well-known/oauth-client-metadata.json
-//     → redirect_uris:
-//         [ "https://dev.denazen.com/oauth-callback",
-//           "com.denazen.dev:/oauth-callback" ]
-//
 //   GET https://beta.denazen.com/.well-known/oauth-client-metadata.json
-//     → client_id: https://beta.denazen.com/.well-known/oauth-client-metadata.json
-//     → redirect_uris:
-//         [ "https://beta.denazen.com/oauth-callback",
-//           "com.denazen.beta:/oauth-callback" ]
-//
 //   GET https://denazen.com/.well-known/oauth-client-metadata.json
-//     → client_id: https://denazen.com/.well-known/oauth-client-metadata.json
-//     → redirect_uris:
-//         [ "https://denazen.com/oauth-callback",
-//           "com.denazen:/oauth-callback" ]
+//     → each returns metadata bound to its own host with the original
+//       `com.denazen.*` URL schemes that the legacy app builds were
+//       compiled against. Display name shows "Rhize" — the rebrand is
+//       intentional and pre-dates this Function update.
 //
 //   Any other host (preview *.pages.dev, localhost, www. variants):
-//     → falls back to production metadata. Not used by any real client;
-//       lets us sanity-check the function on the preview deployment.
+//     → falls back to production rhize.social metadata. Not used by
+//       any real client; lets us sanity-check the function on the
+//       preview deployment.
 //
 // IMPORTANT: keep the static files at public/.well-known/oauth-client-
 // metadata*.json deleted. Static files take priority over functions in
@@ -65,12 +80,22 @@ interface VariantConfig {
 }
 
 const VARIANTS: Record<string, VariantConfig> = {
-  'dev.denazen.com':  { scheme: 'com.denazen.dev',  client_name: 'Rhize Dev',  client_uri_host: 'dev.denazen.com'  },
-  'beta.denazen.com': { scheme: 'com.denazen.beta', client_name: 'Rhize Beta', client_uri_host: 'beta.denazen.com' },
-  'denazen.com':      { scheme: 'com.denazen',      client_name: 'Rhize',      client_uri_host: 'denazen.com'      },
+  // New rhize.social family — primary going forward.
+  'dev.rhize.social':  { scheme: 'social.rhize.dev',  client_name: 'Rhize Dev',  client_uri_host: 'dev.rhize.social'  },
+  'beta.rhize.social': { scheme: 'social.rhize.beta', client_name: 'Rhize Beta', client_uri_host: 'beta.rhize.social' },
+  'rhize.social':      { scheme: 'social.rhize',      client_name: 'Rhize',      client_uri_host: 'rhize.social'      },
+  // Legacy denazen.com family — preserved during the rebrand
+  // transition for existing app builds. Remove with the rest of the
+  // legacy block once Step 7 of plan-rebrand-denazen-to-rhize.md
+  // ships. Schemes here intentionally retain the original
+  // `com.denazen.*` values to match what those legacy apps were
+  // compiled with.
+  'dev.denazen.com':   { scheme: 'com.denazen.dev',   client_name: 'Rhize Dev',  client_uri_host: 'dev.denazen.com'   },
+  'beta.denazen.com':  { scheme: 'com.denazen.beta',  client_name: 'Rhize Beta', client_uri_host: 'beta.denazen.com'  },
+  'denazen.com':       { scheme: 'com.denazen',       client_name: 'Rhize',      client_uri_host: 'denazen.com'       },
 };
 
-const DEFAULT_VARIANT: VariantConfig = VARIANTS['denazen.com'];
+const DEFAULT_VARIANT: VariantConfig = VARIANTS['rhize.social'];
 
 export const onRequestGet: PagesFunction = ({ request }) => {
   const host = new URL(request.url).hostname.toLowerCase();
@@ -83,9 +108,12 @@ export const onRequestGet: PagesFunction = ({ request }) => {
     client_uri: `https://${clientUriHost}`,
     // logo / policy / tos all reference the production host — assets and
     // legal copy live on prod regardless of which variant is requesting.
-    logo_uri: 'https://denazen.com/images/brand/penrose-64.png',
-    policy_uri: 'https://denazen.com/privacy/',
-    tos_uri: 'https://denazen.com/terms/',
+    // Pointed at rhize.social uniformly (including for the legacy
+    // denazen.com variants) so the OAuth consent screen is brand-
+    // consistent during the transition.
+    logo_uri: 'https://rhize.social/images/brand/rhize-64.png',
+    policy_uri: 'https://rhize.social/privacy/',
+    tos_uri: 'https://rhize.social/terms/',
     application_type: 'native',
     redirect_uris: [
       `https://${clientUriHost}/oauth-callback`,
